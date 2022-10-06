@@ -6,10 +6,8 @@
         active-text-color="#ffd04b"
         background-color="#545c64"
         class="el-menu-vertical-demo"
-        default-active="2"
+        default-active="3"
         text-color="#fff"
-        @open="handleOpen"
-        @close="handleClose"
       >
         <el-sub-menu index="1">
           <template #title>
@@ -56,17 +54,18 @@ import {
   Location,
   Setting,
 } from '@element-plus/icons-vue'
-import {onMounted} from 'vue'
-import {useRouter} from 'vue-router'
+import {onMounted,watch} from 'vue'
+import {useRouter,useRoute} from 'vue-router'
 const router = useRouter()
-// onMounted(()=>{
-//   router.push({name:'MyMessage'})
-// })
+let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+onMounted(()=>{
+  // router.push({name:'MyMessage'})
+})
 const handleOpen = (key: string, keyPath: string[]) => {
-  console.log('000000',key, keyPath)
+  // console.log('000000',key, keyPath)
 }
 const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
+  // console.log(key, keyPath)
 }
 const handleGozs = ()=>{
   router.push({name:'MyCertificate'})
@@ -79,7 +78,7 @@ const handleGopet = ()=>{
 }
 </script>
 <style scoped>
-  el-row{
-    margin-bottom: 200px;
-  }
+  /* .el-cow{
+    min-height: 400px;
+  } */
 </style>

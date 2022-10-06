@@ -15,13 +15,14 @@
     <el-form-item>
       <el-button type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
       <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+
     </el-form-item>
     <el-form-item>
-    <div class="zhuce"> 
-      <el-button type="" link>注册</el-button>
-    <el-button type="" link>找回密码</el-button>
-    </div>
-  </el-form-item>
+      <div class="zhuce">
+        <el-button type="" link>注册</el-button>
+        <el-button type="" link>找回密码</el-button>
+      </div>
+    </el-form-item>
   </el-form>
 
   <!-- <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
@@ -39,7 +40,12 @@ import type { FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import SIdentify from '@/components/Sidentify.vue';
+import { reqUserLogin } from '@/api/index'
 const router = useRouter()
+if (document.cookie.includes('userToken')) {
+  let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  router.push({ name: 'user', query: { _id: myCookie } })
+}
 // 图形验证码
 let identifyCodes = "1234567890"
 let identifyCode = ref('3212')
@@ -127,16 +133,25 @@ const rules = reactive({
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  formEl.validate((valid) => {
+  formEl.validate(async (valid) => {
     if (valid) {
-      open2()
-      router.push({ name: 'user' })
-    } else {
+
       if (yanzhengma.value !== shuruyanzhengma.value) {
         open3()
+        return
+      }
+      let form = {
+        phoneNumber: ruleForm.pass,
+        password: ruleForm.checkPass
+      }
+      let result = await reqUserLogin(form)
+      if (result.status == 0) {
+        open2()
       } else {
         open4()
       }
+      router.push({ name: 'user', query: { id: result.data[0]._id } })
+    } else {
       refreshCode()
       return false
     }
@@ -152,7 +167,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 // .yanzhengma{
 //   margin-top: 20px;
 // }
-.zhuce{
+.zhuce {
   text-align: left;
 }
 </style>

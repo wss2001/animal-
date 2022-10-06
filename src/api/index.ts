@@ -15,3 +15,14 @@ export const reqAddFood = (form:any)=>{
 export const reqUserLogin = (form:any)=>{
   return requests({url:'/user/login',data:{form:form},method:'POST'})
 }
+export const reqGetUserCwInfo=(id:string)=>{
+  return requests({url:`/user/getCwBaseInfo?id=${id}`,method:'GET'})
+}
+export const reqGetUserInfo=(id:string)=>{
+  return requests({url:`/user/getUserInfo?id=${id}`,method:'GET'})
+}
+export const reqUploadtx=(id:string,url:string)=>{
+  return requests({url:`/user/uploadtx`,method:'POST',data:{id:id,url:url}})
+}
+
+
