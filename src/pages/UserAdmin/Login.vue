@@ -147,10 +147,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       let result = await reqUserLogin(form)
       if (result.status == 0) {
         open2()
+        router.push({ name: 'user', query: { id: result.data[0]._id } })
       } else {
         open4()
       }
-      router.push({ name: 'user', query: { id: result.data[0]._id } })
     } else {
       refreshCode()
       return false

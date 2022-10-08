@@ -15,7 +15,6 @@
               </div>
             </template>
           </el-popover>
-          
         </div>
         <div class="right">
           <p>宠物名称: <el-button type="warning">{{cw.cwInfo.name}}</el-button>
@@ -53,26 +52,29 @@
             <el-button type="primary" @click="addedFood">确 定</el-button>
           </span>
         </template>
-
       </el-dialog>
 
-      <el-dialog title="提示" :visible.sync="dialogSy" width="30%">
+      <el-dialog title="提示" v-model="dialogSy" width="30%">
         支付二维码
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogSy = false">取 消</el-button>
-          <el-button type="primary" @click="sureSy(cw.cwInfo._id)">确 定</el-button>
-        </span>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogSy = false">取 消</el-button>
+            <el-button type="primary" @click="sureSy(cw.cwInfo._id)">确 定</el-button>
+          </span>
+        </template>
       </el-dialog>
 
-      <el-dialog title="提示" :visible.sync="dialogTz" width="30%">
+      <el-dialog title="提示" v-model="dialogTz" width="30%">
         <span>您还未登录,请跳转到登录页面</span>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogTz = false">取 消</el-button>
-          <el-button type="primary" @click="TzLogin">跳转到登录页面</el-button>
-        </span>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogTz = false">取 消</el-button>
+            <el-button type="primary" @click="TzLogin">跳转到登录页面</el-button>
+          </span>
+        </template>
       </el-dialog>
     </div>
-    <CC></CC>
+    <!-- <CC></CC> -->
   </div>
 </template>
 <script lang="ts" setup>
@@ -80,19 +82,21 @@ import { onMounted, ref, reactive } from "vue";
 import { useRouter } from 'vue-router';
 import { cwStore } from "@/store/cw";
 import { reqAddFood } from '@/api/index'
+import CC from '@/components/CC.vue'
 const router = useRouter()
 let id = router.currentRoute.value.query.id as string
 const cw = cwStore()
 let urls = reactive({
-  arr:[
-  'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-  'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-  'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-  'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
-  'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
-  'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
-  'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
-]})
+  arr: [
+    'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+    'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
+    'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
+    'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
+    'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+    'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
+    'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
+  ]
+})
 onMounted(async () => {
   try {
     await cw.getCwInfo(id)
@@ -101,22 +105,37 @@ onMounted(async () => {
     console.error(error)
   }
 })
-let show = ref(true)
 let dialogVisible = ref(false)
 let dialogFormVisible = ref(false)
 let dialogSy = ref(false)
 let dialogTz = ref(false)
-
-let user = ref('')
 let formLabelWidth = '120px'
-let srcList = reactive([])
 const TzLogin = () => {
-  console.log('TzLogin')
+  dialogTz.value = false
+  router.push({name:'userLogin'})
 }
-const sureSy = (id: string) => {
+const sureSy = async (id: string) => {
   console.log('sureSy', id)
+  dialogSy.value = true
+  let food = form.food
+  // let id = cw.cwInfo._id
+  let data = { food: food, id: id }
+  let result
+  try {
+    result = await reqAddFood(data)
+  } catch (error) {
+    console.error(error)
+  }
+  cw.getCwInfo(id)
+  form.food = 0
+  console.log(cw.cwInfo.alsoFood, cw.cwInfo.alsoFoodtian)
 }
+let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 const addFood = (state: boolean) => {
+  if(!myCookie){
+    dialogTz.value = true
+    return
+  }
   if (state) {
     dialogVisible.value = true
   } else {
@@ -129,25 +148,17 @@ const sureAdd = () => {
 }
 let form = reactive({ food: 0 })
 const addedFood = async () => {
-  console.log('addedFood')
   dialogFormVisible.value = false
-  let food = form.food
-  let id = cw.cwInfo._id
-  let data = { food: food, id: id }
-  let result
-  try {
-    result = await reqAddFood(data)
-  } catch (error) {
-    console.error(error)
-  }
-  cw.getCwInfo(id)
-  console.log(cw.cwInfo.alsoFood, cw.cwInfo.alsoFoodtian)
+  dialogSy.value = true
+  
 }
-
-const shouyang = (id: string) => { }
-
-
-
+const shouyang = (id: string) => {
+  if(!myCookie){
+    dialogTz.value = true
+    return
+  }
+  
+}
 
 </script>
 <style lang="less">

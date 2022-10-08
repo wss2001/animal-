@@ -19,7 +19,17 @@
       <Plus />
     </el-icon>
   </el-upload>
+  <div class="mianban">
+  <el-collapse accordion>
+  <el-collapse-item title="消息" name="2">
+    <div class="item" v-for="msg in result.userInfo.msg">
+      {{msg}}
+    </div>
+  </el-collapse-item>
+</el-collapse>
+</div>
 </template>
+
 <script lang="ts" setup>
 import { reqGetUserInfo, reqUploadtx } from '@/api/index'
 import { onMounted, ref, reactive, nextTick } from "vue";
@@ -30,7 +40,7 @@ import type { UploadProps } from 'element-plus'
 const router = useRouter()
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 let result = reactive({
-  userInfo: { img: '' }
+  userInfo: { img: '',msg:[] }
 })
 //退出登录
 const fail = () => {
@@ -39,16 +49,21 @@ const fail = () => {
   //@ts-ignore
   document.cookie = 'userToken' + "=a; expires=" + date.toGMTString();
   router.push({ name: 'userLogin' })
-  console.log(document.cookie);
+  // console.log(document.cookie);
 }
 onMounted(async () => {
   //检查登陆状态
   if (!document.cookie.includes('userToken')) {
     router.push({ name: 'userLogin' })
     console.log('时间过久退出登陆状态')
+  } else {
+    try {
+      let k = await reqGetUserInfo(myCookie)
+      result.userInfo = k.data[0]
+    } catch (error) {
+      console.log(error)
+    }
   }
-  let k = await reqGetUserInfo(myCookie)
-  result.userInfo = k.data[0]
 })
 const isShow = ref(false)
 const changetx = () => {
@@ -60,10 +75,10 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
   uploadFile
 ) => {
   isShow.value = false
-  imageUrl.value = URL.createObjectURL(uploadFile.raw!)
-  result.userInfo.img = URL.createObjectURL(uploadFile.raw!)
-  console.log(URL.createObjectURL(uploadFile.raw!))
-  reqUploadtx(myCookie, URL.createObjectURL(uploadFile.raw!))
+  let url = `http://127.0.0.1:3007/${response.data.path}`
+  imageUrl.value = url
+  result.userInfo.img = url
+  reqUploadtx(myCookie, url)
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -80,6 +95,25 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 
 </script>
 <style lang="less" scoped>
+  .mianban{
+    position: absolute;
+    top: 30px;
+    right:60px;
+    .el-collapse{
+      --el-collapse-header-bg-color:#f3f0e9;
+      --el-collapse-content-bg-color:#f3f0e9;
+    }
+    .el-collapse-item__wrap{
+      width: 300px;
+    }
+    .item{
+      border-radius: 5px;
+      border:1px solid black;
+      margin-bottom: 2px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
 span {
   float: left;
 }

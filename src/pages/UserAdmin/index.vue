@@ -19,12 +19,21 @@ const router =useRouter()
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 user.getCwInfo(myCookie)
 onMounted(()=>{
-router.push({name:'MyMessage'})
+  if (!document.cookie.includes('userToken')) {
+    router.push({ name: 'userLogin' })
+    console.log('时间过久退出登陆状态')
+  }else{
+    router.push({name:'MyMessage'})
+  }
+
 })
 
 </script>
 <style lang="less" scoped>
 .el-container {
   min-height: 500px;
+}
+.el-main{
+  position: relative;
 }
 </style>

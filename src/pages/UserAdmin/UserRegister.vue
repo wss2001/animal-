@@ -1,32 +1,34 @@
 <template>
   <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
-    <el-form-item label="账号" prop="pass">
+    <el-form-item label="账号" prop="phone">
+      <el-input v-model="ruleForm.phone" type="text" autocomplete="off" />
+    </el-form-item>
+    <el-form-item label="密码" prop="pass">
       <el-input v-model="ruleForm.pass" type="text" autocomplete="off" />
     </el-form-item>
-    <el-form-item label="密码" prop="checkPass">
+    <el-form-item label="确认密码" prop="checkPass">
       <el-input v-model="ruleForm.checkPass" type="password" autocomplete="off" />
     </el-form-item>
-    <el-form-item label="验证码" prop="age">
-      <el-input v-model="shuruyanzhengma" />
-      <div @click="refreshCode" class="yanzhengma">
-        <SIdentify :identifyCode="identifyCode" @clickChild="clickChild" />
-      </div>
+    <el-form-item>
+      <el-checkbox v-model="radio"
+        ><span @click="goread">阅读须知</span></el-checkbox
+      >
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
+      <el-button type="primary" @click="submitForm(ruleFormRef)">注册</el-button>
       <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-
     </el-form-item>
-
   </el-form>
 
-  <!-- <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-      <p>账号密码输入错误请重新输入</p>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="FindPass">找回密码</el-button>
+  <el-dialog v-model="centerDialogVisible" title="用户名" width="30%" center>
+    <el-input v-model="name"/>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="changeName">换名字</el-button>
+        <el-button type="primary" @click="register">确认</el-button>
       </span>
-    </el-dialog> -->
+    </template>
+  </el-dialog>
 
 </template>
 <script lang="ts" setup>
@@ -34,42 +36,22 @@ import { reactive, ref, onMounted, watch } from 'vue'
 import type { FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
-import SIdentify from '@/components/Sidentify.vue';
-import { reqCwAdminLogin } from '@/api/index'
+import { reqUserRegister } from '@/api/index'
+import { createRandomChinese, RandomNumBoth } from '@/utils/index'
 const router = useRouter()
-if (document.cookie.includes('cwBaseAdminToken')) {
-  let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  router.push({ name: 'cwBaseAdmin', query: { id: myCookie } })
+//确认须知
+const radio = ref(false)
+const goread = () => {
+  router.push({ name: 'read' })
 }
-// 图形验证码
-let identifyCodes = "1234567890"
-let identifyCode = ref('3212')
-const randomNum = (min: any, max: any) => {
-  return Math.floor(Math.random() * (max - min) + min)
-}
-const makeCode = (o: any, l: any) => {
-  for (let i = 0; i < l; i++) {
-    identifyCode.value += o[
-      randomNum(0, o.length)
-    ];
-  }
-}
-const refreshCode = () => {
-  identifyCode.value = "";
-  makeCode(identifyCodes, 4);
-}
-onMounted(() => {
-  identifyCode.value = "";
-  makeCode(identifyCodes, 4);
-})
 const open2 = () => {
   ElMessage({
-    message: '登录成功',
+    message: '注册成功请输入用户名',
     type: 'success',
   })
 }
 const open4 = () => {
-  ElMessage.error('账号密码错误')
+  ElMessage.error('请确认协议')
 }
 const open3 = () => {
   ElMessage.error('输入验证码错误')
@@ -77,9 +59,7 @@ const open3 = () => {
 const ruleFormRef = ref<FormInstance>()
 let yanzhengma = ref('')
 let shuruyanzhengma = ref('')
-const clickChild = (e: any) => {
-  yanzhengma.value = e
-}
+
 const checkAge = (rule: any, value: any, callback: any) => {
   if (shuruyanzhengma.value == '') {
     return callback(new Error('请输入验证码'))
@@ -94,7 +74,7 @@ const checkAge = (rule: any, value: any, callback: any) => {
 
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('请输入账号'))
+    callback(new Error('Please input the password'))
   } else {
     if (ruleForm.checkPass !== '') {
       if (!ruleFormRef.value) return
@@ -105,7 +85,16 @@ const validatePass = (rule: any, value: any, callback: any) => {
 }
 const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('请输入密码'))
+    callback(new Error('Please input the password again'))
+  } else if (value !== ruleForm.pass) {
+    callback(new Error("Two inputs don't match!"))
+  } else {
+    callback()
+  }
+}
+const checkphone = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('输入手机号不能为空'))
   } else {
     callback()
   }
@@ -114,39 +103,59 @@ const validatePass2 = (rule: any, value: any, callback: any) => {
 const ruleForm = reactive({
   pass: '',
   checkPass: '',
+  phone: ''
 })
 
 const rules = reactive({
   pass: [{ validator: validatePass, trigger: 'blur' }],
   checkPass: [{ validator: validatePass2, trigger: 'blur' }],
   age: [{ validator: checkAge, trigger: 'blur' }],
+  phone: [{ validator: checkphone, trigger: 'blur' }]
 })
-
+const centerDialogVisible = ref(false)
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate(async (valid) => {
     if (valid) {
-
-      if (yanzhengma.value !== shuruyanzhengma.value) {
-        open3()
-        return
-      }
-      let form = {
-        phoneNumber: ruleForm.pass,
-        password: ruleForm.checkPass
-      }
-      let result = await reqCwAdminLogin(form)
-      if (result.status == 0) {
-        open2()
-      } else {
+      if (!radio.value) {
         open4()
+        return
+      } else {
+        open2()
+        centerDialogVisible.value = true
       }
-      router.push({ name: 'cwBaseAdmin', query: { id: result.data[0]._id } })
     } else {
-      refreshCode()
+      // refreshCode()
       return false
     }
   })
+}
+
+//生成随机名字
+let name = ref('123')
+const changeName = () => {
+  let a = RandomNumBoth(2, 5)
+  let result = createRandomChinese(a)
+  name.value = result
+}
+onMounted(() => {
+  changeName()
+})
+const register = async () => {
+  let form = {
+    phoneNumber: ruleForm.phone,
+    pass: ruleForm.checkPass,
+    username: name.value
+  }
+  centerDialogVisible.value = false
+  try {
+    let result = await reqUserRegister(form)
+    if (result.status == 0) {
+      router.push({ name: 'user', query: { id: result.data.insertedIds[0] } })
+    }
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const resetForm = (formEl: FormInstance | undefined) => {
@@ -155,9 +164,10 @@ const resetForm = (formEl: FormInstance | undefined) => {
 }
 </script>
 <style lang="less" scoped>
-// .yanzhengma{
-//   margin-top: 20px;
-// }
+.dialog-footer button:first-child {
+  margin-right: 10px;
+}
+
 .zhuce {
   text-align: left;
 }

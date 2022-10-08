@@ -33,6 +33,11 @@ export const routes: Irouter[] = [
     component: () => import('@/pages/CwInfo.vue')
   },
   {
+    path: '/read',
+    name: 'read',
+    component: () => import('@/components/MyProtocol.vue')
+  },
+  {
     path: '/shipin',
     name: 'shipin',
     component: () => import("@/pages/Shipin.vue")
@@ -72,13 +77,13 @@ export const routes: Irouter[] = [
   {
       path:'/userRegister',
       name:'userRegister',
-      component:() => import("@/pages/UserAdmin/Login.vue"),
+      component:() => import("@/pages/UserAdmin/UserRegister.vue"),
       meta:{showFooter:false,showHeader:true,content:'用户注册'}
   },
   // {
   //     path:'/adminLogin',
   //     name:'adminLogin',
-  //     component:AdminLogin,
+  //     component:() => import("@/pages/CwBaseAdmin/Login.vue"),
   //     meta:{showFooter:false,showHeader:true,content:'后台登录'}
   // },
   // {
@@ -87,12 +92,18 @@ export const routes: Irouter[] = [
   //     component:Admin,
   //     meta:{showFooter:false,showHeader:true,content:'后台管理'}
   // },
-  // {
-  //     path:'/cwBaseAdminLogin',
-  //     name:'cwBaseAdminLogin',
-  //     component:CwBaseAdminLogin,
-  //     meta:{showFooter:false,showHeader:true,content:'基地管理人员登录'}
-  // },
+  {
+      path:'/cwBaseAdminLogin',
+      name:'cwBaseAdminLogin',
+      component:() => import("@/pages/CwBaseAdmin/Login.vue"),
+      meta:{showFooter:false,showHeader:true,content:'基地管理人员登录'}
+  },
+  {
+    path:'/cwBaseAdmin',
+    name:'cwBaseAdmin',
+    component:() => import("@/pages/CwBaseAdmin/index.vue"),
+    meta:{showFooter:false,showHeader:false,content:'基地管理后台'}
+},
 ]
 
 const router = createRouter({
