@@ -24,7 +24,6 @@ const cwBase = cwBaseStore()
 let id = router.currentRoute.value.query.id as string
 onMounted(async () => {
   await cwBase.getCwBaseInfo(id)
-  console.log(cwBase.handlecwArr())
 })
 const goCwInfo = (id: string) => {
   router.push({name:'cwinfo',query:{id:id}})

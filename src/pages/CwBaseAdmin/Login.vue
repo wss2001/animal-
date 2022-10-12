@@ -27,16 +27,52 @@
         <el-button type="primary" @click="FindPass">找回密码</el-button>
       </span>
     </el-dialog> -->
+    <div id="maychar"></div>
 
 </template>
 <script lang="ts" setup>
-import { reactive, ref, onMounted, watch } from 'vue'
+import { reactive, ref, onMounted, watch,inject  } from 'vue'
 import type { FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import SIdentify from '@/components/Sidentify.vue';
 import { reqCwAdminLogin } from '@/api/index'
 const router = useRouter()
+let echarts = inject("echarts"); 
+ // 折线图
+ const changetype = () => {
+      // 获取组件实例
+      //@ts-ignore
+      const machart = echarts.init(document.getElementById("maychar"));
+      // 设置配置项
+      const option = {
+        xAxis: {
+          data: ["A", "B", "C", "D", "E"],
+        },
+        yAxis: {},
+        series: [
+          {
+            data: [10, 22, 28, 43, 49],
+            type: "line",
+            stack: "x",
+          },
+          {
+            data: [5, 4, 3, 5, 10],
+            type: "line",
+            stack: "x",
+          },
+        ],
+      };
+      // 复制
+      machart.setOption(option);
+      // 根据页面大小自动响应图表大小
+      window.addEventListener("resize", function () {
+        machart.resize();
+      });
+    };
+onMounted(()=>{
+  changetype()
+})
 if (document.cookie.includes('cwBaseAdminToken')) {
   let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
   router.push({ name: 'cwBaseAdmin', query: { id: myCookie } })
@@ -135,13 +171,18 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         phoneNumber: ruleForm.pass,
         password: ruleForm.checkPass
       }
-      let result = await reqCwAdminLogin(form)
-      if (result.status == 0) {
+      let result:any
+      try {
+        result = await reqCwAdminLogin(form)
+        if (result.status == 0) {
         open2()
       } else {
         open4()
       }
       router.push({ name: 'cwBaseAdmin', query: { id: result.data[0]._id } })
+      } catch (error) {
+        console.log(error)
+      }
     } else {
       refreshCode()
       return false
@@ -158,6 +199,11 @@ const resetForm = (formEl: FormInstance | undefined) => {
 // .yanzhengma{
 //   margin-top: 20px;
 // }
+#maychar{
+  max-height: 500px;
+  // max-height: 400px;
+  height: 500px;
+}
 .zhuce {
   text-align: left;
 }

@@ -80,18 +80,32 @@ export const routes: Irouter[] = [
       component:() => import("@/pages/UserAdmin/UserRegister.vue"),
       meta:{showFooter:false,showHeader:true,content:'用户注册'}
   },
-  // {
-  //     path:'/adminLogin',
-  //     name:'adminLogin',
-  //     component:() => import("@/pages/CwBaseAdmin/Login.vue"),
-  //     meta:{showFooter:false,showHeader:true,content:'后台登录'}
-  // },
-  // {
-  //     path:'/admin',
-  //     name:'admin',
-  //     component:Admin,
-  //     meta:{showFooter:false,showHeader:true,content:'后台管理'}
-  // },
+  {
+      path:'/adminLogin',
+      name:'adminLogin',
+      component:() => import("@/pages/Admin/Login.vue"),
+      meta:{showFooter:false,showHeader:true,content:'后台登录'}
+  },
+  {
+      path:'/admin',
+      name:'admin',
+      component:() => import("@/pages/Admin/index.vue"),
+      meta:{showFooter:false,showHeader:true,content:'后台管理'},
+      children: [
+        {
+          path: 'incomes',
+          name: 'incomes',
+          component: () => import("@/pages/Admin/Incomes.vue"),
+          meta: { showFooter: false, showHeader: true, content: '收益信息' }
+        },
+        {
+          path: 'cwBase',
+          name: 'cwBase',
+          component: () => import("@/pages/Admin/CwBase.vue"),
+          meta: { showFooter: false, showHeader: true, content: '宠物信息' }
+        },
+      ]
+  },
   {
       path:'/cwBaseAdminLogin',
       name:'cwBaseAdminLogin',
@@ -102,7 +116,27 @@ export const routes: Irouter[] = [
     path:'/cwBaseAdmin',
     name:'cwBaseAdmin',
     component:() => import("@/pages/CwBaseAdmin/index.vue"),
-    meta:{showFooter:false,showHeader:false,content:'基地管理后台'}
+    meta:{showFooter:false,showHeader:false,content:'基地管理后台'},
+    children: [
+      {
+        path: 'message',
+        name: 'baseMessage',
+        component: () => import("@/pages/CwBaseAdmin/MyMessage.vue"),
+        meta: { showFooter: false, showHeader: true, content: '管理人员信息' }
+      },
+      {
+        path: 'basepet',
+        name: 'basepet',
+        component: () => import("@/pages/CwBaseAdmin/PetCount.vue"),
+        meta: { showFooter: false, showHeader: true, content: '宠物信息' }
+      },
+      {
+        path: 'addpet',
+        name: 'addpet',
+        component: () => import("@/pages/CwBaseAdmin/AddPet.vue"),
+        meta: { showFooter: false, showHeader: true, content: '宠物信息' }
+      },
+    ]
 },
 ]
 

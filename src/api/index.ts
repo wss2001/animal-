@@ -42,5 +42,10 @@ export const reqCwAdminLogin = (form:any)=>{
   return requests({url:'/cwbase/login',data:{form:form},method:'POST'})
 }
 
+//基地管理新增宠物
+export const reqCwAdminAddPet = (form:any)=>{
+  return requests({url:'/cwbase/addpet',data:{form:form},method:'POST'})
+}
+
 
 

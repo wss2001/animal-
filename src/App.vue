@@ -2,7 +2,10 @@
 
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
-import { onMounted } from 'vue'
+import * as echarts from "echarts";
+import { onMounted,provide } from 'vue'
+
+provide("echarts", echarts);
 </script>
 
 <template>

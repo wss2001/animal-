@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <el-container>
     <!-- <el-aside width="230px"> -->
     <MyAside></MyAside>

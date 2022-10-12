@@ -10,6 +10,7 @@ export default defineConfig({
     alias: [ // 配置 @ 指代 src
       {
         find: "@",
+        //@ts-ignore
         replacement: resolve(__dirname, "./src"),
       },
     ],
