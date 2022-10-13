@@ -1,9 +1,15 @@
+/**
+ * @description 通过前后俩个时间戳获取其中相差几天
+ * @param startTime 
+ * @param endTime 
+ * @returns 
+ */
 export const calculateDiffTime = function (startTime: number, endTime: number) {
   // let startTime = '1629100469000' //2021-08-16 17:51
   //     let endTime = '1876262719000' //2032-08-16 17:51
   // let endTime = parseInt(eTime)
   // let startTime = parseInt(sTime)
-  let a = ((endTime - startTime) / 1000 ).toString()
+  let a = ((endTime - startTime) / 1000).toString()
   let runTime = parseInt(a);
   var year = Math.floor(runTime / 86400 / 365);
   runTime = runTime % (86400 * 365);
@@ -20,7 +26,7 @@ export const calculateDiffTime = function (startTime: number, endTime: number) {
   // return year + ',' + month + ',' + day + ',' + hour + ',' + minute + ',' + second;
   return `${month}月${day}天`
 }
-export const createRandomChinese = function (count: number)  {
+export const createRandomChinese = function (count: number) {
   const start = parseInt('4e00', 16)
   const end = parseInt('9fa5', 16)
   let name = ''
@@ -30,9 +36,73 @@ export const createRandomChinese = function (count: number)  {
   }
   return eval(`'${name}'`)
 }
-export function RandomNumBoth(Min:number,Max:number){
+/**
+ * @description 获取俩个范围内的随机数
+ * @param Min 
+ * @param Max 
+ * @returns 
+ */
+export function RandomNumBoth(Min: number, Max: number) {
   var Range = Max - Min;
   var Rand = Math.random();
   var num = Min + Math.round(Rand * Range); //四舍五入
   return num;
+}
+/**
+ * @description 获取指定名称的cookie的值
+ * @param objname {string}
+ * @returns 
+ */
+export function getcookie(objname: string) {
+  var arrstr = document.cookie.split("; ");
+  for (var i = 0; i < arrstr.length; i++) {
+    var temp = arrstr[i].split("=");
+    if (temp[0] == objname) return unescape(temp[1]);
+  }
+}
+
+/**
+ * @description 时间格式化
+ * @param { date | string | number | undefined } date 时间戳，时间对象，时间字符串，（undefied | 0 | NaN | '' - 代表当前时间）
+ * @param { string } format 格式化形式参考 http://momentjs.cn/docs/ 年份、月份、日期的令牌 eg. YYYY-MM-DD HH:mm:ss
+ * @param { boolean | undefined} addZero  true - 数字不足10时补0，如：2020-6-8 —— 2020-06-08
+ */
+export const formatDate = (date?: Date | string | number, addZero?: boolean, format = 'YYYY-MM-DD', addTimeZero?: boolean) => {
+  let result = ''
+  let tempDate: Date
+
+  if (typeof date === 'object') {
+    tempDate = date
+  } else {
+    tempDate = !date ? new Date() : new Date(date)
+  }
+
+  if (/(Y+)/.test(format)) {
+    result = format.replace(RegExp.$1, `${tempDate.getFullYear()}`)
+  } else {
+    result = format
+  }
+
+  const month = tempDate.getMonth() + 1
+  const day = tempDate.getDate()
+  const hours = tempDate.getHours()
+  const minutes = tempDate.getMinutes()
+  const seconds = tempDate.getSeconds()
+  const prefix = addZero ? '0' : ''
+  const timePreFix = addTimeZero ? '0' : ''
+  const tokens: Record<string, string> = {
+    'M+': `${month < 10 ? `${prefix}${month}` : month}`,
+    'D+': `${day < 10 ? `${prefix}${day}` : day}`,
+    'H+': `${hours < 10 ? `${prefix || timePreFix}${hours}` : hours}`,
+    'm+': `${minutes < 10 ? `${prefix || timePreFix}${minutes}` : minutes}`,
+    's+': `${seconds < 10 ? `${prefix || timePreFix}${seconds}` : seconds}`
+  }
+
+  Object.keys(tokens).forEach(key => {
+    if (new RegExp(`(${key})`).test(format)) {
+      result = result.replace(RegExp.$1, (tokens)[key])
+    }
+  })
+
+  return result
 }

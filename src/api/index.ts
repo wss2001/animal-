@@ -46,6 +46,9 @@ export const reqCwAdminLogin = (form:any)=>{
 export const reqCwAdminAddPet = (form:any)=>{
   return requests({url:'/cwbase/addpet',data:{form:form},method:'POST'})
 }
-
+//基地管理删除宠物
+export const reqCwAdminDeletePet = (form:any)=>{
+  return requests({url:'/cwbase/removePet',data:{form:form},method:'POST'})
+}
 
 

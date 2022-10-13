@@ -13,12 +13,12 @@
       <el-col :span="11">
         <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%" />
       </el-col>
-      <el-col :span="2" class="text-center">
+      <!-- <el-col :span="2" class="text-center">
         <span class="text-gray-500">-</span>
       </el-col>
       <el-col :span="11">
         <el-time-picker v-model="form.date2" placeholder="Pick a time" style="width: 100%" />
-      </el-col>
+      </el-col> -->
     </el-form-item>
     <el-form-item label="Instant delivery">
       <el-switch v-model="form.delivery" />
@@ -52,6 +52,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { onMounted, ref, reactive } from "vue";
 import { reqCwAdminAddPet } from '@/api/index'
 import { ElMessage } from 'element-plus'
+import {formatDate} from '@/utils/index'
 import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
 const router = useRouter()
@@ -75,14 +76,14 @@ const form = reactive({
   desc: '',
   imageUrl: ''
 })
+// const date = computed(()=>form.date1.slice(0,41))
+// console.log(date.value)
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
   response,
   uploadFile
 ) => {
   let url = `http://127.0.0.1:3007/${response.data.path}`
   form.imageUrl = url
-  // result.userInfo.img = url
-  // form.imageUrl = URL.createObjectURL(uploadFile.raw!)
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -99,28 +100,29 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
 const onSubmit = async () => {
-  console.log(form)
+  // console.log(form)
+  let date = formatDate(form.date1,true)
   let newform = {
     name: form.name,
     intro: form.desc,
     img: form.imageUrl,
-    id: myCookie
+    id: myCookie,
+    birth:date
   }
-  try {
-    let result = await reqCwAdminAddPet(newform)
-    if (result.data.status == 1) {
-      open2()
-      form.name = ''
-      form.desc = ''
-      form.imageUrl = ''
-    } else {
-      open4()
-    }
-  } catch (error) {
-    console.log(error)
-  }
-
-
+  // console.log(newform)
+  // try {
+  //   let result = await reqCwAdminAddPet(newform)
+  //   if (result.data.status == 1) {
+  //     open2()
+  //     form.name = ''
+  //     form.desc = ''
+  //     form.imageUrl = ''
+  //   } else {
+  //     open4()
+  //   }
+  // } catch (error) {
+  //   console.log(error)
+  // }
 }
 
 </script>
