@@ -104,6 +104,12 @@ export const routes: Irouter[] = [
           component: () => import("@/pages/Admin/CwBase.vue"),
           meta: { showFooter: false, showHeader: true, content: '宠物信息' }
         },
+        {
+          path: 'adminMessage',
+          name: 'adminMessage',
+          component: () => import("@/pages/Admin/Message.vue"),
+          meta: { showFooter: false, showHeader: true, content: '宠物信息' }
+        },
       ]
   },
   {

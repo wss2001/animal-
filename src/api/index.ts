@@ -52,3 +52,13 @@ export const reqCwAdminDeletePet = (form:any)=>{
 }
 
 
+
+//后台管理登录
+export const reqAdminLogin = (form:any)=>{
+  return requests({url:'/admin/login',data:{form:form},method:'POST'})
+}
+//后台管理获取消息
+export const reqAdminGetMessage = (form:any)=>{
+  return requests({url:'/admin/getMessage',data:{form:form},method:'POST'})
+}
+
