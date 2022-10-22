@@ -13,13 +13,13 @@ import { useRouter, useRoute } from 'vue-router';
 import MyAside from "./MyAside.vue";
 import MyHome from "./MyHome.vue";
 import { onMounted, ref } from "vue";
+
 const router =useRouter()
 onMounted(()=>{
   if (!document.cookie.includes('admin')) {
     router.push({ name: 'home' })
     console.log('退出登陆状态')
   }
-  
 })
 
 </script>

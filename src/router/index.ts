@@ -15,12 +15,14 @@ export const routes: Irouter[] = [
     path: '/',
     // redirect: '/dashboard'
     name: 'home',
-    component: Home
+    component: Home,
+    meta: { showFooter: false, showHeader: true, content: '用户首页' },
   },
   {
     path: '/cwBaseInfo',
     name: 'cwBaseInfo',
-    component: () => import('@/pages/CwBaseInfo.vue')
+    component: () => import('@/pages/CwBaseInfo.vue'),
+    meta: { showFooter: false, showHeader: true, content: '用户首页' },
   },
   {
     path: '/map',
@@ -30,12 +32,20 @@ export const routes: Irouter[] = [
   {
     path: '/cwinfo',
     name: 'cwinfo',
-    component: () => import('@/pages/CwInfo.vue')
+    component: () => import('@/pages/CwInfo.vue'),
+    meta: { showFooter: false, showHeader: true, content: '用户首页' },
   },
   {
     path: '/read',
     name: 'read',
-    component: () => import('@/components/MyProtocol.vue')
+    component: () => import('@/components/MyProtocol.vue'),
+    meta: { showFooter: false, showHeader: false, content: '用户首页' },
+  },
+  {
+    path: '/peopleZhuYe',
+    name: 'peopleZhuYe',
+    component: () => import('@/components/PeopleZhuYe.vue'),
+    meta: { showFooter: false, showHeader: false, content: '用户' },
   },
   {
     path: '/shipin',

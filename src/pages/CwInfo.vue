@@ -1,10 +1,11 @@
 <template>
   <div class="banxin">
-    <div>
+    <div class="zhuti">
       <!-- <div class="gg" v-show="this.show">
         <div>我是广告猫粮狗粮，宠物医生，我是广告猫粮狗粮，宠物医生，我是广告猫粮狗粮，宠物医生我是广告猫粮狗粮，宠物医生我是广告猫粮狗粮，宠物医生</div>
         <div @click="guanbi" class="guanbi">X</div>
       </div> -->
+      <h2 class="sj"><font color="green">[{{cw.cwInfo.state?'投喂':'领养'}}]</font>{{cw.cwInfo.name}}</h2>
       <div class="info">
         <div class="img left">
           <el-popover placement="top-start" title="宠物简介" :width="200" trigger="hover"
@@ -16,17 +17,37 @@
             </template>
           </el-popover>
         </div>
+        <div class="middle">
+          <p>宠物名称:<el-button type="plain" text>{{cw.cwInfo.name}}</el-button>
+          </p>
+          <p>宠物剩余食物: <el-button @click="addFood(cw.cwInfo.state)" type="plain" text>{{cw.handleFood()}}</el-button></p>
+          <p>联系人:</p>
+          <p>联系电话:</p>
+          <p>(^_^)联系的时候告诉我是在宠物救助盒子看到的这条消息</p>
+          <p><el-button type="danger" text v-if="!cw.cwInfo.state" @click="shouyang(cw.cwInfo._id)">收养它</el-button></p>
+          <p><el-button type="danger" text @click="collect(cw.cwInfo._id)">收藏该宠物</el-button></p>
+          <p><el-button type="primary" text  @click="addFood(cw.cwInfo.state)">是否为他增加粮食</el-button></p>
+        </div>
         <div class="right">
-          <p>宠物名称: <el-button type="warning">{{cw.cwInfo.name}}</el-button>
-          </p>
-          <p>宠物简介: <el-button type="primary">{{cw.cwInfo.intro}}</el-button>
-          </p>
-          <p>宠物剩余食物: <el-button @click="addFood(cw.cwInfo.state)" type="warning">{{cw.handleFood()}}</el-button><i
-              class="el-icon-chicken"></i></p>
-          <el-button v-if="!cw.cwInfo.state" @click="shouyang(cw.cwInfo._id)">收养它</el-button>
+          <div class="other">
+            <p>作者其它信息</p>
+            <p class="gengduo" @click="router.back()">更多</p>
+          </div>
+          <div class="findother">
+            <div class="img">
+              
+            </div>
+            <div class="qita">
+              <p>{{brother.bb.intro}}</p>
+              <p>{{brother.bb.intro}}</p>
+            </div>
+          </div>
         </div>
       </div>
-      <el-button primary @click="addFood(cw.cwInfo.state)">是否为他增加粮食</el-button>
+      <div class="intro">
+        <p>宠物简介: </p>
+        <p>{{cw.cwInfo.intro}}</p>
+      </div>
       <el-dialog title="提示" v-model="dialogVisible" width="30%">
         <p>{{cw.cwInfo.name}}已经被领养了，确定不再看看别的宠物么</p>
         <template #footer>
@@ -74,14 +95,14 @@
         </template>
       </el-dialog>
     </div>
-    <!-- <CC></CC> -->
+    <CC></CC>
   </div>
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, reactive } from "vue";
 import { useRouter } from 'vue-router';
 import { cwStore } from "@/store/cw";
-import { reqAddFood } from '@/api/index'
+import { reqAddFood,reqGetBrother } from '@/api/index'
 import CC from '@/components/CC.vue'
 const router = useRouter()
 let id = router.currentRoute.value.query.id as string
@@ -97,10 +118,18 @@ let urls = reactive({
     'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
   ]
 })
+let brother = reactive({
+  bb:{
+    name:'',
+    intro:''
+  }
+})
 onMounted(async () => {
   try {
     await cw.getCwInfo(id)
     urls.arr = cw.cwInfo.imgArr
+    let {data} = await reqGetBrother(id)
+    brother.bb = data
   } catch (error) {
     console.error(error)
   }
@@ -159,9 +188,100 @@ const shouyang = (id: string) => {
   }
   
 }
+//收藏该宠物
+const collect = (id:string)=>{
+  if(!myCookie){
+    dialogTz.value = true
+    return
+  }
+console.log(id,myCookie)
+}
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
+p{
+  font-size: 16px;
+  text-align: left;
+}
+.el-button{
+  text-align: left;
+}
+.lingyangzhe {
+  font-size: 16px;
+  position: absolute;
+  top: 5px;
+}
+
+
+
+img {
+  cursor: pointer;
+  width: 250px;
+  height: 250px;
+}
+.zhuti{
+  margin-bottom: 20px;
+  .sj{
+    
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 50px;
+    margin-bottom: 10px;
+  }
+}
+.info{
+  height: 350px;
+  display: flex;
+  flex-wrap: nowrap;
+  margin-bottom: 10px;
+  background-color: rgba(0, 0, 0, 0.02);
+  .left{
+    width: 35%;
+  }
+  .middle{
+    width: 35%;
+    margin-right: 10px;
+    background-color: rgba(0, 0, 0, 0.02);
+    p{
+      text-align: left;
+      padding: 5px;
+      .el-button{
+        font-size: 16px;
+      }
+    }
+  }
+  .right{
+    flex:1;
+    .other{
+      display: flex;
+      justify-content: space-between;
+      .gengduo:hover{
+        text-decoration: underline;
+        color: brown;
+      }
+    }
+    .findother{
+      display: flex;
+      flex-wrap: nowrap;
+      height: 100px;
+      .img{
+        width: 30%;
+        background-color: pink;
+        height: 70px;
+        margin-right: 10px;
+      }
+      .qita{
+        text-align: left;
+        flex: 1;
+        line-height: 30px;
+      }
+    }
+  }
+}
+.intro{
+  margin-bottom: 20px;
+}
+
 .demo-image__lazy {
   height: 300px;
   overflow-y: auto;
@@ -179,50 +299,5 @@ const shouyang = (id: string) => {
 
 .dialog-footer button:first-child {
   margin-right: 10px;
-}
-
-.lingyangzhe {
-  font-size: 16px;
-  position: absolute;
-  top: 5px;
-}
-
-.cwBaseLi {
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-li {
-
-  margin-bottom: 15px;
-  position: relative;
-}
-
-.img {
-  width: 250px;
-  height: 250px;
-}
-
-img {
-  cursor: pointer;
-  width: 250px;
-  height: 250px;
-}
-
-.intro {
-  width: 250px;
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.3);
-  bottom: 0;
-}
-
-.intro p {
-  font-size: 18px;
-  margin-top: 5px;
-}
-
-.intro p span {
-  color: brown;
 }
 </style>

@@ -18,6 +18,7 @@ import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import {reqAdminLogin} from '@/api/index'
+import {jiami} from '@/utils/index'
 const router = useRouter()
 const ruleFormRef = ref<FormInstance>()
 const validatePass = (rule: any, value: any, callback: any) => {
@@ -60,8 +61,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
         user:ruleForm.pass,
         pass:ruleForm.checkPass
       }
-      let result = await reqAdminLogin(form)
-      console.log(result)
+      let handleform = jiami(JSON.stringify(form))
+      let result = await reqAdminLogin(handleform)
       if(result.status==0){
         router.push({name:'admin'})
       }else{

@@ -1,3 +1,4 @@
+import { JSEncrypt } from "JSEncrypt";
 /**
  * @description 通过前后俩个时间戳获取其中相差几天
  * @param startTime 
@@ -106,3 +107,17 @@ export const formatDate = (date?: Date | string | number, addZero?: boolean, for
 
   return result
 }
+
+const PUBLIC_KEY = 'MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgHhRji4xQbxS0KwXJm8Ud/orrwxadH/VR7/uLlJ6ayNGsAqm1+ohAobgzqj6yDWdAaK1GwEpO+ACTBUEhMYiMuugxEO79iYtlEXKCHbqiR0ua7w8oZPQp6i+pIcO/OgDJTEIA38spnqmPvfnz4UKFQSmt3SFLx8rjzDhyYw+T3P/AgMBAAE=';
+export const jiami = (data:any)=>{
+  // 使用公钥加密
+  const encrypt = new JSEncrypt() //new
+  encrypt.setPublicKey(PUBLIC_KEY) //公钥赋值
+  let result = encrypt.encrypt(data) //加密字段
+  return result
+}
+// export const jiemi = (data:any)=>{
+//   const nodersa2 = new NodeRSA(privateKey);
+//     const decrypted2 = nodersa2.decryptPublic(decrypted, "utf8");
+//     console.log(decrypted2);
+// }

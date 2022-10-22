@@ -14,22 +14,164 @@
       </li>
     </ul>
   </div>
+  <div>
+    <el-card class="box-card">
+      <template #header>
+        <div class="card-header">
+          <span>留言</span>
+        </div>
+      </template>
+      <template v-if="!isEmpty">
+        <div v-for="item in cc.comment" :key="item._id" class="text item">
+          <el-divider>
+            <el-icon>
+              <star-filled />
+            </el-icon>{{item.date}}
+          </el-divider>
+          <span>{{item.content}}</span>
+          <el-divider content-position="right" @click="lookOther(item.userid)">{{item.name}}</el-divider>
+        </div>
+      </template>
+    </el-card>
+    <el-empty v-if="isEmpty" description="没有评论" :image-size="200" />
+    <el-form>
+      <p class="liuyan">留言</p>
+      <el-form-item prop="desc">
+        <el-input v-model="content" type="textarea" />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="plain" @click="submit">评论</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 <script lang="ts" setup>
-import { onMounted } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useRouter } from 'vue-router';
 import { cwBaseStore } from "@/store/cwbase";
+import { StarFilled } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
+import { reqGetComment, reqSubmitComment } from '@/api/index';
 const router = useRouter()
 const cwBase = cwBaseStore()
 let id = router.currentRoute.value.query.id as string
+let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+let cc = reactive({
+  comment: [{
+    name: '',
+    date: '1970-09-01',
+    content: '',
+    _id: '',
+    userid:''
+  }]
+})
+const open2 = () => {
+  ElMessage({
+    message: '留言成功',
+    type: 'success',
+  })
+}
+const open4 = () => {
+  ElMessage.error('留言发生错误，检查网络')
+}
+const open3 = () => {
+  ElMessage.error('请输入内容')
+}
+const open1 = () => {
+  ElMessage.error('账号未登录,请点击右上角登录')
+}
 onMounted(async () => {
   await cwBase.getCwBaseInfo(id)
 })
+let isEmpty = ref(false)
+const getComment = async (id: string) => {
+  try {
+    let { data, status } = await reqGetComment(id)
+    if (status == 0 && data.length !== 0) {
+      cc.comment = data.reverse()
+    }
+    else {
+      isEmpty.value = true
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+onMounted(async () => {
+  getComment(id)
+})
 const goCwInfo = (id: string) => {
-  router.push({name:'cwinfo',query:{id:id}})
+  if(id==''||id==undefined){
+    return
+  }
+  router.push({ name: 'cwinfo', query: { id: id } })
+}
+//进入他人界面
+const lookOther = (otherid: string) => {
+  if(otherid==''||otherid==undefined){
+    return
+  }
+  // router.push({path:'/'})
+  router.push({path:'/peopleZhuYe',query:{id:otherid}})
+}
+let content = ref('')
+const submit = async () => {
+  if (myCookie == '') {
+    console.log(myCookie)
+    open1()
+    return
+  }
+  if (content.value == '') {
+    open3()
+    return
+  }
+  let form = {
+    content: content.value,
+    id: myCookie,
+    baseid: id
+  }
+  let result = await reqSubmitComment(form)
+  if (result.status == 0) {
+    open2()
+    getComment(id)
+  } else {
+    open4()
+  }
 }
 </script>
 <style lang="less">
+.el-card {
+  background-color: rgba(255, 255, 255, 0.03);
+  max-height: 385px;
+  overflow: scroll;
+}
+
+.el-divider__text {
+  background-color: rgba(238, 151, 151, 0.5);
+}
+
+.el-divider__text.is-right:hover {
+  cursor: pointer;
+}
+
+.card-header {
+  font-size: 16px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+  /* Chrome Safari */
+}
+
+.liuyan {
+  font-size: 16px;
+  margin: 5px;
+}
+
+.el-form-item__content {
+  justify-content: flex-end;
+}
+
 .lingyangzhe {
   font-size: 16px;
   position: absolute;
@@ -43,7 +185,6 @@ const goCwInfo = (id: string) => {
 }
 
 li {
-
   margin-bottom: 15px;
   position: relative;
 }
@@ -73,5 +214,23 @@ img {
 
 .intro p span {
   color: brown;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.box-card {
+  width: 100%;
 }
 </style>

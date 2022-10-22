@@ -45,6 +45,7 @@ textarea {
 }
 body {
   background-color: #f3f0e9;
+  display: block;
 }
 h1 {
   font-size: 18px;

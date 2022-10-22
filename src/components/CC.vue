@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="cc">
     <div style="height: 50%;  position: relative;">
       <div style="
             position: absolute;
@@ -190,6 +190,9 @@
 
 </script>
 
-<style>
-
+<style scoped>
+.cc{
+  /* overflow: hidden; */
+  margin-top: 52px;
+}
 </style>

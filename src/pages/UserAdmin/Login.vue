@@ -41,6 +41,7 @@ import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import SIdentify from '@/components/Sidentify.vue';
 import { reqUserLogin } from '@/api/index'
+import {jiami} from '@/utils/index'
 const router = useRouter()
 if (document.cookie.includes('userToken')) {
   let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
@@ -144,7 +145,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         phoneNumber: ruleForm.pass,
         password: ruleForm.checkPass
       }
-      let result = await reqUserLogin(form)
+      let handleform = jiami(JSON.stringify(form))
+      let result = await reqUserLogin(handleform)
       if (result.status == 0) {
         open2()
         router.push({ name: 'user', query: { id: result.data[0]._id } })

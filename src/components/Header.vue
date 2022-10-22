@@ -1,10 +1,15 @@
 <template lang="">
   <div class="header">
     <el-page-header @back="goBack">
-    <template #content>
+    <!-- <template #content>
       <span class="text-large font-600 mr-3"> {{content}} </span>
-    </template>
-  </el-page-header>   
+    </template> -->
+  </el-page-header>  
+  <div class="head">
+    <el-image style="width: 90px; height: 70px" :src="url" fit="contain" />
+    <el-button @click="goUserLogin" type="warning" text bg>登录</el-button>
+  </div> 
+  
   <el-tabs
     v-model="activeName"
     type="card"
@@ -14,7 +19,7 @@
   <el-tab-pane label="用户注册" name="first" @click="goUserRegister"></el-tab-pane>
     <!-- <el-tab-pane label="后台管理" name="second" @click="goAdminLogin"></el-tab-pane> -->
     <el-tab-pane label="基地管理登录" name="third" @click="goBaseUser"></el-tab-pane>
-    <el-tab-pane label="用户登录" name="fourth" @click="goUserLogin"></el-tab-pane>
+    <!-- <el-tab-pane label="用户登录" name="fourth" @click="goUserLogin"></el-tab-pane> -->
     <el-tab-pane label="首页" name="five" @click="goHome"></el-tab-pane>
   </el-tabs>
     
@@ -30,6 +35,7 @@ import { ref, computed } from "vue";
 import { useRouter } from 'vue-router';
 const activeName = ref('first')
 const router = useRouter()
+const url = ref('http://localhost:3007/public/img/cw1.jpg')
 const goBack = () => {
   router.back()
 }
@@ -71,6 +77,16 @@ const goUserLogin = () => {
 .header {
   position: relative;
   margin: 10px;
+  .head{
+    display: flex;
+    justify-content: space-between;
+    .el-button{
+      align-self: center;
+    }
+  }
+}
+.el-button.is-text:not(.is-disabled).is-has-bg{
+  background-color: #197048;
 }
 .demo-tabs > .el-tabs__content {
   padding: 32px;

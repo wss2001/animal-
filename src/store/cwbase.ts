@@ -42,15 +42,15 @@ export const cwBaseStore = defineStore('cwBase', {
     async getCwBaseInfo(id: string) {
       let { data } = await reqGetCwBaseInfo(id)
       this.cwArr = data
-      this.cwArr.forEach(item=>{
-        let date = new Date().getTime()
-      let foodTime = new Date(item.alsoFood).getTime()
-      let result:string = calculateDiffTime(date,foodTime)
-      if(date>foodTime){
-        result = '0天'
-      }
-        item.alsoFoodtian = result
-      })
+      // this.cwArr.forEach(item=>{
+      //   let date = new Date().getTime()
+      // let foodTime = new Date(item.alsoFood).getTime()
+      // let result:string = calculateDiffTime(date,foodTime)
+      // if(date>foodTime){
+      //   result = '0天'
+      // }
+      //   item.alsoFoodtian = result
+      // })
     }
   }
 })

@@ -10,7 +10,11 @@
   </el-card>
 </template>
 <script setup lang="ts">
-
+import {reqAdminGetMessage  } from "@/api/index";
+import { onMounted } from "vue";
+onMounted(async ()=>{
+  let result = await reqAdminGetMessage()
+})
 </script>
 <style lang="less" scoped>
   .card-header {

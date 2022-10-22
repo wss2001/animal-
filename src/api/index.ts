@@ -51,14 +51,24 @@ export const reqCwAdminDeletePet = (form:any)=>{
   return requests({url:'/cwbase/removePet',data:{form:form},method:'POST'})
 }
 
-
-
 //后台管理登录
 export const reqAdminLogin = (form:any)=>{
   return requests({url:'/admin/login',data:{form:form},method:'POST'})
 }
 //后台管理获取消息
-export const reqAdminGetMessage = (form:any)=>{
-  return requests({url:'/admin/getMessage',data:{form:form},method:'POST'})
+export const reqAdminGetMessage = ()=>{
+  return requests({url:'/admin/getMessage',method:'GET'})
+}
+//通过cwid获取基地其他一个宠物信息
+export const reqGetBrother = (id:string)=>{
+  return requests({url:`/cw/getbrother?id=${id}`,method:'GET'})
+}
+//获取评论
+export const reqGetComment = (id:string)=>{
+  return requests({url:`/comment/getComment?id=${id}`,method:'GET'})
+}
+//提交评论
+export const reqSubmitComment = (form:any)=>{
+  return requests({url:`/comment/submitComment`,data:{form},method:'POST'})
 }
 
