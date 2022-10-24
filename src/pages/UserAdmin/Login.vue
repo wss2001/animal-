@@ -38,10 +38,10 @@
 import { reactive, ref, onMounted, watch } from 'vue'
 import type { FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus'
 import SIdentify from '@/components/Sidentify.vue';
 import { reqUserLogin } from '@/api/index'
 import {jiami} from '@/utils/index'
+import { open2,open4 } from "@/utils/message";
 const router = useRouter()
 if (document.cookie.includes('userToken')) {
   let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
@@ -72,18 +72,6 @@ onMounted(() => {
 //   console.error(identifyCode.value,newvalue)
 // })
 
-const open2 = () => {
-  ElMessage({
-    message: '登录成功',
-    type: 'success',
-  })
-}
-const open4 = () => {
-  ElMessage.error('账号密码错误')
-}
-const open3 = () => {
-  ElMessage.error('输入验证码错误')
-}
 const ruleFormRef = ref<FormInstance>()
 let yanzhengma = ref('')
 let shuruyanzhengma = ref('')
@@ -95,7 +83,7 @@ const checkAge = (rule: any, value: any, callback: any) => {
     return callback(new Error('请输入验证码'))
   }
   if (yanzhengma.value !== shuruyanzhengma.value) {
-    open3()
+    open4('输入验证码错误')
     return callback(new Error('输入验证码错误'))
   } else {
     callback()
@@ -138,7 +126,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
 
       if (yanzhengma.value !== shuruyanzhengma.value) {
-        open3()
         return
       }
       let form = {
@@ -148,10 +135,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       let handleform = jiami(JSON.stringify(form))
       let result = await reqUserLogin(handleform)
       if (result.status == 0) {
-        open2()
+        open2('登录成功')
         router.push({ name: 'user', query: { id: result.data[0]._id } })
       } else {
-        open4()
+        open4('账号密码错误')
       }
     } else {
       refreshCode()

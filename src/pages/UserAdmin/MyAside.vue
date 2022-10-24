@@ -40,7 +40,7 @@
         </el-menu-item>
         <el-menu-item index="4">
           <el-icon><setting /></el-icon>
-          <span>Navigator Four</span>
+          <span @click="handleGoFriend">我的好友</span>
         </el-menu-item>
       </el-menu>
     </el-col>
@@ -66,6 +66,9 @@ const handleOpen = (key: string, keyPath: string[]) => {
 }
 const handleClose = (key: string, keyPath: string[]) => {
   // console.log(key, keyPath)
+}
+const handleGoFriend = ()=>{
+  router.push({name:'myFriend'})
 }
 const handleGozs = ()=>{
   router.push({name:'MyCertificate'})

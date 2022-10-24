@@ -192,7 +192,10 @@
 
 <style scoped>
 .cc{
+  /* position: relative; */
   /* overflow: hidden; */
+  height: 520px;
   margin-top: 52px;
+  /* margin-bottom: 53px; */
 }
 </style>

@@ -72,3 +72,15 @@ export const reqSubmitComment = (form:any)=>{
   return requests({url:`/comment/submitComment`,data:{form},method:'POST'})
 }
 
+//获取新闻信息
+export const reqGetNews = ()=>{
+  return requests({url:`/admin/getnews`,method:'GET'})
+}
+//给人留言
+export const reqLeaveMessage = (form:any)=>{
+  return requests({url:`/user/leavemessage`,method:'POST',data:{form}})
+}
+//发送好友请求
+export const reqAddFriend = (form:any)=>{
+  return requests({url:`/user/addfriend`,method:'POST',data:{form}})
+}

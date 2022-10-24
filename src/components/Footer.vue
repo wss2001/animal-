@@ -39,10 +39,10 @@
           </ul>
         </div>
       </div>
-      <div class="copyright">
+      <!-- <div class="copyright">
         <p>地址：哈尔滨市南岗区哈尔滨理工大学新主楼2301</p>
         <p>黑ICP备19006430号</p>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

@@ -1,11 +1,13 @@
 <template>
   <div class="banxin">
     <div class="zhuti">
-      <!-- <div class="gg" v-show="this.show">
+      <div class="gg" v-show="showgg">
         <div>我是广告猫粮狗粮，宠物医生，我是广告猫粮狗粮，宠物医生，我是广告猫粮狗粮，宠物医生我是广告猫粮狗粮，宠物医生我是广告猫粮狗粮，宠物医生</div>
-        <div @click="guanbi" class="guanbi">X</div>
-      </div> -->
-      <h2 class="sj"><font color="green">[{{cw.cwInfo.state?'投喂':'领养'}}]</font>{{cw.cwInfo.name}}</h2>
+        <div @click="showgg=false" class="guanbi">X</div>
+      </div>
+      <h2 class="sj">
+        <font color="green">[{{cw.cwInfo.state?'投喂':'领养'}}]</font>{{cw.cwInfo.name}}
+      </h2>
       <div class="info">
         <div class="img left">
           <el-popover placement="top-start" title="宠物简介" :width="200" trigger="hover"
@@ -20,13 +22,20 @@
         <div class="middle">
           <p>宠物名称:<el-button type="plain" text>{{cw.cwInfo.name}}</el-button>
           </p>
-          <p>宠物剩余食物: <el-button @click="addFood(cw.cwInfo.state)" type="plain" text>{{cw.handleFood()}}</el-button></p>
+          <p>宠物剩余食物: <el-button @click="addFood(cw.cwInfo.state)" type="plain" text>{{cw.handleFood()}}</el-button>
+          </p>
           <p>联系人:</p>
           <p>联系电话:</p>
           <p>(^_^)联系的时候告诉我是在宠物救助盒子看到的这条消息</p>
-          <p><el-button type="danger" text v-if="!cw.cwInfo.state" @click="shouyang(cw.cwInfo._id)">收养它</el-button></p>
-          <p><el-button type="danger" text @click="collect(cw.cwInfo._id)">收藏该宠物</el-button></p>
-          <p><el-button type="primary" text  @click="addFood(cw.cwInfo.state)">是否为他增加粮食</el-button></p>
+          <p>
+            <el-button type="danger" text v-if="!cw.cwInfo.state" @click="shouyang(cw.cwInfo._id)">收养它</el-button>
+          </p>
+          <p>
+            <el-button type="danger" text @click="collect(cw.cwInfo._id)">收藏该宠物</el-button>
+          </p>
+          <p>
+            <el-button type="primary" text @click="addFood(cw.cwInfo.state)">是否为他增加粮食</el-button>
+          </p>
         </div>
         <div class="right">
           <div class="other">
@@ -35,7 +44,7 @@
           </div>
           <div class="findother">
             <div class="img">
-              
+
             </div>
             <div class="qita">
               <p>{{brother.bb.intro}}</p>
@@ -97,12 +106,13 @@
     </div>
     <CC></CC>
   </div>
+  
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, reactive } from "vue";
 import { useRouter } from 'vue-router';
 import { cwStore } from "@/store/cw";
-import { reqAddFood,reqGetBrother } from '@/api/index'
+import { reqAddFood, reqGetBrother } from '@/api/index'
 import CC from '@/components/CC.vue'
 const router = useRouter()
 let id = router.currentRoute.value.query.id as string
@@ -118,17 +128,18 @@ let urls = reactive({
     'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
   ]
 })
+let showgg = ref(true)
 let brother = reactive({
-  bb:{
-    name:'',
-    intro:''
+  bb: {
+    name: '',
+    intro: ''
   }
 })
 onMounted(async () => {
   try {
     await cw.getCwInfo(id)
     urls.arr = cw.cwInfo.imgArr
-    let {data} = await reqGetBrother(id)
+    let { data } = await reqGetBrother(id)
     brother.bb = data
   } catch (error) {
     console.error(error)
@@ -141,7 +152,7 @@ let dialogTz = ref(false)
 let formLabelWidth = '120px'
 const TzLogin = () => {
   dialogTz.value = false
-  router.push({name:'userLogin'})
+  router.push({ name: 'userLogin' })
 }
 const sureSy = async (id: string) => {
   console.log('sureSy', id)
@@ -161,7 +172,7 @@ const sureSy = async (id: string) => {
 }
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 const addFood = (state: boolean) => {
-  if(!myCookie){
+  if (!myCookie) {
     dialogTz.value = true
     return
   }
@@ -179,33 +190,53 @@ let form = reactive({ food: 0 })
 const addedFood = async () => {
   dialogFormVisible.value = false
   dialogSy.value = true
-  
+
 }
 const shouyang = (id: string) => {
-  if(!myCookie){
+  if (!myCookie) {
     dialogTz.value = true
     return
   }
-  
+
 }
 //收藏该宠物
-const collect = (id:string)=>{
-  if(!myCookie){
+const collect = (id: string) => {
+  if (!myCookie) {
     dialogTz.value = true
     return
   }
-console.log(id,myCookie)
+  console.log(id, myCookie)
 }
 
 </script>
 <style lang="less" scoped>
-p{
+.gg {
+  width: 150px;
+  height: 350px;
+  background-color: aquamarine;
+  position: fixed;
+  top: 200px;
+  right: 0;
+}
+
+.guanbi {
+  cursor: pointer;
+  font-size: 30px;
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  top: 0;
+}
+
+p {
   font-size: 16px;
   text-align: left;
 }
-.el-button{
+
+.el-button {
   text-align: left;
 }
+
 .lingyangzhe {
   font-size: 16px;
   position: absolute;
@@ -219,58 +250,71 @@ img {
   width: 250px;
   height: 250px;
 }
-.zhuti{
+
+.zhuti {
   margin-bottom: 20px;
-  .sj{
-    
+
+  .sj {
+
     font-size: 24px;
     font-weight: bold;
     line-height: 50px;
     margin-bottom: 10px;
   }
 }
-.info{
+
+.info {
   height: 350px;
   display: flex;
   flex-wrap: nowrap;
   margin-bottom: 10px;
   background-color: rgba(0, 0, 0, 0.02);
-  .left{
+
+  .left {
     width: 35%;
   }
-  .middle{
+
+  .middle {
     width: 35%;
     margin-right: 10px;
     background-color: rgba(0, 0, 0, 0.02);
-    p{
+
+    p {
       text-align: left;
       padding: 5px;
-      .el-button{
+
+      .el-button {
         font-size: 16px;
       }
     }
   }
-  .right{
-    flex:1;
-    .other{
+
+  .right {
+    flex: 1;
+
+    .other {
       display: flex;
       justify-content: space-between;
-      .gengduo:hover{
+
+      .gengduo:hover {
         text-decoration: underline;
         color: brown;
       }
     }
-    .findother{
+
+    .findother {
       display: flex;
       flex-wrap: nowrap;
       height: 100px;
-      .img{
+
+      .img {
         width: 30%;
         background-color: pink;
         height: 70px;
         margin-right: 10px;
       }
-      .qita{
+
+      .qita {
         text-align: left;
         flex: 1;
         line-height: 30px;
@@ -278,7 +322,8 @@ img {
     }
   }
 }
-.intro{
+
+.intro {
   margin-bottom: 20px;
 }
 

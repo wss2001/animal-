@@ -16,7 +16,7 @@ export const routes: Irouter[] = [
     // redirect: '/dashboard'
     name: 'home',
     component: Home,
-    meta: { showFooter: false, showHeader: true, content: '用户首页' },
+    meta: { showFooter: true, showHeader: true, content: '用户首页' },
   },
   {
     path: '/cwBaseInfo',
@@ -45,7 +45,19 @@ export const routes: Irouter[] = [
     path: '/peopleZhuYe',
     name: 'peopleZhuYe',
     component: () => import('@/components/PeopleZhuYe.vue'),
+    meta: { showFooter: false, showHeader: true, content: '用户' },
+  },
+  {
+    path: '/newhome',
+    name: 'newhome',
+    component: () => import('@/components/NewHome.vue'),
     meta: { showFooter: false, showHeader: false, content: '用户' },
+  },
+  {
+    path: '/aboutme',
+    name: 'aboutme',
+    component: () => import('@/components/AboutMe.vue'),
+    meta: { showFooter: true, showHeader: false, content: '用户' },
   },
   {
     path: '/shipin',
@@ -69,6 +81,12 @@ export const routes: Irouter[] = [
         name: 'MyCertificate',
         component: () => import("@/pages/UserAdmin/MyCertificate.vue"),
         meta: { showFooter: false, showHeader: true, content: '用户证书' }
+      },
+      {
+        path: 'myFriend',
+        name: 'myFriend',
+        component: () => import("@/pages/UserAdmin/MyFriend.vue"),
+        meta: { showFooter: false, showHeader: true, content: '用户宠物' }
       },
       {
         path: 'myPet',

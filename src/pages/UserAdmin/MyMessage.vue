@@ -23,7 +23,8 @@
   <el-collapse accordion>
   <el-collapse-item title="消息" name="2">
     <div class="item" v-for="msg in result.userInfo.msg">
-      {{msg}}
+      {{msg.content}}
+      <p>--{{msg.fname}}</p>
     </div>
   </el-collapse-item>
 </el-collapse>
@@ -40,7 +41,7 @@ import type { UploadProps } from 'element-plus'
 const router = useRouter()
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 let result = reactive({
-  userInfo: { img: '',msg:[] }
+  userInfo: { img: '',msg:[{fname:'',content:''}] }
 })
 //退出登录
 const fail = () => {
@@ -112,6 +113,9 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
       margin-bottom: 2px;
       padding-left: 20px;
       padding-right: 20px;
+      // height: 100px;
+      width: auto;
+      max-width: 200px;
     }
   }
 span {

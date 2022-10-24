@@ -19,8 +19,8 @@
   <el-tab-pane label="用户注册" name="first" @click="goUserRegister"></el-tab-pane>
     <!-- <el-tab-pane label="后台管理" name="second" @click="goAdminLogin"></el-tab-pane> -->
     <el-tab-pane label="基地管理登录" name="third" @click="goBaseUser"></el-tab-pane>
-    <!-- <el-tab-pane label="用户登录" name="fourth" @click="goUserLogin"></el-tab-pane> -->
     <el-tab-pane label="首页" name="five" @click="goHome"></el-tab-pane>
+    <el-tab-pane label="关于我们" name="fourth" @click="goAboutMe"></el-tab-pane>
   </el-tabs>
     
     <!-- <template>
@@ -51,7 +51,7 @@ const handleClick = (tab: any, event: any) => {
     goBaseUser()
   }
   if (tab.props.name == 'fourth') {
-    goUserLogin()
+    goAboutMe()
   }
   if (tab.props.name == 'five') {
     goHome()
@@ -68,6 +68,9 @@ const goAdminLogin = () => {
 }
 const goBaseUser = () => {
   router.push({ name: 'cwBaseAdminLogin' })
+}
+const goAboutMe = () => {
+  router.push({ name: 'aboutme' })
 }
 const goUserLogin = () => {
   router.push({ name: 'userLogin' })

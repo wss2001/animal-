@@ -50,8 +50,9 @@ import { onMounted, reactive, ref } from "vue";
 import { useRouter } from 'vue-router';
 import { cwBaseStore } from "@/store/cwbase";
 import { StarFilled } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
+import { open2,open4 } from '@/utils/message'
 import { reqGetComment, reqSubmitComment } from '@/api/index';
+import { jiami } from "@/utils/index";
 const router = useRouter()
 const cwBase = cwBaseStore()
 let id = router.currentRoute.value.query.id as string
@@ -65,21 +66,7 @@ let cc = reactive({
     userid:''
   }]
 })
-const open2 = () => {
-  ElMessage({
-    message: '留言成功',
-    type: 'success',
-  })
-}
-const open4 = () => {
-  ElMessage.error('留言发生错误，检查网络')
-}
-const open3 = () => {
-  ElMessage.error('请输入内容')
-}
-const open1 = () => {
-  ElMessage.error('账号未登录,请点击右上角登录')
-}
+
 onMounted(async () => {
   await cwBase.getCwBaseInfo(id)
 })
@@ -111,18 +98,17 @@ const lookOther = (otherid: string) => {
   if(otherid==''||otherid==undefined){
     return
   }
-  // router.push({path:'/'})
-  router.push({path:'/peopleZhuYe',query:{id:otherid}})
+  let jiamiid = jiami(otherid) as string
+  router.push({path:'/peopleZhuYe',query:{id:jiamiid}})
 }
 let content = ref('')
 const submit = async () => {
   if (myCookie == '') {
-    console.log(myCookie)
-    open1()
+    open4('账号未登录,请点击右上角登录')
     return
   }
   if (content.value == '') {
-    open3()
+    open4('请输入内容')
     return
   }
   let form = {
@@ -132,10 +118,10 @@ const submit = async () => {
   }
   let result = await reqSubmitComment(form)
   if (result.status == 0) {
-    open2()
+    open2('留言成功')
     getComment(id)
   } else {
-    open4()
+    open4('留言发生错误，检查网络')
   }
 }
 </script>
