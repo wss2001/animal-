@@ -34,7 +34,8 @@
 import { reactive, ref, onMounted, watch, inject } from 'vue'
 import type { FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus'
+// import { ElMessage } from 'element-plus'
+import {open2,open4} from '@/utils/message'
 import SIdentify from '@/components/Sidentify.vue';
 import { reqCwAdminLogin } from '@/api/index'
 import {jiami} from '@/utils/index'
@@ -99,18 +100,6 @@ onMounted(() => {
   identifyCode.value = "";
   makeCode(identifyCodes, 4);
 })
-const open2 = () => {
-  ElMessage({
-    message: '登录成功',
-    type: 'success',
-  })
-}
-const open4 = () => {
-  ElMessage.error('账号密码错误')
-}
-const open3 = () => {
-  ElMessage.error('输入验证码错误')
-}
 const ruleFormRef = ref<FormInstance>()
 let yanzhengma = ref('')
 let shuruyanzhengma = ref('')
@@ -122,7 +111,7 @@ const checkAge = (rule: any, value: any, callback: any) => {
     return callback(new Error('请输入验证码'))
   }
   if (yanzhengma.value !== shuruyanzhengma.value) {
-    open3()
+    open4('输入验证码错误')
     return callback(new Error('输入验证码错误'))
   } else {
     callback()
@@ -165,7 +154,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
 
       if (yanzhengma.value !== shuruyanzhengma.value) {
-        open3()
+        open4('输入验证码错误')
         return
       }
       let form = {
@@ -176,13 +165,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         let handleform = jiami(JSON.stringify(form))
       let result = await reqCwAdminLogin(handleform)
         if (result.status == 0) {
-          open2()
+          open2('登陆成功')
         } else {
-          open4()
+          open4('账号密码错误')
         }
         router.push({ name: 'cwBaseAdmin', query: { id: result.data[0]._id } })
       } catch (error) {
         console.log(error)
+        open4('账号密码错误')
       }
     } else {
       refreshCode()

@@ -76,6 +76,16 @@ export const reqSubmitComment = (form:any)=>{
 export const reqGetNews = ()=>{
   return requests({url:`/admin/getnews`,method:'GET'})
 }
+//获取单个新闻信息
+export const reqGetNewsById = (id:string)=>{
+  return requests({url:`/admin/getnewsbyid?id=${id}`,method:'GET'})
+}
+//获取单个新闻信息
+export const reqAddNews = (form:any)=>{
+  return requests({url:`/admin/addNews`,method:'POST',data:{form}})
+}
+
+
 //给人留言
 export const reqLeaveMessage = (form:any)=>{
   return requests({url:`/user/leavemessage`,method:'POST',data:{form}})
@@ -84,3 +94,26 @@ export const reqLeaveMessage = (form:any)=>{
 export const reqAddFriend = (form:any)=>{
   return requests({url:`/user/addfriend`,method:'POST',data:{form}})
 }
+//确认好友请求
+export const reqSureAddFriend = (form:any)=>{
+  return requests({url:`/user/sureAddFriend`,method:'POST',data:{form}})
+}
+//获取好友请求数组
+export const reqGetFriendRequest = (id:string)=>{
+  return requests({url:`/user/getfriendrequest?id=${id}`,method:'GET'})
+}
+//获取好友数组
+export const reqGetFriendList = (id:string)=>{
+  return requests({url:`/user/getfriends?id=${id}`,method:'GET'})
+}
+//请求注册宠物基地
+export const reqRegisterCwAdmin = (form:any)=>{
+  return requests({url:`/user/registercwadmin`,method:'POST',data:{form}})
+}
+//同意注册宠物基地
+export const reqAgree = (form:any)=>{
+  return requests({url:`/user/agree`,method:'POST',data:{form}})
+}
+
+
+

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="intro">
-      <h2>网站简介</h2>
+      <h2>网站简介 <button @click="registerCwAdmin" class="title">申请成为宠物基地</button></h2>
       <p>珍宠网是青岛珍宠信息技术有限公司于2018年8月1日正式推出的主打产品，为城市动物而生，以救助城市流浪动物为核心业务的宠物类综合网站，本网站将会一直以让城市动物生活的更好为目的坚定不移的发展下去！</p>
       <p>我们的宣言：为城市动物而生</p>
     </div>
@@ -35,9 +35,24 @@
   </div>
 </template>
 <script setup lang="ts">
-
+import { useRouter } from "vue-router";
+const router = useRouter()
+const registerCwAdmin = ()=>{
+  router.push({name:'registerCwAdmin'})
+}
 </script>
 <style lang="less" scoped>
+
+.title{
+  background-color: rgb(185, 164, 164);
+  padding: 5px;
+  font-size: 16px;
+  // float: right;
+  &:hover{
+    cursor: pointer;
+  }
+  
+}
 h2{
     color: #334F67;
     // float: left;
@@ -57,6 +72,12 @@ h2{
   .recruit{
     p{
       margin: 20px 0px 20px 0px;
+    }
+  }
+  .intro{
+    h2{
+      display: flex;
+      justify-content: space-between;
     }
   }
 </style>

@@ -40,7 +40,7 @@
         </el-menu-item>
         <el-menu-item index="4">
           <el-icon><setting /></el-icon>
-          <span>Navigator Four</span>
+          <span @click="handleWrite">写作</span>
         </el-menu-item>
       </el-menu>
     </el-col>
@@ -65,6 +65,10 @@ const handleGopmes = ()=>{
 const handleGopet = ()=>{
   router.push({name:'incomes'})
 }
+const handleWrite = ()=>{
+  router.push({name:'writeNews'})
+}
+
 </script>
 <style lang="less" scoped>
   

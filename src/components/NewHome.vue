@@ -28,12 +28,37 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
-let a = ref('ppppp')
+import { ref,reactive,onMounted } from 'vue'
+import {useRoute} from 'vue-router'
+import {reqGetNewsById} from '@/api/index'
+const route = useRoute()
+let rr = reactive({
+  article:{
+    content:'',
+    state:'',
+    date:'1970-07-01'
+  }
+})
+const id = route.query.id as string;
+console.log(id)
+onMounted(async ()=>{
+  try {
+    if(id!==undefined){
+      const {data,status} = await reqGetNewsById(id)
+    if(status==200){
+      rr.article = data
+    }
+    }
+  } catch (error) {
+    console.log(error)
+  }
+
+})
 </script>
 <style lang="less" scoped>
 .container {
   width: 60%;
+  min-height: 470px;
 }
 
 .head {
@@ -55,9 +80,10 @@ let a = ref('ppppp')
 }
 .content{
   white-space: pre-warp;
+  padding: 10px;
   p{
     font-size: 18px;
-    line-height: 20px;
+    line-height: 30px;
   }
 }
 </style>

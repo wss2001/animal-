@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
 import { reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
+import {open2,open4} from '@/utils/message'
 import type { FormInstance } from 'element-plus'
 import {reqAdminLogin} from '@/api/index'
 import {jiami} from '@/utils/index'
@@ -49,9 +49,6 @@ const rules = reactive({
   pass: [{ validator: validatePass, trigger: 'blur' }],
   checkPass: [{ validator: validatePass2, trigger: 'blur' }],
 })
-const open4 = () => {
-  ElMessage.error('账号密码错误')
-}
 
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -67,7 +64,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         router.push({name:'admin'})
       }else{
         console.log('登陆失败')
-        open4()
+        open4('账号密码错误')
       }
     } else {
       console.log('登陆失败!')

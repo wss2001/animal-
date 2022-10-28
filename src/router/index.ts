@@ -60,6 +60,13 @@ export const routes: Irouter[] = [
     meta: { showFooter: true, showHeader: false, content: '用户' },
   },
   {
+    path: '/registerCwAdmin',
+    name: 'registerCwAdmin',
+    component: () => import('@/components/RegisterCwAdmin.vue'),
+    meta: { showFooter: true, showHeader: false, content: '用户' },
+  },
+  
+  {
     path: '/shipin',
     name: 'shipin',
     component: () => import("@/pages/Shipin.vue")
@@ -138,6 +145,13 @@ export const routes: Irouter[] = [
           component: () => import("@/pages/Admin/Message.vue"),
           meta: { showFooter: false, showHeader: true, content: '宠物信息' }
         },
+        {
+          path: 'writeNews',
+          name: 'writeNews',
+          component: () => import("@/pages/Admin/WriteNews.vue"),
+          meta: { showFooter: false, showHeader: true, content: '宠物信息' }
+        },
+        
       ]
   },
   {

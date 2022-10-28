@@ -16,7 +16,7 @@
 				</div>
 				<div class="intro">
 					<p>宠物救助者基地：<span>{{item.baseName}}</span></p>
-					<p>剩余<el-button type="danger " size="small" round>{{item.notUse}}</el-button>只待收养</p>
+					<p>剩余<el-button type="danger" size="small" round>{{item.notUse}}</el-button>只待收养</p>
 				</div>
 			</li>
 		</ul>
@@ -93,31 +93,42 @@ li {
 .img {
 	width: 250px;
 	height: 250px;
+	border: 4px solid transparent;
+	border-radius: 20px;
+	&:hover{
+		border: 4px solid rgb(240, 93, 93);
+	}
 }
 
 img {
 	cursor: pointer;
 	width: 250px;
 	height: 250px;
+	border-radius: 20px;
 }
 
 .intro {
 	width: 250px;
 	position: absolute;
 	background-color: rgba(255, 255, 255, 0.3);
-	bottom: 0;
+	bottom: 3px;
+	// left: 8px;
 }
 
 .intro p {
 	font-size: 18px;
 	margin-top: 5px;
+	text-indent: 8px;
 }
 
 .intro p span {
 	color: brown;
 }
 
-el-button {
+.el-button {
 	opacity: 0.5;
+	&:hover{
+		opacity: 1;
+	}
 }
 </style>

@@ -3,8 +3,8 @@
     <div class="left">
       <div class="swiper">
         <el-carousel :interval="5000" arrow="always">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <h3 text="2xl" justify="center">{{ item }}</h3>
+          <el-carousel-item v-for="item in urls.arr" :key="item">
+            <el-image style="width: 100%; height: 100%" :src="item" fit="cover" />
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -84,6 +84,14 @@ import { ref, reactive, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { reqGetNews } from '@/api/index'
 const router = useRouter()
+let urls = reactive({
+  arr: [
+    'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+    'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
+    'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
+    'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
+  ]
+})
 let nn = reactive({
   news: [{
     title: '',
@@ -92,27 +100,46 @@ let nn = reactive({
     content: '',
     _id: '',
     state: ''
-  }]
+  }],
+  hot:[{
+    title: '',
+    intro: '',
+    date: '1970-06-01',
+    content: '',
+    _id: '',
+    state: ''
+  }],
+  mustLearn:[{
+    title: '',
+    intro: '',
+    date: '1970-06-01',
+    content: '',
+    _id: '',
+    state: ''
+  }],
+  help:[{
+    title: '',
+    intro: '',
+    date: '1970-06-01',
+    content: '',
+    _id: '',
+    state: ''
+  }],
 })
 onMounted(async () => {
   try {
     let {data,status} = await reqGetNews()
     if(status==200){
       nn.news = data
+      nn.hot = nn.news.filter(item => item.state == 'rd');
+      nn.help = nn.news.filter(item => item.state == 'jz');
+      nn.mustLearn = nn.news.filter(item => item.state == 'bx');
     }
   } catch (error) {
     console.log(error)
   }
 })
-const hot = computed(() => {
-  return nn.news.filter(item => item.state == 'rd')
-})
-const mustLearn = computed(() => {
-  return nn.news.filter(item => item.state == 'bx')
-})
-const help = computed(() => {
-  return nn.news.filter(item => item.state == 'jz')
-})
+
 const handleNew = (id:string)=>{
   if(id==''||id==undefined){
     console.log('网络发生错误')
@@ -189,6 +216,7 @@ li {
     margin-right: 12px;
     padding: 10px;
     overflow: scroll;
+    min-height: 100px;
     .redian {
       margin-bottom: 15px;
     }
@@ -207,8 +235,6 @@ li {
       font-size: 14px;
       margin-right: 5px;
     }
-
-    .redian {}
   }
 
   .right {

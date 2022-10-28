@@ -33,7 +33,7 @@
 
 <script lang="ts" setup>
 import { reqGetUserInfo, reqUploadtx } from '@/api/index'
-import { onMounted, ref, reactive, nextTick } from "vue";
+import { onMounted, ref, reactive, nextTick,computed } from "vue";
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
@@ -41,7 +41,7 @@ import type { UploadProps } from 'element-plus'
 const router = useRouter()
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 let result = reactive({
-  userInfo: { img: '',msg:[{fname:'',content:''}] }
+  userInfo: { img: '',msg:[{fname:'',content:'',state:''}] }
 })
 //退出登录
 const fail = () => {
@@ -93,6 +93,9 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
+let friends = computed(()=>{
+  
+})
 
 </script>
 <style lang="less" scoped>
