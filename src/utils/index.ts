@@ -116,6 +116,7 @@ export const jiami = (data:any)=>{
   let result = encrypt.encrypt(data) //加密字段
   return result
 }
+//解密
 export function deCode(str:string) {
   var encrypt = new JSEncrypt()
   const key = `-----BEGIN RSA PRIVATE KEY-----

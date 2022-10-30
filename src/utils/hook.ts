@@ -10,6 +10,7 @@ export function useSignOut(type:string) {
   onMounted(async () => {
     //检查登陆状态
     if (!document.cookie.includes(type)) {
+      console.log(`${type=='cwBaseAdminToken'?'cwBaseAdminLogin':'userLogin'}`)
       router.push({ name: `${type=='cwBaseAdminToken'?'cwBaseAdminLogin':'userLogin'}`})
       console.log('时间过久退出登陆状态')
     } 

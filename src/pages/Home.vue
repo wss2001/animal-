@@ -3,7 +3,7 @@
 	<div class="banxin">
 		<div class="page-head">
 			<h2>我要领养</h2>
-			<p>领养须知</p>
+			<p @click="router.push({name:'newhome',query:{id:'635cd985d087d025c767749b'}})">领养须知</p>
 		</div>
 		
 		<el-divider>

@@ -36,7 +36,7 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { reqGetCwBaseInfo,reqCwAdminDeletePet } from '@/api/index'
+import { reqGetCwBaseInfo,reqCwAdminDeletePet,reqCwAdminEditPet } from '@/api/index'
 import { onMounted,reactive,ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSignOut } from '@/utils/hook'
@@ -44,7 +44,7 @@ import { ElMessageBox,ElMessage } from 'element-plus'
 
 const dialogVisible = ref(false)
 const handleClose = (done: () => void) => {
-  ElMessageBox.confirm('Are you sure to close this dialog?')
+  ElMessageBox.confirm('确定关闭这个窗口么')
     .then(() => {
       done()
     })

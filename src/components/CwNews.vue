@@ -11,11 +11,9 @@
       <div class="mustStudy">
         <h2>养宠必学</h2>
         <ul>
-          <li>世界上最大的狗品种 体型大的狗狗排行</li>
-          <li>世界上最大的狗品种 体型大的狗狗排行</li>
-          <li>世界上最大的狗品种 体型大的狗狗排行</li>
-          <li>世界上最大的狗品种 体型大的狗狗排行</li>
-          <li>世界上最大的狗品种 体型大的狗狗排行</li>
+          <li v-for="item in nn.mustLearn" @click="handleNew(item._id)">
+            {{item.title}}
+          </li>
         </ul>
       </div>
     </div>
@@ -23,34 +21,17 @@
       <div class="redian">
         <h2><span>[热点]</span>在台湾没天敌 遭弃养绿鬣蜥大量繁衍</h2>
         <ul>
-          <li>
-            养百斤麝香猪屡遭邻居嫌臭 女疲惫决定为猪搬走
+          <li v-for="item in nn.hot" @click="handleNew(item._id)">
+            {{item.title}}
           </li>
-          <li>
-            养百斤麝香猪屡遭邻居嫌臭 女疲惫决定为猪搬走
-          </li>
-          <li>
-            养百斤麝香猪屡遭邻居嫌臭 女疲惫决定为猪搬走
-          </li>
-          <li>
-            养百斤麝香猪屡遭邻居嫌臭 女疲惫决定为猪搬走
-          </li>
+          
         </ul>
       </div>
       <div class="jiuzhu">
         <h2><span>[救助]</span>在台湾没天敌 遭弃养绿鬣蜥大量繁衍</h2>
         <ul>
-          <li>
-            养百斤麝香猪屡遭邻居嫌臭 女疲惫决定为猪搬走
-          </li>
-          <li>
-            养百斤麝香猪屡遭邻居嫌臭 女疲惫决定为猪搬走
-          </li>
-          <li>
-            养百斤麝香猪屡遭邻居嫌臭 女疲惫决定为猪搬走
-          </li>
-          <li>
-            养百斤麝香猪屡遭邻居嫌臭 女疲惫决定为猪搬走
+          <li v-for="item in nn.help" @click="handleNew(item._id)">
+            {{item.title}}
           </li>
         </ul>
       </div>

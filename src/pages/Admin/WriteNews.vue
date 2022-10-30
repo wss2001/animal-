@@ -18,7 +18,20 @@
         <el-radio label="Sponsor" />
         <el-radio label="Venue" />
       </el-radio-group>
-    </el-form-item> -->
+    -->
+    <el-form-item label="图片上传">
+      
+      <el-upload
+    class="avatar-uploader"
+    action="http://127.0.0.1:5173/api/user/addjpg"
+    :show-file-list="false"
+    :on-success="handleAvatarSuccess"
+    :before-upload="beforeAvatarUpload"
+  >
+    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+    <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+  </el-upload>
+</el-form-item>
     <el-form-item label="正文内容">
       <el-input v-model="form.desc" type="textarea" />
     </el-form-item>
@@ -31,10 +44,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive,ref } from 'vue'
 import {reqAddNews} from '@/api/index'
 import { open2, open4 } from '@/utils/message';
-
+import { Plus } from '@element-plus/icons-vue'
+import type { UploadProps } from 'element-plus'
+import { ElMessage } from 'element-plus'
 const form = reactive({
   name: '',
   region: '',
@@ -49,18 +64,43 @@ const onSubmit = async() => {
   let newform = {
     title:form.name,
     state:form.region,
-    content:form.desc
+    content:form.desc,
+    img:imageUrl.value
   }
-  
   try {
     const {status} = await reqAddNews(newform)
     if(status==200){
       open2('新增成功')
+      form.desc='';
+      form.name='';
+      form.region='',
+      imageUrl.value=''
     }
   } catch (error) {
     open4('新增失败')
     console.log(error)
   }
+}
+const imageUrl = ref('')
+const handleAvatarSuccess: UploadProps['onSuccess'] = (
+  response,
+  uploadFile
+) => {
+  // imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+  let url = `http://127.0.0.1:3007/${response.data.path}`
+  imageUrl.value = url
+}
+
+const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  // if (rawFile.type !== 'image/jpeg') {
+  //   ElMessage.error('Avatar picture must be JPG format!')
+  //   return false
+  // } else 
+  if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('Avatar picture size can not exceed 2MB!')
+    return false
+  }
+  return true
 }
 </script>
 <style lang="less" scoped>
@@ -79,4 +119,30 @@ const onSubmit = async() => {
     width: 80%;
     height: 400px;
   }
+  .avatar-uploader .avatar {
+  width: 100px;
+  height: 100px;
+  display: block;
+}
+
+  .avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
 </style>

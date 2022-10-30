@@ -17,7 +17,7 @@ import { onMounted, ref } from "vue";
 const router =useRouter()
 onMounted(()=>{
   if (!document.cookie.includes('admin')) {
-    router.push({ name: 'home' })
+    router.push({ name: 'adminLogin' })
     console.log('退出登陆状态')
   }
 })

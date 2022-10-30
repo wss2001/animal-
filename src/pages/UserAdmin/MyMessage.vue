@@ -22,17 +22,23 @@
   <div class="mianban">
   <el-collapse accordion>
   <el-collapse-item title="消息" name="2">
-    <div class="item" v-for="msg in result.userInfo.msg">
+    <div class="item" v-for="msg in result.msg">
       {{msg.content}}
-      <p>--{{msg.fname}}</p>
+      <p>--{{msg.fname}}</p>--{{msg.date}}
     </div>
   </el-collapse-item>
 </el-collapse>
 </div>
+<div class="change">
+  <h2>修改个人信息</h2>
+  <div class="change_zhuti">
+
+  </div>
+</div>
 </template>
 
 <script lang="ts" setup>
-import { reqGetUserInfo, reqUploadtx } from '@/api/index'
+import { reqGetUserInfo, reqUploadtx,reqGetUserMsg } from '@/api/index'
 import { onMounted, ref, reactive, nextTick,computed } from "vue";
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
@@ -41,7 +47,8 @@ import type { UploadProps } from 'element-plus'
 const router = useRouter()
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 let result = reactive({
-  userInfo: { img: '',msg:[{fname:'',content:'',state:''}] }
+  userInfo: { img: '' },
+  msg:[{content:'',fname:'',date:''}]
 })
 //退出登录
 const fail = () => {
@@ -50,7 +57,6 @@ const fail = () => {
   //@ts-ignore
   document.cookie = 'userToken' + "=a; expires=" + date.toGMTString();
   router.push({ name: 'userLogin' })
-  // console.log(document.cookie);
 }
 onMounted(async () => {
   //检查登陆状态
@@ -59,8 +65,24 @@ onMounted(async () => {
     console.log('时间过久退出登陆状态')
   } else {
     try {
-      let k = await reqGetUserInfo(myCookie)
-      result.userInfo = k.data[0]
+      let {data} = await reqGetUserInfo(myCookie)
+      result.userInfo = data[0]
+    } catch (error) {
+      console.log(error)
+    }
+  }
+})
+onMounted(async()=>{
+  //检查登陆状态
+  if (!document.cookie.includes('userToken')) {
+    router.push({ name: 'userLogin' })
+    console.log('时间过久退出登陆状态')
+  } else {
+    try {
+      let {data,status} = await reqGetUserMsg(myCookie)
+      if(status==200){
+        result.msg = data
+      }
     } catch (error) {
       console.log(error)
     }
@@ -99,6 +121,13 @@ let friends = computed(()=>{
 
 </script>
 <style lang="less" scoped>
+.change{
+  margin-top: 50px;
+  h2{
+    font-size: 18px;
+    color: #496421;
+  }
+}
   .mianban{
     position: absolute;
     top: 30px;

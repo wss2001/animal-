@@ -6,40 +6,28 @@
         <el-button class="button" text>Operation button</el-button>
       </div>
     </template>
-    <div class="item">
+    <div class="item" v-for="item in Msg.registerMsg">
       <div class="left">
         <div>
-        注册账号：1212
+        注册账号：{{item.phone}}
       </div>
       <div>
-        注册理由：撒大大的方式
+        注册理由：{{item.intro}}
       </div>
       </div>
       <div class="right">
-        <el-button type="success" plain @click="agree('id')">同意</el-button>
-      </div>
-    </div>
-    <div class="item">
-      <div class="left">
-        <div>
-        注册账号：1212
-      </div>
-      <div class="intro">
-        注册理由：撒大大的方式注册理由撒大大的方式注册理撒大大的方式注册理撒大大的方式注册理由撒大大的方式注册理撒大大的方式
-      </div>
-      </div>
-      <div class="right">
-        <el-button type="success" plain>同意</el-button>
+        <el-button type="danger" plain @click="refuse(item._id)">拒绝</el-button>
+        <el-button type="success" plain @click="agree(item._id)">同意</el-button>
       </div>
     </div>
   </el-card>
 </template>
 <script setup lang="ts">
-import {reqAdminGetMessage,reqAgree  } from "@/api/index";
+import {reqAdminGetMessage,reqAgree ,reqRefuse } from "@/api/index";
 import { onMounted,reactive,computed } from "vue";
 import {open2,open4} from '@/utils/message'
 let Msg = reactive({
-  registerMsg:[{phone:'',intro:''}]
+  registerMsg:[{phone:'',intro:'',_id:'',pass:""}]
 })
 onMounted(()=>{
   getNews()
@@ -49,7 +37,6 @@ const getNews = async()=>{
     let {data,status} = await reqAdminGetMessage()
     if(status==200){
       Msg.registerMsg = data;
-      console.log(Msg.registerMsg)
     }
   } catch (error) {
     console.log(error)
@@ -60,7 +47,8 @@ const agree = async (id:string)=>{
     let form = {
       id:id
     }
-    const {status} = await reqAgree(form)
+    try {
+      const {status} = await reqAgree(form)
     if(status==200){
       open2('操作成功')
       getNews()
@@ -68,9 +56,32 @@ const agree = async (id:string)=>{
     else{
       open4('操作失败')
     }
+    } catch (error) {
+      open4('操作失败')
+    }
+    
   }
-  
 }
+const refuse = async (id:string)=>{
+  if(id!==''){
+    let form = {
+      id:id
+    }
+    try {
+      const {status} = await reqRefuse(form)
+    if(status==200){
+      open2('操作成功')
+      getNews()
+    }
+    else{
+      open4('操作失败')
+    }
+    } catch (error) {
+      open4('操作失败')
+    }
+  }
+}
+
 </script>
 <style lang="less" scoped>
   .card-header {
@@ -95,6 +106,10 @@ const agree = async (id:string)=>{
   border-radius: 5px;
   .left{
     margin-right: 15px;
+  }
+  .right{
+    display: flex;
+    flex-wrap: nowrap;
   }
   .intro{
     overflow-y: scroll;

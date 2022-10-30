@@ -3,19 +3,16 @@
     <el-form-item label="宠物名字">
       <el-input v-model="form.name" />
     </el-form-item>
-    <el-form-item label="Activity zone">
+    <!-- <el-form-item label="Activity zone">
       <el-select v-model="form.region" placeholder="please select your zone">
         <el-option label="Zone one" value="shanghai" />
         <el-option label="Zone two" value="beijing" />
       </el-select>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="日期">
       <el-col :span="15">
         <el-date-picker v-model="form.date1" type="date" placeholder="收养日期" style="width: 100%" />
       </el-col>
-    </el-form-item>
-    <el-form-item label="Instant delivery">
-      <el-switch v-model="form.delivery" />
     </el-form-item>
     <el-form-item label="宠物照片">
       <el-upload class="avatar-uploader" action="http://127.0.0.1:5173/api/user/addjpg" :show-file-list="false"
@@ -25,12 +22,6 @@
           <Plus />
         </el-icon>
       </el-upload>
-    </el-form-item>
-    <el-form-item label="Resources">
-      <el-radio-group v-model="form.resource">
-        <el-radio label="Sponsor" />
-        <el-radio label="Venue" />
-      </el-radio-group>
     </el-form-item>
     <el-form-item label="宠物简介">
       <el-input v-model="form.desc" type="textarea" />
@@ -46,27 +37,16 @@ import { useRouter, useRoute } from 'vue-router';
 import { onMounted, ref, reactive } from "vue";
 import { reqCwAdminAddPet } from '@/api/index'
 import { ElMessage } from 'element-plus'
+import {open2,open4} from '@/utils/message'
 import {formatDate} from '@/utils/index'
 import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
 const router = useRouter()
-const open2 = () => {
-  ElMessage({
-    message: '新增成功',
-    type: 'success',
-  })
-}
-const open4 = () => {
-  ElMessage.error('新增失败')
-}
+
 const form = reactive({
   name: '',
   region: '',
   date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
-  resource: '',
   desc: '',
   imageUrl: ''
 })
@@ -103,20 +83,24 @@ const onSubmit = async () => {
     id: myCookie,
     birth:date
   }
-  // console.log(newform)
-  // try {
-  //   let result = await reqCwAdminAddPet(newform)
-  //   if (result.data.status == 1) {
-  //     open2()
-  //     form.name = ''
-  //     form.desc = ''
-  //     form.imageUrl = ''
-  //   } else {
-  //     open4()
-  //   }
-  // } catch (error) {
-  //   console.log(error)
-  // }
+  if(newform.name==''||newform.intro==''||newform.img==''||newform.id==''){
+    open4('请输入完整内容')
+    return
+  }
+  console.log(newform)
+  try {
+    let result = await reqCwAdminAddPet(newform)
+    if (result.data.status == 200) {
+      open2('新增成功')
+      form.name = ''
+      form.desc = ''
+      form.imageUrl = ''
+    } else {
+      open4('新增失败')
+    }
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 </script>

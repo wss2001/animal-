@@ -13,7 +13,6 @@ import { StarFilled } from '@element-plus/icons-vue'
 </script>
 <style lang="less" scoped>
   span{
-    
     font-size: 20px;
   }
 </style>

@@ -11,10 +11,10 @@
         to="/">宠物救助盒子</router-link>(https://www.zhenpet.com) 版权所有 All Rights Reserved.<br>
     </div>
     <p>
-      <img src="template/comiis_19lou/img/jin01.gif">
-      <img src="template/comiis_19lou/img/jin02.gif">
-      <img src="template/comiis_19lou/img/jin04.gif">
-      <img src="template/comiis_19lou/img/jin05.gif">
+      <img src="public/vite.svg">
+      <img src="public/vite.svg">
+      <img src="public/vite.svg">
+      <img src="public/vite.svg">
     </p>
   </div>
 </template>

@@ -24,6 +24,11 @@ export const reqGetUserCwInfo=(id:string)=>{
 export const reqGetUserInfo=(id:string)=>{
   return requests({url:`/user/getUserInfo?id=${id}`,method:'GET'})
 }
+// 获取用户的消息数组
+export const reqGetUserMsg=(id:string)=>{
+  return requests({url:`/user/getUserMsg?id=${id}`,method:'GET'})
+}
+
 // 上传头像照片
 export const reqUploadtx=(id:string,url:string)=>{
   return requests({url:`/user/uploadtx`,method:'POST',data:{id:id,url:url}})
@@ -49,6 +54,10 @@ export const reqCwAdminAddPet = (form:any)=>{
 //基地管理删除宠物
 export const reqCwAdminDeletePet = (form:any)=>{
   return requests({url:'/cwbase/removePet',data:{form:form},method:'POST'})
+}
+//基地管理修改宠物
+export const reqCwAdminEditPet = (form:any)=>{
+  return requests({url:'/cwbase/updatepet',data:{form:form},method:'POST'})
 }
 
 //后台管理登录
@@ -85,7 +94,6 @@ export const reqAddNews = (form:any)=>{
   return requests({url:`/admin/addNews`,method:'POST',data:{form}})
 }
 
-
 //给人留言
 export const reqLeaveMessage = (form:any)=>{
   return requests({url:`/user/leavemessage`,method:'POST',data:{form}})
@@ -108,12 +116,22 @@ export const reqGetFriendList = (id:string)=>{
 }
 //请求注册宠物基地
 export const reqRegisterCwAdmin = (form:any)=>{
-  return requests({url:`/user/registercwadmin`,method:'POST',data:{form}})
+  return requests({url:`/admin/registercwadmin`,method:'POST',data:{form}})
 }
 //同意注册宠物基地
 export const reqAgree = (form:any)=>{
-  return requests({url:`/user/agree`,method:'POST',data:{form}})
+  return requests({url:`/admin/agree`,method:'POST',data:{form}})
 }
+//拒绝注册宠物基地
+export const reqRefuse = (form:any)=>{
+  return requests({url:`/admin/refuse`,method:'POST',data:{form}})
+}
+
+//删除宠物基地
+export const reqRemoveCwBase = (id:any)=>{
+  return requests({url:`/admin/removecwbase`,method:'POST',data:{id}})
+}
+
 
 
 

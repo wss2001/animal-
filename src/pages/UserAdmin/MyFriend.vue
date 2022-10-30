@@ -2,13 +2,13 @@
   <div class="container">
     <div class="friends">
       <h2>我的好友</h2>
-      <div class="item">
-        <div class="left_img">
-          <img src="http://127.0.0.1:3007/public/img/cw1.jpg" alt="">
+      <div class="item" v-for="item in ff.friends">
+        <div class="left_img" @click="gouser(item._id)">
+          <img :src="item.img" alt="">
         </div>
         <div class="intro">
-          <p class="name">用户名：ppapap</p>
-          <p class="cwLength">宠物数量为：5</p>
+          <p class="name">用户名：{{item.username}}</p>
+          <p class="cwLength">宠物数量为：{{item.cw.length}}</p>
         </div>
       </div>
     </div>
@@ -20,13 +20,13 @@
             <img :src="item.img" alt="">
           </div>
           <div class="content_intro">
-            <p class="name">{{item.name}}</p>
+            <p class="name">{{item.fname}}</p>
             <p class="pl">{{item.content}}</p>
           </div>
         </div>
         <div class="state">
-          <p class="sure" v-if="item.state">已添加</p>
-          <p class="nosure" @click="sureAddFriend(item.fid)" v-if="!item.state">接受</p>
+          <p class="sure" v-if="item.show">已添加</p>
+          <p class="nosure" @click="sureAddFriend(item.fid,item._id)" v-if="!item.show">接受</p>
         </div>
       </div>
     </div>
@@ -37,10 +37,12 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { reqSureAddFriend, reqGetFriendRequest,reqGetFriendList } from '@/api/index'
 import { open2, open4 } from '@/utils/message'
+import { jiami } from "@/utils/index";
+const router = useRouter()
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 let ff = reactive({
-  friendRequest:[{name:"",img:"",content:'',state:false,fid:''}],
-  friends:[{username:'',img:'',cw:[]}]
+  friendRequest:[{fname:"",img:"",content:'',state:'',fid:'',show:false,_id:''}],
+  friends:[{username:'',img:'',cw:[],_id:''}]
 })
 onMounted(async () => {
   if (myCookie == '') {
@@ -59,7 +61,6 @@ onMounted(async () => {
 onMounted(async ()=>{
   try {
     let {data,status} = await reqGetFriendList(myCookie);
-    console.log(data,status)
     if(status==200){
       ff.friends = data;
     }
@@ -68,14 +69,15 @@ onMounted(async ()=>{
   }
   
 })
-const sureAddFriend = async (id:string) => {
+const sureAddFriend = async (id:string,_id:string) => {
   if (myCookie == '') {
     open4('未登录')
     return
   }
   let form = {
     myid: myCookie,
-    userid:id
+    userid:id,
+    _id
   }
   try {
     let {data,status} = await reqSureAddFriend(form)
@@ -88,6 +90,13 @@ const sureAddFriend = async (id:string) => {
   }
   
 
+}
+const gouser = (otherid:string)=>{
+  if(otherid==''||otherid==undefined){
+    return
+  }
+  let jiamiid = jiami(otherid) as string
+  router.push({path:'/peopleZhuYe',query:{id:jiamiid}})
 }
 </script>
 <style lang="less" scoped>
@@ -147,7 +156,7 @@ const sureAddFriend = async (id:string) => {
       .content_img {
         height: 60px;
         width: 60px;
-        background-color: aqua;
+        // background-color: aqua;
         margin-right: 5px;
         img{
           height: 60px;
@@ -187,10 +196,11 @@ const sureAddFriend = async (id:string) => {
       }
 
       .nosure {
-        background-color: green;
+        background-color: rgba(32, 95, 11, 0.5);
         color: white;
         &:hover{
           cursor: pointer;
+          background-color: rgba(32, 95, 11, 1);
         }
       }
     }

@@ -164,12 +164,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       try {
         let handleform = jiami(JSON.stringify(form))
       let result = await reqCwAdminLogin(handleform)
+        router.push({ name: 'cwBaseAdmin', query: { id: result.data[0]._id } })
         if (result.status == 0) {
           open2('登陆成功')
         } else {
           open4('账号密码错误')
         }
-        router.push({ name: 'cwBaseAdmin', query: { id: result.data[0]._id } })
       } catch (error) {
         console.log(error)
         open4('账号密码错误')

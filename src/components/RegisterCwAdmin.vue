@@ -3,14 +3,18 @@
   <div class="container">
     <div class="left">
       <el-form :model="form" label-width="180px">
-        <el-form-item label="请输入手机号">
+        <el-form-item label="请输入手机号：">
           <el-input v-model="form.name" />
         </el-form-item>
-        <el-form-item label="请简单描述下你的基地">
+        <el-form-item label="请输入密码：">
+          <el-input v-model="form.pass" />
+        </el-form-item>
+        <el-form-item label="请简单描述下你的基地：">
           <el-input v-model="form.desc" type="textarea" />
         </el-form-item>
+        
         <el-form-item style="margin-left: 180px;">
-          <el-button type="plain" @click="onSubmit">注册</el-button>
+          <el-button plain @click="onSubmit">注册</el-button>
           <el-button>取消</el-button>
         </el-form-item>
       </el-form>
@@ -30,6 +34,7 @@ import { reqRegisterCwAdmin } from '@/api/index'
 const form = reactive({
   name: '',
   desc: '',
+  pass:''
 })
 
 const onSubmit = async () => {
@@ -39,13 +44,16 @@ const onSubmit = async () => {
   }
   const newform = {
     phone: form.name,
-    intro: form.desc
+    intro: form.desc,
+    pass:form.pass
   }
   try {
     const { data, status } = await reqRegisterCwAdmin(newform);
   if (status == 200) {
     open2('已经申请注册请注意查收信息')
     form.name=''
+    form.pass=''
+    form.desc=''
   } else {
     open4('注册失败')
   }

@@ -1,53 +1,59 @@
 <template>
-  <div class="container">
-    <div class="head">
-      <h2>世界上最大的狗品种 体型大的狗狗排行</h2>
-      <p></p>
-      <p class="xg1">
-        3月13日 06:00<span class="pipe">|</span>
-        发布者: <span>珍宠小白</span><span class="pipe">|</span>
-        查看: <em id="_viewnum">298</em><span class="pipe">|</span>
-        评论: 0</p>
+  <div class="all">
+    <div class="container">
+      <div class="head">
+        <h2>{{ rr.article.title }}</h2>
+        <p></p>
+        <p class="xg1">
+          {{ rr.article.date }}<span class="pipe">|</span>
+          发布者: <span>王守帅</span></p>
+      </div>
+      <div class="content">
+        <p>{{ rr.article.content }}</p>
+        <img v-show="rr.article.img!==''" :src="rr.article.img" alt="">
+      </div>
     </div>
-    <div class="content">
-      <p>大楼住户王小姐向《苹果日报》投诉，指称今年2月许姓女子带着猪搬来后，就开始出现恶臭，
-        难闻的味道透过相通的抽风管线扩散到其他住户，后来才知道是她让猪在厕所排泄，并将秽物冲入马桶，气得她向环保局、动保处、
-        1999市民专线检举多次检举，但碍于无法可管，只好自己想办法，把抽风口密封、排水孔堵住，还点香氛蜡烛，但依旧无法抵
-        挡猪的味道。
-
-许小姐则反驳，先是问记者你有闻到臭味吗?，并说自己已经养了麝香猪妹妹8年，
-有训练过猪要去厕所排泄，而且她都会跟进去处理大便，会用报纸包起来，装入塑胶袋丢垃圾车，
-小便会立刻用水冲乾净，尽量做到不要再让它有味道，还特地买了消毒水，无奈邻居依旧无法接受
-，养猪养了8年，第一次被邻居抗议!，但她也疲惫不堪，决定下个月搬走。
-
-对此，桑姓房东表示，许女搬来时就事先告知有养猪，并承诺不会制造脏乱，
-可是到了7月陆续有其他住户抗议，也多次请她改善。大楼保全则说，
-今年夏天开始有住户抗议许女饲养的猪发出排泄物臭味
-，影响晾晒衣服跟住户生活，还有人惊讶地说养猪耶，不是养狗、养猫?太夸张。</p>
+    <div class="quwen">
+      <h2>宠物趣闻</h2>
+      <div class="zhuti">
+        <div class="img"></div>
+        <p class="content">这估计没多久就要成为脑震荡了！</p>
+      </div>
+      <div class="zhuti">
+        <div class="img"></div>
+        <p class="content">这估计没多久就要成为脑震荡了！</p>
+      </div>
+      <div class="zhuti">
+        <div class="img"></div>
+        <p class="content">这估计没多久就要成为脑震荡了！</p>
+      </div>
+      
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref,reactive,onMounted } from 'vue'
-import {useRoute} from 'vue-router'
-import {reqGetNewsById} from '@/api/index'
+import { ref, reactive, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { reqGetNewsById } from '@/api/index'
 const route = useRoute()
 let rr = reactive({
-  article:{
-    content:'',
-    state:'',
-    date:'1970-07-01'
+  article: {
+    content: '',
+    state: '',
+    date: '1970-07-01',
+    title: '',
+    img:""
   }
 })
 const id = route.query.id as string;
-console.log(id)
-onMounted(async ()=>{
+onMounted(async () => {
   try {
-    if(id!==undefined){
-      const {data,status} = await reqGetNewsById(id)
-    if(status==200){
-      rr.article = data
-    }
+    if (id !== undefined) {
+      const { data, status } = await reqGetNewsById(id)
+      if (status == 200) {
+        rr.article = data
+        console.log(rr.article.img)
+      }
     }
   } catch (error) {
     console.log(error)
@@ -56,8 +62,55 @@ onMounted(async ()=>{
 })
 </script>
 <style lang="less" scoped>
+img{
+  width: 200px;
+  height: 200px;
+}
+.all {
+  display: grid;
+  grid-template-columns: 60% 35%;
+  grid-gap: 30px;
+
+  .quwen {
+    margin-top: 100px;
+    background-color: rgb(247, 242, 242);
+    height: 400px;
+
+    h2 {
+      font-size: 20px;
+      font: 700 21px/22px;
+      word-wrap: break-word;
+      font-style: normal;
+      color: #E9A400;
+      margin-bottom: 8px;
+    }
+
+    .zhuti {
+      display: flex;
+      flex-wrap: nowrap;
+      margin-bottom: 8px;
+
+      .img {
+        width: 130px;
+        height: 80px;
+        background-color: #333;
+        margin-right: 5px;
+      }
+
+      .content {
+        font-size: 20px;
+        font: 700 21px/22px;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
 .container {
-  width: 60%;
+  // width: 60%;
   min-height: 470px;
 }
 
@@ -78,10 +131,12 @@ onMounted(async ()=>{
     color: #999 !important;
   }
 }
-.content{
+
+.content {
   white-space: pre-warp;
   padding: 10px;
-  p{
+
+  p {
     font-size: 18px;
     line-height: 30px;
   }

@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 // import routes from "./route";
+import { deCode } from "@/utils/index";
 
 import Home from '@/pages/Home.vue'
 interface Irouter {
@@ -8,6 +9,7 @@ interface Irouter {
   name: string
   children?:any
   meta?: any
+  beforeEnter?:any
 }
 
 export const routes: Irouter[] = [
@@ -126,17 +128,27 @@ export const routes: Irouter[] = [
       name:'admin',
       component:() => import("@/pages/Admin/index.vue"),
       meta:{showFooter:false,showHeader:true,content:'后台管理'},
+      beforeEnter: (to:any, from:any, next:any) => {
+        const { token } = localStorage;
+        const {user,pass} = JSON.parse(deCode(token) as string)
+        if(user=='123'&&pass=='123'){
+          next()
+        }else{
+          next({name:"adminLogin"})
+        }
+      },
       children: [
         {
           path: 'incomes',
           name: 'incomes',
           component: () => import("@/pages/Admin/Incomes.vue"),
-          meta: { showFooter: false, showHeader: true, content: '收益信息' }
+          meta: { showFooter: false, showHeader: true, content: '收益信息' },
+          
         },
         {
           path: 'cwBase',
           name: 'cwBase',
-          component: () => import("@/pages/Admin/CwBase.vue"),
+          component: () => import("@/pages/Admin/Cwbase.vue"),
           meta: { showFooter: false, showHeader: true, content: '宠物信息' }
         },
         {

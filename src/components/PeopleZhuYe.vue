@@ -96,6 +96,7 @@ onMounted(async () => {
 })
 const addFriendDesc =  ref('')
 const addFriend = async () => {
+  //已经为好友直接默认
   if(myCookie==id){
     return 
   }
@@ -105,9 +106,7 @@ const addFriend = async () => {
       userid:id,
       content:addFriendDesc.value
     }
-    console.log(id)
     let { data, status } = await reqAddFriend(form)
-    console.log(data,status)
     if (status == 200) {
       open2('已成功发送请求')
     }else{

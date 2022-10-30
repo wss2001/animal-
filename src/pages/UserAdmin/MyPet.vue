@@ -35,8 +35,10 @@ const goCwinfo = (id: string) => {
 }
 let showEmpty = ref(false)
 const handleGetCw = async () => {
-  let k = await reqGetUserCwInfo(myCookie)
-  cwArr.data = k.data
+  let {data,status} = await reqGetUserCwInfo(myCookie)
+  if(status==200){
+    cwArr.data = data
+  }
   if (cwArr.data.length == 0) {
     showEmpty.value = true
   }

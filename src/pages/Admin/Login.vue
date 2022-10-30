@@ -58,9 +58,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
         user:ruleForm.pass,
         pass:ruleForm.checkPass
       }
-      let handleform = jiami(JSON.stringify(form))
+      let handleform = jiami(JSON.stringify(form)) as string
       let result = await reqAdminLogin(handleform)
       if(result.status==0){
+        localStorage.setItem('token',handleform)
         router.push({name:'admin'})
       }else{
         console.log('登陆失败')
