@@ -56,6 +56,13 @@ export const routes: Irouter[] = [
     meta: { showFooter: false, showHeader: false, content: '用户' },
   },
   {
+    path: '/:cathchAll(.*)',
+    name: '404',
+    component: () => import('@/components/404.vue'),
+    meta: { showFooter: false, showHeader: false, content: '404' },
+  },
+  
+  {
     path: '/aboutme',
     name: 'aboutme',
     component: () => import('@/components/AboutMe.vue'),

@@ -26,29 +26,85 @@
       {{msg.content}}
       <p>--{{msg.fname}}</p>--{{msg.date}}
     </div>
+    <div class="item" v-for="zzmsg in result.zzMsg">
+      转让宠物:{{zzmsg.cwName}}
+      <p>--转让人:{{zzmsg.fname}}</p>--{{zzmsg.date}}
+    </div>
   </el-collapse-item>
 </el-collapse>
+</div>
+<div class="haoyouzhuanzeng">
+  <el-card class="box-card">
+    <template #header>
+      <div class="card-header">
+        <span>转让消息</span>
+        <!-- <el-button class="button" text>Operation button</el-button> -->
+      </div>
+    </template>
+    <div class="text item" v-for="item in result.zzMsg">
+      <div class="left">
+        <div>
+        转让人：{{item.fname}}
+      </div>
+      <div>
+        转让宠物：{{item.cwName}}
+      </div>
+      </div>
+      <div class="right" v-if="!item.issure">
+        <el-button type="danger" plain @click="refuse(item._id,item.fid,item.cwid)">拒绝</el-button>
+        <el-button type="success" plain @click="agree(item._id,item.fid,item.cwid)">同意</el-button>
+      </div>
+      <div class="right" v-if="item.issure">
+        <el-button class="already">已处理{{item.yes?'收养':'拒绝'}}</el-button>
+      </div>
+    </div>
+  </el-card>
 </div>
 <div class="change">
   <h2>修改个人信息</h2>
   <div class="change_zhuti">
-
+    <el-descriptions  :column="3" border>
+    <el-descriptions-item
+      label="用户名"
+      label-align="right"
+      align="center"
+      label-class-name="my-label"
+      class-name="my-content"
+      width="150px"
+      >{{result.userInfo.username}}</el-descriptions-item
+    >
+    <el-descriptions-item label="账号" label-align="right" align="center"
+      >{{result.userInfo.phoneNumber}}</el-descriptions-item
+    >
+    <el-descriptions-item label="性别" label-align="right" align="center">
+      <el-tag size="small">{{result.userInfo.sex}}</el-tag>
+    </el-descriptions-item>
+    <el-descriptions-item label="简介" label-align="right" align="center"
+      >{{result.userInfo.desc}}</el-descriptions-item>
+      <el-descriptions-item label-align="right" align="center"
+      >修改账号密码</el-descriptions-item>
+      <el-descriptions-item label-align="right" align="center"
+      >修改基本信息</el-descriptions-item>
+  </el-descriptions>
   </div>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { reqGetUserInfo, reqUploadtx,reqGetUserMsg } from '@/api/index'
+import { reqGetUserInfo, reqUploadtx,reqGetUserMsg,reqGetFriendShare } from '@/api/index'
 import { onMounted, ref, reactive, nextTick,computed } from "vue";
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
+import {reqAgreeZZ ,reqRefuseZZ } from "@/api/index";
+import {open2,open4} from '@/utils/message'
 const router = useRouter()
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 let result = reactive({
-  userInfo: { img: '' },
-  msg:[{content:'',fname:'',date:''}]
+  userInfo: { img: '' ,username:'',phoneNumber:'',sex:'',desc:''},
+  msg:[{content:'',fname:'',date:'',state:''}],
+  zzMsg:[{fname:'',date:'',fid:'',_id:'',cwName:'',cwid:'',issure:false,yes:false}]
 })
 //退出登录
 const fail = () => {
@@ -58,9 +114,10 @@ const fail = () => {
   document.cookie = 'userToken' + "=a; expires=" + date.toGMTString();
   router.push({ name: 'userLogin' })
 }
-onMounted(async () => {
-  //检查登陆状态
-  if (!document.cookie.includes('userToken')) {
+//获取用户信息
+const getUser = async()=>{
+//检查登陆状态
+if (!document.cookie.includes('userToken')) {
     router.push({ name: 'userLogin' })
     console.log('时间过久退出登陆状态')
   } else {
@@ -71,7 +128,11 @@ onMounted(async () => {
       console.log(error)
     }
   }
+}
+onMounted(async () => {
+  getUser()
 })
+//获取评论信息
 onMounted(async()=>{
   //检查登陆状态
   if (!document.cookie.includes('userToken')) {
@@ -88,6 +149,28 @@ onMounted(async()=>{
     }
   }
 })
+//获取转增信息
+const getZZ = async ()=>{
+//检查登陆状态
+if (!document.cookie.includes('userToken')) {
+    router.push({ name: 'userLogin' })
+    console.log('时间过久退出登陆状态')
+  } else {
+    try {
+      let {data,status} = await reqGetFriendShare(myCookie)
+      console.log(data)
+      if(status==200){
+        result.zzMsg = data
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+onMounted(async()=>{
+  getZZ()
+})
+
 const isShow = ref(false)
 const changetx = () => {
   isShow.value = !isShow.value
@@ -115,12 +198,84 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
-let friends = computed(()=>{
-  
-})
+const agree = async (id:string,fid:string,cwid:string)=>{
+  if(id!==''){
+    let form = {
+      _id:id,
+      myid:myCookie,
+      userid:fid,
+      cwid
+    }
+    try {
+      const {status} = await reqAgreeZZ(form)
+    if(status==200){
+      open2('操作成功')
+    }
+    else{
+      open4('操作失败')
+    }
+    } catch (error) {
+      open4('操作失败')
+    }
+    
+  }
+}
+const refuse = async (id:string,fid:string,cwid:string)=>{
+  if(id!==''){
+    let form = {
+      _id:id,
+      myid:myCookie,
+      userid:fid,
+      cwid
+    }
+    try {
+      const {status} = await reqRefuseZZ(form)
+    if(status==200){
+      open2('操作成功')
+    }
+    else{
+      open4('操作失败')
+    }
+    } catch (error) {
+      open4('操作失败')
+    }
+  }
+}
 
 </script>
 <style lang="less" scoped>
+.haoyouzhuanzeng{
+  margin: 20px 0;
+  margin-bottom: 0;
+  .item {
+  margin-bottom: 18px;
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  border: 1px solid #465213;
+  padding: 5px;
+  border-radius: 5px;
+  .left{
+    margin-right: 15px;
+  }
+  .right{
+    display: flex;
+    flex-wrap: nowrap;
+    .already{
+      border: none;
+      &:hover{
+        cursor: none;
+      }
+    }
+  }
+  .intro{
+    overflow-y: scroll;
+    height: 30px;
+  }
+}
+}
 .change{
   margin-top: 50px;
   h2{
@@ -153,7 +308,12 @@ let friends = computed(()=>{
 span {
   float: left;
 }
-
+.my-label {
+  background: var(--el-color-success-light-9);
+}
+.my-content {
+  background: var(--el-color-danger-light-9);
+}
 .example-showcase .el-dropdown-link {
   cursor: pointer;
   color: var(--el-color-primary);

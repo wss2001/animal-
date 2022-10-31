@@ -67,7 +67,6 @@ onMounted(async ()=>{
   } catch (error) {
     console.log(error)
   }
-  
 })
 const sureAddFriend = async (id:string,_id:string) => {
   if (myCookie == '') {

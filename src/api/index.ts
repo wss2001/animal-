@@ -37,7 +37,7 @@ export const reqUploadtx=(id:string,url:string)=>{
 export const reqUserRegister = (form:any)=>{
   return requests({url:'/user/register',data:{form:form},method:'POST'})
 }
-//转让宠物
+//转让宠物第一版未用
 export const reqChangepet = (form:any)=>{
   return requests({url:'/user/changepet',data:{form:form},method:'POST'})
 }
@@ -60,14 +60,6 @@ export const reqCwAdminEditPet = (form:any)=>{
   return requests({url:'/cwbase/updatepet',data:{form:form},method:'POST'})
 }
 
-//后台管理登录
-export const reqAdminLogin = (form:any)=>{
-  return requests({url:'/admin/login',data:{form:form},method:'POST'})
-}
-//后台管理获取消息
-export const reqAdminGetMessage = ()=>{
-  return requests({url:'/admin/getMessage',method:'GET'})
-}
 //通过cwid获取基地其他一个宠物信息
 export const reqGetBrother = (id:string)=>{
   return requests({url:`/cw/getbrother?id=${id}`,method:'GET'})
@@ -79,19 +71,6 @@ export const reqGetComment = (id:string)=>{
 //提交评论
 export const reqSubmitComment = (form:any)=>{
   return requests({url:`/comment/submitComment`,data:{form},method:'POST'})
-}
-
-//获取新闻信息
-export const reqGetNews = ()=>{
-  return requests({url:`/admin/getnews`,method:'GET'})
-}
-//获取单个新闻信息
-export const reqGetNewsById = (id:string)=>{
-  return requests({url:`/admin/getnewsbyid?id=${id}`,method:'GET'})
-}
-//获取单个新闻信息
-export const reqAddNews = (form:any)=>{
-  return requests({url:`/admin/addNews`,method:'POST',data:{form}})
 }
 
 //给人留言
@@ -113,6 +92,44 @@ export const reqGetFriendRequest = (id:string)=>{
 //获取好友数组
 export const reqGetFriendList = (id:string)=>{
   return requests({url:`/user/getfriends?id=${id}`,method:'GET'})
+}
+//获取好友转增宠物数组
+export const reqGetFriendShare = (id:string)=>{
+  return requests({url:`/user/getfriendshare?id=${id}`,method:'GET'})
+}
+//发送好友转增宠物数组
+export const reqFindFriendToShare = (form:any)=>{
+  return requests({url:`/user/findshare`,method:'POST',data:{form}})
+}
+//同意接受宠物转增
+export const reqAgreeZZ = (form:any)=>{
+  return requests({url:`/user/agreezz`,method:'POST',data:{form}})
+}
+//拒绝注册宠物转增
+export const reqRefuseZZ = (form:any)=>{
+  return requests({url:`/user/refusezz`,method:'POST',data:{form}})
+}
+
+
+//后台管理登录
+export const reqAdminLogin = (form:any)=>{
+  return requests({url:'/admin/login',data:{form:form},method:'POST'})
+}
+//后台管理获取消息
+export const reqAdminGetMessage = ()=>{
+  return requests({url:'/admin/getMessage',method:'GET'})
+}
+//获取新闻信息
+export const reqGetNews = ()=>{
+  return requests({url:`/admin/getnews`,method:'GET'})
+}
+//获取单个新闻信息
+export const reqGetNewsById = (id:string)=>{
+  return requests({url:`/admin/getnewsbyid?id=${id}`,method:'GET'})
+}
+//添加新闻信息
+export const reqAddNews = (form:any)=>{
+  return requests({url:`/admin/addNews`,method:'POST',data:{form}})
 }
 //请求注册宠物基地
 export const reqRegisterCwAdmin = (form:any)=>{
