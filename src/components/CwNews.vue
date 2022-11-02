@@ -12,7 +12,7 @@
         <h2>养宠必学</h2>
         <ul>
           <li v-for="item in nn.mustLearn" @click="handleNew(item._id)">
-            {{item.title}}
+            {{ item.title }}
           </li>
         </ul>
       </div>
@@ -22,16 +22,16 @@
         <h2><span>[热点]</span>在台湾没天敌 遭弃养绿鬣蜥大量繁衍</h2>
         <ul>
           <li v-for="item in nn.hot" @click="handleNew(item._id)">
-            {{item.title}}
+            {{ item.title }}
           </li>
-          
+
         </ul>
       </div>
       <div class="jiuzhu">
         <h2><span>[救助]</span>在台湾没天敌 遭弃养绿鬣蜥大量繁衍</h2>
         <ul>
           <li v-for="item in nn.help" @click="handleNew(item._id)">
-            {{item.title}}
+            {{ item.title }}
           </li>
         </ul>
       </div>
@@ -44,26 +44,24 @@
       </div>
       <div class="quwen">
         <h2>宠物趣闻</h2>
-        <div class="zhuti">
-          <div class="img"></div>
-          <p class="content">这估计没多久就要成为脑震荡了！</p>
-        </div>
-        <div class="zhuti">
-          <div class="img"></div>
-          <p class="content">这估计没多久就要成为脑震荡了！</p>
-        </div>
-        <div class="zhuti">
-          <div class="img"></div>
-          <p class="content">这估计没多久就要成为脑震荡了！</p>
+        <div class="zhuti" v-for="item in nn.suiji">
+          <div class="img">
+            <img :src="item.img" alt="">
+          </div>
+          <div class="text">
+            <p class="content" @click="handleNew(item._id)">{{ item.title }}</p>
+            <p class="neirong">{{ item.content }}</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted, computed, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { reqGetNews } from '@/api/index'
+import { RandomNumBoth } from '@/utils/index'
 const router = useRouter()
 let urls = reactive({
   arr: [
@@ -82,7 +80,7 @@ let nn = reactive({
     _id: '',
     state: ''
   }],
-  hot:[{
+  hot: [{
     title: '',
     intro: '',
     date: '1970-06-01',
@@ -90,7 +88,7 @@ let nn = reactive({
     _id: '',
     state: ''
   }],
-  mustLearn:[{
+  mustLearn: [{
     title: '',
     intro: '',
     date: '1970-06-01',
@@ -98,41 +96,55 @@ let nn = reactive({
     _id: '',
     state: ''
   }],
-  help:[{
+  help: [{
     title: '',
     intro: '',
     date: '1970-06-01',
     content: '',
     _id: '',
     state: ''
+  }],
+  suiji: [{
+    title: '',
+    intro: '',
+    date: '1970-06-01',
+    content: '',
+    _id: '',
+    state: '',
+    img: ''
   }],
 })
-onMounted(async () => {
+onBeforeMount(async () => {
   try {
-    let {data,status} = await reqGetNews()
-    if(status==200){
+    let { data, status } = await reqGetNews()
+    if (status == 200) {
       nn.news = data
       nn.hot = nn.news.filter(item => item.state == 'rd');
       nn.help = nn.news.filter(item => item.state == 'jz');
       nn.mustLearn = nn.news.filter(item => item.state == 'bx');
+      let arr: any = []
+      for (let i = 0; i < 3; i++) {
+        arr.push(nn.news[RandomNumBoth(0, nn.news.length - 1)])
+      }
+      nn.suiji = arr
     }
   } catch (error) {
     console.log(error)
   }
 })
 
-const handleNew = (id:string)=>{
-  if(id==''||id==undefined){
+const handleNew = (id: string) => {
+  if (id == '' || id == undefined) {
     console.log('网络发生错误')
     return
   }
-  router.push({name:'newhome',query:{id:id}})
+  router.push({ name: 'newhome', query: { id: id } })
 }
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 const goHome = () => {
-  if(myCookie==''){
+  if (myCookie == '') {
     router.push({ name: 'userLogin' })
-  }else{
+  } else {
     router.push({ name: 'user', query: { id: myCookie } })
   }
 }
@@ -198,6 +210,7 @@ li {
     padding: 10px;
     overflow: scroll;
     min-height: 100px;
+
     .redian {
       margin-bottom: 15px;
     }
@@ -270,12 +283,20 @@ li {
         display: flex;
         flex-wrap: nowrap;
         margin-bottom: 8px;
+        .text{
+          flex: 1;
+        }
 
         .img {
           width: 130px;
           height: 80px;
-          background-color: #333;
+          // background-color: #333;
           margin-right: 5px;
+
+          img {
+            width: 130px;
+            height: 80px;
+          }
         }
 
         .content {
@@ -284,7 +305,14 @@ li {
 
           &:hover {
             text-decoration: underline;
+            cursor: pointer;
           }
+        }
+        .neirong {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }

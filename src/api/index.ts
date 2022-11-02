@@ -12,6 +12,11 @@ export const reqGetCwInfo=(id:string)=>{
 export const reqAddFood = (form:any)=>{
   return requests({url:'/cw/addfood',data:{form:form},method:'POST'})
 }
+//更新宠物食物天数
+export const reqUpdateFood = (id:string)=>{
+  return requests({url:`/cw/updatefood?id=${id}`,method:'GET'})
+}
+
 // 用户登录
 export const reqUserLogin = (form:any)=>{
   return requests({url:'/user/login',data:{form:form},method:'POST'})
@@ -109,6 +114,15 @@ export const reqAgreeZZ = (form:any)=>{
 export const reqRefuseZZ = (form:any)=>{
   return requests({url:`/user/refusezz`,method:'POST',data:{form}})
 }
+//收藏
+export const reqCollect = (form:any)=>{
+  return requests({url:`/user/collect`,method:'POST',data:{form}})
+}
+//支付测试
+export const reqPay = (form:any)=>{
+  return requests({url:'/pay/api/payment',method:'POST',data:{form}})
+}
+
 
 
 //后台管理登录

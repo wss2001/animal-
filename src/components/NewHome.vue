@@ -15,27 +15,27 @@
     </div>
     <div class="quwen">
       <h2>宠物趣闻</h2>
-      <div class="zhuti">
-        <div class="img"></div>
-        <p class="content">这估计没多久就要成为脑震荡了！</p>
-      </div>
-      <div class="zhuti">
-        <div class="img"></div>
-        <p class="content">这估计没多久就要成为脑震荡了！</p>
-      </div>
-      <div class="zhuti">
-        <div class="img"></div>
-        <p class="content">这估计没多久就要成为脑震荡了！</p>
-      </div>
+      <div class="zhuti" v-for="item in rr.suiji">
+          <div class="img">
+            <img :src="item.img" alt="">
+          </div>
+          <div class="text">
+            <p class="content" @click="handleNew(item._id)">{{ item.title }}</p>
+            <p class="neirong">{{ item.content }}</p>
+          </div>
+        </div>
       
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { reqGetNewsById } from '@/api/index'
+import { ref, reactive, onMounted,onBeforeMount } from 'vue'
+import { useRoute,useRouter } from 'vue-router'
+import { reqGetNewsById, reqGetNews} from '@/api/index'
+import { RandomNumBoth } from '@/utils/index'
+
 const route = useRoute()
+const router = useRouter()
 let rr = reactive({
   article: {
     content: '',
@@ -43,7 +43,23 @@ let rr = reactive({
     date: '1970-07-01',
     title: '',
     img:""
-  }
+  },suiji: [{
+    title: '',
+    intro: '',
+    date: '1970-06-01',
+    content: '',
+    _id: '',
+    state: '',
+    img: ''
+  }],
+  news: [{
+    title: '',
+    intro: '',
+    date: '1970-06-01',
+    content: '',
+    _id: '',
+    state: ''
+  }],
 })
 const id = route.query.id as string;
 onMounted(async () => {
@@ -58,8 +74,29 @@ onMounted(async () => {
   } catch (error) {
     console.log(error)
   }
-
 })
+onBeforeMount(async () => {
+  try {
+    let { data, status } = await reqGetNews()
+    if (status == 200) {
+      rr.news = data
+      let arr: any = []
+      for (let i = 0; i < 3; i++) {
+        arr.push(rr.news[RandomNumBoth(0, rr.news.length - 1)])
+      }
+      rr.suiji = arr
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
+const handleNew = (id: string) => {
+  if (id == '' || id == undefined) {
+    console.log('网络发生错误')
+    return
+  }
+  router.push({ name: 'newhome', query: { id: id } })
+}
 </script>
 <style lang="less" scoped>
 img{
@@ -86,26 +123,41 @@ img{
     }
 
     .zhuti {
-      display: flex;
-      flex-wrap: nowrap;
-      margin-bottom: 8px;
+        display: flex;
+        flex-wrap: nowrap;
+        margin-bottom: 8px;
+        .text{
+          flex: 1;
+        }
 
-      .img {
-        width: 130px;
-        height: 80px;
-        background-color: #333;
-        margin-right: 5px;
-      }
+        .img {
+          width: 130px;
+          height: 80px;
+          // background-color: #333;
+          margin-right: 5px;
 
-      .content {
-        font-size: 20px;
-        font: 700 21px/22px;
+          img {
+            width: 130px;
+            height: 80px;
+          }
+        }
 
-        &:hover {
-          text-decoration: underline;
+        .content {
+          font-size: 20px;
+          font: 700 21px/22px;
+
+          &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+          }
+        }
+        .neirong {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
-    }
   }
 }
 

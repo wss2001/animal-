@@ -3,15 +3,15 @@
     <div class="zhuti">
       <div class="gg" v-show="showgg">
         <div>我是广告猫粮狗粮，宠物医生，我是广告猫粮狗粮，宠物医生，我是广告猫粮狗粮，宠物医生我是广告猫粮狗粮，宠物医生我是广告猫粮狗粮，宠物医生</div>
-        <div @click="showgg=false" class="guanbi">X</div>
+        <div @click="guanbigg" class="guanbi">X</div>
       </div>
       <h2 class="sj">
-        <font color="green">[{{cw.cwInfo.state?'投喂':'领养'}}]</font>{{cw.cwInfo.name}}
+        <font color="green">[{{ result.cw.state ? '投喂' : '领养' }}]</font>{{ result.cw.name }}
       </h2>
       <div class="info">
         <div class="img left">
           <el-popover placement="top-start" title="宠物简介" :width="200" trigger="hover"
-            :content="`这是${cw.cwInfo.name},${cw.cwInfo.state?'已被收养':'还未被人收养，它很可爱是吧，不忍心它挨饿吧'}`">
+            :content="`这是${result.cw.name},${result.cw.state ? '已被收养' : '还未被人收养，它很可爱是吧，不忍心它挨饿吧'}`">
             <template #reference>
               <div class="demo-image__lazy">
                 <el-image v-for="url in urls.arr" :key="url" :src="url" lazy />
@@ -20,21 +20,21 @@
           </el-popover>
         </div>
         <div class="middle">
-          <p>宠物名称:<el-button type="plain" text>{{cw.cwInfo.name}}</el-button>
+          <p>宠物名称:<el-button plain text>{{ result.cw.name }}</el-button>
           </p>
-          <p>宠物剩余食物: <el-button @click="addFood(cw.cwInfo.state)" type="plain" text>{{cw.handleFood()}}</el-button>
+          <p>宠物剩余食物: <el-button @click="addFood(result.cw.state)" type="plain" text>{{result.cw.alsoFoodtian}}天</el-button>
           </p>
           <p>联系人:</p>
           <p>联系电话:</p>
           <p>(^_^)联系的时候告诉我是在宠物救助盒子看到的这条消息</p>
           <p>
-            <el-button type="danger" text v-if="!cw.cwInfo.state" @click="shouyang(cw.cwInfo._id)">收养它</el-button>
+            <el-button type="danger" text v-if="!result.cw.state" @click="shouyang">收养它</el-button>
           </p>
           <p>
-            <el-button type="danger" text @click="collect(cw.cwInfo._id)">收藏该宠物</el-button>
+            <el-button type="danger" text @click="collect(id)">收藏该宠物</el-button>
           </p>
           <p>
-            <el-button type="primary" text @click="addFood(cw.cwInfo.state)">是否为他增加粮食</el-button>
+            <el-button type="primary" text @click="addFood(result.cw.state)">是否为他增加粮食</el-button>
           </p>
         </div>
         <div class="right">
@@ -47,21 +47,21 @@
 
             </div>
             <div class="qita">
-              <p>{{brother.bb.intro}}</p>
-              <p>{{brother.bb.intro}}</p>
+              <p>{{ brother.bb.name }}</p>
+              <p>{{ brother.bb.intro }}</p>
             </div>
           </div>
         </div>
       </div>
       <div class="intro">
         <p>宠物简介: </p>
-        <p>{{cw.cwInfo.intro}}</p>
+        <p>{{ result.cw.intro }}</p>
       </div>
       <el-dialog title="提示" v-model="dialogVisible" width="30%">
-        <p>{{cw.cwInfo.name}}已经被领养了，确定不再看看别的宠物么</p>
+        <p>{{ result.cw.name }}已经被领养了，确定不再看看别的宠物么</p>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="dialogVisible=false">换一个别的宠物看看</el-button>
+            <el-button @click="dialogVisible = false">换一个别的宠物看看</el-button>
             <el-button type="primary" @click="sureAdd">还是打算给他口粮</el-button>
           </span>
         </template>
@@ -83,17 +83,6 @@
           </span>
         </template>
       </el-dialog>
-
-      <el-dialog title="提示" v-model="dialogSy" width="30%">
-        支付二维码
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogSy = false">取 消</el-button>
-            <el-button type="primary" @click="sureSy(cw.cwInfo._id)">确 定</el-button>
-          </span>
-        </template>
-      </el-dialog>
-
       <el-dialog title="提示" v-model="dialogTz" width="30%">
         <span>您还未登录,请跳转到登录页面</span>
         <template #footer>
@@ -106,17 +95,18 @@
     </div>
     <CC></CC>
   </div>
-  
+
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, reactive } from "vue";
 import { useRouter } from 'vue-router';
 import { cwStore } from "@/store/cw";
-import { reqAddFood, reqGetBrother } from '@/api/index'
+import { reqGetBrother, reqCollect, reqPay,reqUpdateFood,reqGetCwInfo } from '@/api/index'
+import { open2, open4 } from '@/utils/message'
 import CC from '@/components/CC.vue'
 const router = useRouter()
 let id = router.currentRoute.value.query.id as string
-const cw = cwStore()
+// const cw = cwStore()
 let urls = reactive({
   arr: [
     'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
@@ -128,6 +118,9 @@ let urls = reactive({
     'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
   ]
 })
+let result = reactive({
+  cw:{name:'',state:false,intro:'',alsoFoodtian:''}
+})
 let showgg = ref(true)
 let brother = reactive({
   bb: {
@@ -135,42 +128,40 @@ let brother = reactive({
     intro: ''
   }
 })
+//更新宠物的剩余食物天数
+onMounted(async()=>{
+  try {
+    const {data,status} = await reqUpdateFood(id)
+  } catch (error) {
+    console.log(error)
+  }
+})
+//获取宠物详细数据
 onMounted(async () => {
   try {
-    await cw.getCwInfo(id)
-    urls.arr = cw.cwInfo.imgArr
-    let { data } = await reqGetBrother(id)
-    brother.bb = data
+    const cw = await reqGetCwInfo(id)
+    if(cw.status==200){
+      result.cw = cw.data
+    }
+    let { data, status } = await reqGetBrother(id)
+    if (status == 200) {
+      brother.bb = data
+    }
   } catch (error) {
     console.error(error)
   }
 })
 let dialogVisible = ref(false)
 let dialogFormVisible = ref(false)
-let dialogSy = ref(false)
 let dialogTz = ref(false)
 let formLabelWidth = '120px'
 const TzLogin = () => {
   dialogTz.value = false
   router.push({ name: 'userLogin' })
 }
-const sureSy = async (id: string) => {
-  console.log('sureSy', id)
-  dialogSy.value = true
-  let food = form.food
-  // let id = cw.cwInfo._id
-  let data = { food: food, id: id }
-  let result
-  try {
-    result = await reqAddFood(data)
-  } catch (error) {
-    console.error(error)
-  }
-  cw.getCwInfo(id)
-  form.food = 0
-  console.log(cw.cwInfo.alsoFood, cw.cwInfo.alsoFoodtian)
-}
+
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+//判断是否登录打开对应页面
 const addFood = (state: boolean) => {
   if (!myCookie) {
     dialogTz.value = true
@@ -182,32 +173,67 @@ const addFood = (state: boolean) => {
     dialogFormVisible.value = true
   }
 }
+//已经被领养依旧要投喂
 const sureAdd = () => {
   dialogVisible.value = false
   dialogFormVisible.value = true
 }
 let form = reactive({ food: 0 })
+//确认喂养选择多少并且跳转支付页面
 const addedFood = async () => {
+  const obj = {
+    state: 'tw',
+    cwid: id,
+    food: form.food.toString(),
+    userid: myCookie
+  }
   dialogFormVisible.value = false
-  dialogSy.value = true
-
+  pay(obj)
+  form.food = 0
 }
-const shouyang = (id: string) => {
+//收养宠物
+const shouyang = () => {
   if (!myCookie) {
     dialogTz.value = true
     return
+  } else {
+    const obj = {
+      state: 'sy',
+      cwid: id,
+      food: '7',
+      userid: myCookie
+    }
+    pay(obj)
   }
-
+}
+//跳转支付页面
+const pay = async (obj: any) => {
+  let { data, status } = await reqPay(obj)
+  if (status == 200) {
+    window.open(data)
+  }
 }
 //收藏该宠物
-const collect = (id: string) => {
+const collect = async (id: string) => {
   if (!myCookie) {
     dialogTz.value = true
     return
   }
-  console.log(id, myCookie)
+  const form = {
+    cwid: id,
+    myid: myCookie
+  }
+  const { status } = await reqCollect(form)
+  if (status == 200) {
+    open2('收藏成功')
+  } else {
+    open4('收藏失败')
+  }
 }
-
+//关闭广告
+const guanbigg = () => {
+  showgg.value = false
+}
 </script>
 <style lang="less" scoped>
 .gg {
