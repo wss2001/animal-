@@ -1,29 +1,37 @@
 <template>
-  <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
-    <el-form-item label="账号" prop="pass">
-      <el-input v-model="ruleForm.pass" type="text" autocomplete="off" />
-    </el-form-item>
-    <el-form-item label="密码" prop="checkPass">
-      <el-input v-model="ruleForm.checkPass" type="password" autocomplete="off" />
-    </el-form-item>
-    <el-form-item label="验证码" prop="age">
-      <el-input v-model="shuruyanzhengma" />
-      <div @click="refreshCode" class="yanzhengma">
-        <SIdentify :identifyCode="identifyCode" @clickChild="clickChild" />
-      </div>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
-      <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+  <div class="login_container">
+    <div class="right">
+      
+    </div>
+    <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
+      <el-form-item label="账号" prop="pass">
+        <el-input v-model="ruleForm.pass" type="text" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="密码" prop="checkPass">
+        <el-input v-model="ruleForm.checkPass" type="password" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="验证码" prop="age">
+        <el-input v-model="shuruyanzhengma" />
+        <div @click="refreshCode" class="yanzhengma">
+          <SIdentify :identifyCode="identifyCode" @clickChild="clickChild" />
+        </div>
+      </el-form-item>
+      <el-form-item>
+        <div class="anniu">
+          <el-button type="danger" @click="submitForm(ruleFormRef)">登录</el-button>
+          <el-button type="warning" @click="resetForm(ruleFormRef)">重置</el-button>
+        </div>
+      </el-form-item>
+      <el-form-item>
+        <div class="zhuce">
+          <el-button type="" link>注册</el-button>
+          <el-button type="" link>找回密码</el-button>
+        </div>
+      </el-form-item>
+    </el-form>
 
-    </el-form-item>
-    <el-form-item>
-      <div class="zhuce">
-        <el-button type="" link>注册</el-button>
-        <el-button type="" link>找回密码</el-button>
-      </div>
-    </el-form-item>
-  </el-form>
+  </div>
+
 
   <!-- <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <p>账号密码输入错误请重新输入</p>
@@ -40,8 +48,8 @@ import type { FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router';
 import SIdentify from '@/components/Sidentify.vue';
 import { reqUserLogin } from '@/api/index'
-import {jiami} from '@/utils/index'
-import { open2,open4 } from "@/utils/message";
+import { jiami } from '@/utils/index'
+import { open2, open4 } from "@/utils/message";
 const router = useRouter()
 if (document.cookie.includes('userToken')) {
   let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
@@ -153,10 +161,47 @@ const resetForm = (formEl: FormInstance | undefined) => {
 }
 </script>
 <style lang="less" scoped>
-// .yanzhengma{
-//   margin-top: 20px;
-// }
-.zhuce {
+.anniu {
   text-align: left;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+
+  .el-button {
+    flex: 1;
+  }
+}
+</style>
+<style lang="less" scoped>
+.login_container {
+  padding: 50px 0;
+  width: 100vw;
+  height: 400px;
+  position: relative;
+  left: -42px;
+  background: url('https://www.liulangla.cn/public/static/index/login-bg.jpg');
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  .el-form {
+    margin-left: -50px;
+
+    .el-form-item {
+      width: 600px;
+    }
+  }
+
+  .el-form-item__label {
+    color: white;
+  }
+
+  .right {
+    // margin-left: 50px;
+    // background-color: pink;
+    // height: 100px;
+    width: 780px;
+  }
+
 }
 </style>

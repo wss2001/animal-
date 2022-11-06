@@ -1,4 +1,5 @@
 <template>
+  <div class="login_container">
   <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
     <el-form-item label="账号" prop="phone">
       <el-input v-model="ruleForm.phone" type="text" autocomplete="off" />
@@ -19,7 +20,12 @@
       <el-button @click="resetForm(ruleFormRef)">重置</el-button>
     </el-form-item>
   </el-form>
-
+  <div class="right">
+    <h2>已有帐号？点击登录</h2>
+    <p></p>
+    <button @click="router.push({name:'userLogin'})">点击登录</button>
+  </div>
+</div>
   <el-dialog v-model="centerDialogVisible" title="用户名" width="30%" center>
     <el-input v-model="name"/>
     <template #footer>
@@ -167,7 +173,51 @@ const resetForm = (formEl: FormInstance | undefined) => {
 .dialog-footer button:first-child {
   margin-right: 10px;
 }
+.login_container {
+  // padding: 50px 0;
+  // width: 100vw;
+  // height: 400px;
+  // position: relative;
+  // left: -42px;
+  // background: url('https://www.liulangla.cn/public/static/index/login-bg.jpg');
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
 
+  .el-form {
+    margin-left: -50px;
+
+    .el-form-item {
+      width: 600px;
+    }
+  }
+
+  .el-form-item__label {
+    color: white;
+  }
+
+  .right {
+    margin-left: 50px;
+    // background-color: pink;
+    text-align: right;
+    height: 400px;
+    width: 400px;
+    h2{
+      margin: 50px 0;
+      color: rgb(74, 74, 211);
+      font-size: 20px;
+    }
+    button{
+      width: 200px;
+      height: 50px;
+      font-size: 20px;
+      border: 1px solid black;
+      background-color: green;
+      color: white;
+    }
+  }
+
+}
 .zhuce {
   text-align: left;
 }

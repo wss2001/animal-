@@ -1,5 +1,5 @@
 <template>
-  <h2>我的信息</h2>
+  <h2>我的消息</h2>
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
@@ -9,6 +9,8 @@
     </template>
     <div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>
   </el-card>
+  <h2 class="change">修改信息</h2>
+
 </template>
 <script setup lang="ts">
 import {ref,reactive,onMounted} from 'vue'
@@ -20,6 +22,9 @@ import {ref,reactive,onMounted} from 'vue'
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.change{
+  margin-top: 10px;
 }
 
 .text {

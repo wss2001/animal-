@@ -232,7 +232,7 @@ li {
   }
 
   .right {
-    overflow: hidden;
+    overflow-y: hidden;
 
     .hbutton {
       font: 12px/1.5 Tahoma, 'Microsoft Yahei', 'Simsun';
@@ -285,6 +285,7 @@ li {
         margin-bottom: 8px;
         .text{
           flex: 1;
+          // padding-right: 10px;
         }
 
         .img {
@@ -310,9 +311,13 @@ li {
         }
         .neirong {
           width: 100%;
-          white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          display:-webkit-box;
+          /* autoprefixer: off */
+          -webkit-box-orient:vertical;
+          /* autoprefixer: on */
+          -webkit-line-clamp:2; 
         }
       }
     }

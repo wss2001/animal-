@@ -158,7 +158,6 @@ if (!document.cookie.includes('userToken')) {
   } else {
     try {
       let {data,status} = await reqGetFriendShare(myCookie)
-      console.log(data)
       if(status==200){
         result.zzMsg = data
       }
@@ -208,6 +207,7 @@ const agree = async (id:string,fid:string,cwid:string)=>{
     }
     try {
       const {status} = await reqAgreeZZ(form)
+      console.log(status)
     if(status==200){
       open2('操作成功')
     }

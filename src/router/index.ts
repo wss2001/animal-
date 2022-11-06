@@ -203,6 +203,13 @@ export const routes: Irouter[] = [
         component: () => import("@/pages/CwBaseAdmin/AddPet.vue"),
         meta: { showFooter: false, showHeader: true, content: '宠物信息' }
       },
+      {
+        path: 'baseMoney',
+        name: 'baseMoney',
+        component: () => import("@/pages/CwBaseAdmin/BaseMoney.vue"),
+        meta: { showFooter: false, showHeader: true, content: '宠物信息' }
+      },
+      
     ]
 },
 ]

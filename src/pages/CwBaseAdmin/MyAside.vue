@@ -40,7 +40,7 @@
         </el-menu-item>
         <el-menu-item index="4">
           <el-icon><setting /></el-icon>
-          <span>Navigator Four</span>
+          <span @click="handleGoMoney">收益情况</span>
         </el-menu-item>
       </el-menu>
     </el-col>
@@ -66,6 +66,10 @@ const handleGopmes = ()=>{
 const handleGopet = ()=>{
   router.push({name:'addpet'})
 }
+const handleGoMoney = ()=>{
+  router.push({name:'baseMoney'})
+}
+
 </script>
 <style lang="less" scoped>
   

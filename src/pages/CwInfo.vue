@@ -100,13 +100,11 @@
 <script lang="ts" setup>
 import { onMounted, ref, reactive } from "vue";
 import { useRouter } from 'vue-router';
-import { cwStore } from "@/store/cw";
 import { reqGetBrother, reqCollect, reqPay,reqUpdateFood,reqGetCwInfo } from '@/api/index'
 import { open2, open4 } from '@/utils/message'
 import CC from '@/components/CC.vue'
 const router = useRouter()
 let id = router.currentRoute.value.query.id as string
-// const cw = cwStore()
 let urls = reactive({
   arr: [
     'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
@@ -145,10 +143,11 @@ onMounted(async () => {
     }
     let { data, status } = await reqGetBrother(id)
     if (status == 200) {
+      console.log(data,status)
       brother.bb = data
     }
   } catch (error) {
-    console.error(error)
+    console.log(error)
   }
 })
 let dialogVisible = ref(false)
@@ -178,7 +177,7 @@ const sureAdd = () => {
   dialogVisible.value = false
   dialogFormVisible.value = true
 }
-let form = reactive({ food: 0 })
+let form = reactive({ food: 1 })
 //确认喂养选择多少并且跳转支付页面
 const addedFood = async () => {
   const obj = {
@@ -189,7 +188,7 @@ const addedFood = async () => {
   }
   dialogFormVisible.value = false
   pay(obj)
-  form.food = 0
+  form.food = 1
 }
 //收养宠物
 const shouyang = () => {

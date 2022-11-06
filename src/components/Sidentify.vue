@@ -137,5 +137,6 @@ onMounted(() => {
 <style scoped lang='css'>
 .s-canvas {
   cursor: pointer;
+  margin-top: 5px;
 }
 </style>

@@ -9,9 +9,9 @@ export const reqGetCwBaseInfo=(id:string)=>{
 export const reqGetCwInfo=(id:string)=>{
   return requests({url:`/cw/getcw?id=${id}`,method:'GET'})
 }
-export const reqAddFood = (form:any)=>{
-  return requests({url:'/cw/addfood',data:{form:form},method:'POST'})
-}
+// export const reqAddFood = (form:any)=>{
+//   return requests({url:'/cw/addfood',data:{form:form},method:'POST'})
+// }
 //更新宠物食物天数
 export const reqUpdateFood = (id:string)=>{
   return requests({url:`/cw/updatefood?id=${id}`,method:'GET'})
@@ -64,6 +64,11 @@ export const reqCwAdminDeletePet = (form:any)=>{
 export const reqCwAdminEditPet = (form:any)=>{
   return requests({url:'/cwbase/updatepet',data:{form:form},method:'POST'})
 }
+//获取消息中的投喂领养数据从而获取利益
+export const reqGetMsgMoney = (form:any)=>{
+  return requests({url:'/cwbase/getmoney',data:{form:form},method:'POST'})
+}
+
 
 //通过cwid获取基地其他一个宠物信息
 export const reqGetBrother = (id:string)=>{
@@ -122,7 +127,10 @@ export const reqCollect = (form:any)=>{
 export const reqPay = (form:any)=>{
   return requests({url:'/pay/api/payment',method:'POST',data:{form}})
 }
-
+//获取宠物证书
+export const reqGetCertificate = (form:any)=>{
+  return requests({url:'/user/getcertificate',method:'POST',data:{form}})
+}
 
 
 //后台管理登录

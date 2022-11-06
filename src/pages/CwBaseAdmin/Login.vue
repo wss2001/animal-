@@ -1,4 +1,7 @@
 <template>
+  <div class="login_container">
+
+  
   <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
     <el-form-item label="账号" prop="pass">
       <el-input v-model="ruleForm.pass" type="text" autocomplete="off" />
@@ -15,19 +18,12 @@
     <el-form-item>
       <el-button type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
       <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-
     </el-form-item>
-
   </el-form>
+  <div class="right">
 
-  <!-- <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-      <p>账号密码输入错误请重新输入</p>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="FindPass">找回密码</el-button>
-      </span>
-    </el-dialog> -->
-  <div id="maychar"></div>
+  </div>
+</div>
 
 </template>
 <script lang="ts" setup>
@@ -42,39 +38,7 @@ import {jiami} from '@/utils/index'
 const router = useRouter()
 let echarts = inject("echarts");
 // 折线图
-const changetype = () => {
-  // 获取组件实例
-  //@ts-ignore
-  const machart = echarts.init(document.getElementById("maychar"));
-  // 设置配置项
-  const option = {
-    xAxis: {
-      data: ["A", "B", "C", "D", "E"],
-    },
-    yAxis: {},
-    series: [
-      {
-        data: [10, 22, 28, 43, 49],
-        type: "line",
-        stack: "x",
-      },
-      {
-        data: [5, 4, 3, 5, 10],
-        type: "line",
-        stack: "x",
-      },
-    ],
-  };
-  // 复制
-  machart.setOption(option);
-  // 根据页面大小自动响应图表大小
-  window.addEventListener("resize", function () {
-    machart.resize();
-  });
-};
-onMounted(() => {
-  changetype()
-})
+
 if (document.cookie.includes('cwBaseAdminToken')) {
   let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
   router.push({ name: 'cwBaseAdmin', query: { id: myCookie } })
@@ -187,15 +151,32 @@ const resetForm = (formEl: FormInstance | undefined) => {
 }
 </script>
 <style lang="less" scoped>
-// .yanzhengma{
-//   margin-top: 20px;
-// }
-#maychar {
-  max-height: 500px;
-  // max-height: 400px;
-  height: 500px;
-}
+.login_container {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
 
+  .el-form {
+    margin-left: -50px;
+
+    .el-form-item {
+      width: 600px;
+    }
+  }
+
+  .el-form-item__label {
+    color: white;
+  }
+
+  .right {
+    margin-left: 50px;
+    background-color: pink;
+    text-align: right;
+    height: 400px;
+    width: 400px;
+    
+  }
+}
 .zhuce {
   text-align: left;
 }
