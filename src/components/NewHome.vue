@@ -35,7 +35,6 @@ import { reqGetNewsById, reqGetNews} from '@/api/index'
 import { RandomNumBoth } from '@/utils/index'
 
 const route = useRoute()
-const router = useRouter()
 let rr = reactive({
   article: {
     content: '',
@@ -62,6 +61,7 @@ let rr = reactive({
   }],
 })
 const id = route.query.id as string;
+//获取文章正文
 onMounted(async () => {
   try {
     if (id !== undefined) {
@@ -75,6 +75,7 @@ onMounted(async () => {
     console.log(error)
   }
 })
+// 获取3个随机新闻集合
 onBeforeMount(async () => {
   try {
     let { data, status } = await reqGetNews()
@@ -95,7 +96,9 @@ const handleNew = (id: string) => {
     console.log('网络发生错误')
     return
   }
-  router.push({ name: 'newhome', query: { id: id } })
+  // router.push({ name: 'newhome', query: { id: id } })
+  // 打开新页面
+  window.open(`http://127.0.0.1:5173/#/newhome?id=${id}`)
 }
 </script>
 <style lang="less" scoped>
@@ -153,9 +156,14 @@ img{
         }
         .neirong {
           width: 100%;
-          white-space: nowrap;
+          // white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          display:-webkit-box;
+          /* autoprefixer: off */
+          -webkit-box-orient:vertical;
+          /* autoprefixer: on */
+          -webkit-line-clamp:2; 
         }
       }
   }

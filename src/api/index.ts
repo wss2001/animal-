@@ -165,11 +165,15 @@ export const reqAgree = (form:any)=>{
 export const reqRefuse = (form:any)=>{
   return requests({url:`/admin/refuse`,method:'POST',data:{form}})
 }
-
 //删除宠物基地
 export const reqRemoveCwBase = (id:any)=>{
   return requests({url:`/admin/removecwbase`,method:'POST',data:{id}})
 }
+//获取收益
+export const reqGetIncome = ()=>{
+  return requests({url:`/admin/getIncome`,method:'GET'})
+}
+
 
 
 

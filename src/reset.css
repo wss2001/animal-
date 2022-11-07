@@ -27,9 +27,18 @@ td {
   padding: 0;
 }
 .banxin {
-  width: 1280px;
+  /* width: 1280px; */
   margin: 0 auto;
   background-color: #f3f0e9;
+}
+.backstage{
+  float: left;
+  margin-left: 20px;
+}
+@media only screen and (min-width:300px) and (max-width:900px){
+  .backstage{
+    margin-left: 0px;
+  }
 }
 /* 设置默认字体 */
 body,

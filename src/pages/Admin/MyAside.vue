@@ -39,7 +39,7 @@
           <span @click="handleGopet">收益</span>
         </el-menu-item>
         <el-menu-item index="4">
-          <el-icon><setting /></el-icon>
+          <el-icon><document /></el-icon>
           <span @click="handleWrite">写作</span>
         </el-menu-item>
       </el-menu>

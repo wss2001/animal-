@@ -42,9 +42,9 @@
             <p>作者其它信息</p>
             <p class="gengduo" @click="router.back()">更多</p>
           </div>
-          <div class="findother">
+          <div class="findother" @click="goBrother(brother.bb._id)">
             <div class="img">
-
+              <img :src="brother.bb.img" alt="">
             </div>
             <div class="qita">
               <p>{{ brother.bb.name }}</p>
@@ -122,10 +122,13 @@ let result = reactive({
 let showgg = ref(true)
 let brother = reactive({
   bb: {
-    name: '',
-    intro: ''
+    name: '网络出差了',
+    intro: '网络出差了',
+    _id:'',
+    img:''
   }
 })
+let loading = ref(true)
 //更新宠物的剩余食物天数
 onMounted(async()=>{
   try {
@@ -150,6 +153,15 @@ onMounted(async () => {
     console.log(error)
   }
 })
+const goBrother = (id:string)=>{
+  if(id==''||undefined){
+    return
+  }else{
+    //不更新页面
+    // router.push({ name: 'cwinfo', query: { id: id } })
+    window.open(`http://127.0.0.1:5173/#/cwinfo?id=${id}`)
+  }
+}
 let dialogVisible = ref(false)
 let dialogFormVisible = ref(false)
 let dialogTz = ref(false)
@@ -324,6 +336,7 @@ img {
       .gengduo:hover {
         text-decoration: underline;
         color: brown;
+        cursor: pointer;
       }
     }
 
@@ -331,12 +344,18 @@ img {
       display: flex;
       flex-wrap: nowrap;
       height: 100px;
+      &:hover{
+        cursor: pointer;
+      }
 
       .img {
         width: 30%;
-        background-color: pink;
         height: 70px;
         margin-right: 10px;
+        img{
+          width: 100%;
+          height: 100%;
+        }
       }
 
       .qita {

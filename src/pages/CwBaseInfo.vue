@@ -178,12 +178,18 @@ li {
 .img {
   width: 250px;
   height: 250px;
+  overflow: hidden;
 }
 
 img {
   cursor: pointer;
   width: 250px;
   height: 250px;
+  //加载hover中移出没有效果
+  transition: all .4s;
+  &:hover{
+    transform: scale(1.5);
+  }
 }
 
 .intro {

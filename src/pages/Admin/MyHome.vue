@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="backstage">
   <router-view></router-view>
   </div>
 </template>
@@ -8,9 +8,5 @@
 
 </script>
 
-<style scoped>
-  div{
-    float: left;
-    margin-left: 20px;
-  }
+<style scoped>  
 </style>

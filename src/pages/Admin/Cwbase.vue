@@ -5,7 +5,7 @@
       <template #header>
         <div class="card-header">
           <span>{{item.baseName}}</span>
-          <el-button  type="warning" text @click="remove(item._id)">删除该基地</el-button>
+          <el-button  type="warning" text @click="handleShow(item._id)">删除该基地</el-button>
         </div>
       </template>
       <div class="content">
@@ -16,6 +16,23 @@
       <!-- <div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div> -->
     </el-card>
   </div>
+
+  <el-dialog
+    v-model="dialogVisible"
+    title="Tips"
+    width="30%"
+    :before-close="handleClose"
+  >
+    <span>确定要删除该基地么</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="remove">
+          确定
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
@@ -41,7 +58,19 @@ onMounted(async () => {
     console.log(error)
   }
 })
-const remove = async (id:string)=>{
+const dialogVisible = ref(false)
+let baseid = ref('')
+const handleShow = (id:string)=>{
+  console.log(id)
+  baseid.value = id;
+  dialogVisible.value = true
+}
+const handleClose = () => {
+  dialogVisible.value = false
+}
+const remove = async ()=>{
+  dialogVisible.value = false
+  const id = baseid.value
   if(id==''){
     return
   }else{

@@ -33,7 +33,7 @@ img{
   word-wrap: break-word;
   margin: 0 auto;
   text-align: center;
-  width: 1190px;
+  // width: 1190px;
   color: #666;
   padding: 18px 0 10px;
   line-height: 26px;

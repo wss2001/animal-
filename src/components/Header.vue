@@ -88,6 +88,9 @@ const goUserLogin = () => {
     }
   }
 }
+.el-tabs__item.is-active{
+  color: #6b778c;
+}
 .el-button.is-text:not(.is-disabled).is-has-bg{
   background-color: #197048;
 }

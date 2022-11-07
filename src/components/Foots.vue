@@ -187,4 +187,9 @@ h3 {
   display: block;
   margin-bottom: 20px;
 }
+@media only screen and (min-width:0px) and (max-width:900px){
+  .row{
+    display: none;
+  }
+}
 </style>
