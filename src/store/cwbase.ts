@@ -14,7 +14,8 @@ export const cwBaseStore = defineStore('cwBase', {
         intro: '',
         img: '',
         PeopleName: '',
-        baseName: ''
+        baseName: '',
+        hot:1
       }
       ],
       cwArr: [{

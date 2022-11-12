@@ -52,11 +52,17 @@
 </script>
 
 <style lang="less" scoped>
+@media only screen and (min-width:0px) and (max-width:900px){
+  .footer-container{
+    overflow: hidden;
+    width:auto
+  }
+}
 .footer {
   background-color: #eaeaea;
 
   .footer-container {
-    width: 1200px;
+    // width: 1200px;
     margin: 0 auto;
     padding: 0 15px;
 

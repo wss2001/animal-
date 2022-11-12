@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div class="header">
     <el-page-header @back="goBack">
     <!-- <template #content>
@@ -89,7 +89,7 @@ const goUserLogin = () => {
   }
 }
 .el-tabs__item.is-active{
-  color: #6b778c;
+  color: black;
 }
 .el-button.is-text:not(.is-disabled).is-has-bg{
   background-color: #197048;

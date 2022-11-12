@@ -144,6 +144,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       let result = await reqUserLogin(handleform)
       if (result.status == 0) {
         open2('登录成功')
+        //@ts-ignore
+        localStorage.setItem("userToken",result.token)
         router.push({ name: 'user', query: { id: result.data[0]._id } })
       } else {
         open4('账号密码错误')

@@ -3,6 +3,7 @@ import axios from "axios";
 // 引入 axios 实例
 import type {AxiosInstance} from "axios";
 // 引入进度条
+//@ts-ignore
 import nprogress from 'nprogress'
 // // 引入进度条样式
 import 'nprogress/nprogress.css'

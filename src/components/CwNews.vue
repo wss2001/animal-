@@ -178,7 +178,7 @@ li {
 
 .container {
   display: grid;
-  grid-template-columns: 420px 1fr 300px;
+  grid-template-columns: 1.2fr 1.1fr 1fr;
   grid-template-rows: 380px;
   margin-bottom: 20px;
 
@@ -323,7 +323,6 @@ li {
     }
   }
 }
-
 .el-carousel__container {
   height: 200px;
 }

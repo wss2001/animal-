@@ -16,7 +16,7 @@
 				</div>
 				<div class="intro">
 					<p>宠物救助者基地：<span>{{ item.baseName }}</span></p>
-					<p>剩余<el-button type="danger" size="small" round>{{ item.notUse }}</el-button>只待收养</p>
+					<p><span class="hot">{{item.hot || 1}}</span> 关注度</p>
 				</div>
 			</li>
 		</ul>
@@ -126,7 +126,10 @@ img {
 	margin-top: 5px;
 	text-indent: 8px;
 }
-
+.hot{
+	font-size: 22px;
+	color: brown;
+}
 .intro p span {
 	color: brown;
 }

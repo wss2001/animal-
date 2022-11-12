@@ -51,7 +51,7 @@ import { useRouter } from 'vue-router';
 import { cwBaseStore } from "@/store/cwbase";
 import { StarFilled } from '@element-plus/icons-vue'
 import { open2,open4 } from '@/utils/message'
-import { reqGetComment, reqSubmitComment } from '@/api/index';
+import { reqGetComment, reqSubmitComment,reqUpdateHot } from '@/api/index';
 import { jiami } from "@/utils/index";
 const router = useRouter()
 const cwBase = cwBaseStore()
@@ -66,7 +66,13 @@ let cc = reactive({
     userid:''
   }]
 })
-
+onMounted(async () => {
+  try {
+    await reqUpdateHot(id)
+  } catch (error) {
+    console.log(error)
+  }
+})
 onMounted(async () => {
   await cwBase.getCwBaseInfo(id)
 })
@@ -125,7 +131,7 @@ const submit = async () => {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .el-card {
   background-color: rgba(255, 255, 255, 0.03);
   max-height: 385px;

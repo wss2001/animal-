@@ -80,6 +80,7 @@ export default defineComponent({
   margin: auto;
 }
 
+
 /* 去除百度地图版权那行字 和 百度logo */
 .baidumap>.BMap_cpyCtrl {
   display: none !important;
@@ -98,11 +99,12 @@ export default defineComponent({
   float: left;
   width: 480px;
   height: 400px;
-  background: pink;
+  /* background: pink; */
   margin-left: 100px;
 }
 
 .rowcon {
+  position: relative;
   /* background-color: #e7e0d8; */
   font-family: "Microsoft YaHei";
   -webkit-text-size-adjust: none;
@@ -139,7 +141,23 @@ h3 {
   float: left;
   width: 500px;
 }
-
+@media only screen and (min-width:0px) and (max-width:900px){
+  .map{
+    position: absolute;
+    top: 50%;
+    right: 20%;
+    width: 250px;
+    height: 250px;
+  }
+  .baidumap{
+    width: 250px;
+    height: 250px;
+  }
+  .contact{
+    width: 300px;
+    height: 400px;
+  }
+}
 p {
   list-style: none;
   line-height: 30px;
