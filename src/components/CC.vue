@@ -198,4 +198,24 @@
   margin-top: 52px;
   /* margin-bottom: 53px; */
 }
+@media only screen and (min-width:300px) and (max-width:900px){
+  .cc{
+    overflow: hidden;
+  }
+  #module317{
+    display: none;
+  }
+  #module318{
+    display: none;
+  }
+  #module319{
+    display: none;
+  }
+  #module320{
+    display: none;
+  }
+  #module321{
+    display: none;
+  }
+}
 </style>

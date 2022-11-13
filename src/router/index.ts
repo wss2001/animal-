@@ -81,6 +81,12 @@ export const routes: Irouter[] = [
     component: () => import("@/pages/Shipin.vue")
   },
   {
+    path: '/cwbasehome',
+    name: 'cwbasehome',
+    component: () => import("@/pages/CwBaseAdmin/CwBaseHome.vue"),
+    meta: { showFooter: false, showHeader: true, content: '基地首页' },
+  },
+  {
     path: '/user',
     name: 'user',
     component: () => import("@/pages/UserAdmin/index.vue"),
@@ -116,7 +122,7 @@ export const routes: Irouter[] = [
     path: '/userLogin',
     name: 'userLogin',
     component: () => import("@/pages/UserAdmin/Login.vue"),
-    meta: { showFooter: false, showHeader: true, content: '用户登录' }
+    meta: { showFooter: false, showHeader: false, content: '用户登录' }
   },
   {
       path:'/userRegister',
@@ -128,7 +134,7 @@ export const routes: Irouter[] = [
       path:'/adminLogin',
       name:'adminLogin',
       component:() => import("@/pages/Admin/Login.vue"),
-      meta:{showFooter:false,showHeader:true,content:'后台登录'}
+      meta:{showFooter:false,showHeader:false,content:'后台登录'}
   },
   {
       path:'/admin',

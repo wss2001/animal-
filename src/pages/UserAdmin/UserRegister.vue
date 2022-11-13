@@ -43,6 +43,7 @@ import type { FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import { reqUserRegister } from '@/api/index'
+import { jiami } from '@/utils/index'
 import { createRandomChinese, RandomNumBoth } from '@/utils/index'
 const router = useRouter()
 //确认须知
@@ -93,7 +94,7 @@ const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password again'))
   } else if (value !== ruleForm.pass) {
-    callback(new Error("Two inputs don't match!"))
+    callback(new Error("输入密码不正确"))
   } else {
     callback()
   }
@@ -149,9 +150,9 @@ onMounted(() => {
 })
 const register = async () => {
   let form = {
-    phoneNumber: ruleForm.phone,
-    pass: ruleForm.checkPass,
-    username: name.value
+    phoneNumber: jiami(ruleForm.phone),
+    pass: jiami(ruleForm.checkPass),
+    username: jiami(name.value)
   }
   centerDialogVisible.value = false
   try {
@@ -217,6 +218,11 @@ const resetForm = (formEl: FormInstance | undefined) => {
     }
   }
 
+}
+@media only screen and (min-width:0px) and (max-width:900px){
+  .right{
+    text-align: center;
+  }
 }
 .zhuce {
   text-align: left;

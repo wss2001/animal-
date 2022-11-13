@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="gobase" @click="goBase">查看其基地</div>
     <ul class="cwBaseLi">
       <li v-for="item in cwBase.cwArr" :key="item._id" @click="goCwInfo(item._id)">
         <p v-if="item.state" class="lingyangzhe">领养者：{{item.lovePeople}}</p>
@@ -55,8 +56,8 @@ import { reqGetComment, reqSubmitComment,reqUpdateHot } from '@/api/index';
 import { jiami } from "@/utils/index";
 const router = useRouter()
 const cwBase = cwBaseStore()
-let id = router.currentRoute.value.query.id as string
-let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+const id = router.currentRoute.value.query.id as string
+const myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 let cc = reactive({
   comment: [{
     name: '',
@@ -129,6 +130,11 @@ const submit = async () => {
   } else {
     open4('留言发生错误，检查网络')
   }
+}
+//跳转基地详情页面
+const goBase = ()=>{
+  console.log(id)
+  router.push({name:'cwbasehome',query:{id:id}})
 }
 </script>
 <style lang="less" scoped>

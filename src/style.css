@@ -84,7 +84,9 @@ button:focus-visible {
   }
 }
 @media only screen and (min-width:0px) and (max-width:900px){
-  
+  html{
+    font-size: 8px;
+  }
 }
 ol, ul, li{
   list-style: none;

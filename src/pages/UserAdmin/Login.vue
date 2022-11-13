@@ -4,6 +4,10 @@
       
     </div>
     <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
+        <div class="head">
+          <div><el-icon size="50px"><User /></el-icon></div>
+          <h2>登录</h2>
+        </div>
       <el-form-item label="账号" prop="pass">
         <el-input v-model="ruleForm.pass" type="text" autocomplete="off" />
       </el-form-item>
@@ -24,8 +28,8 @@
       </el-form-item>
       <el-form-item>
         <div class="zhuce">
-          <el-button type="" link>注册</el-button>
           <el-button type="" link>找回密码</el-button>
+          <el-button type="" link>注册</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -137,11 +141,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         return
       }
       let form = {
-        phoneNumber: ruleForm.pass,
-        password: ruleForm.checkPass
+        phoneNumber: jiami(ruleForm.pass),
+        password: jiami(ruleForm.checkPass)
       }
-      let handleform = jiami(JSON.stringify(form))
-      let result = await reqUserLogin(handleform)
+      let result = await reqUserLogin(form)
       if (result.status == 0) {
         open2('登录成功')
         //@ts-ignore
@@ -177,17 +180,17 @@ const resetForm = (formEl: FormInstance | undefined) => {
 <style lang="less" scoped>
 .login_container {
   padding: 50px 0;
-  width: 100vw;
+  width: 100%;
   height: 400px;
   position: relative;
-  left: -42px;
-  background: url('https://www.liulangla.cn/public/static/index/login-bg.jpg');
+  // left: -42px;
+  // background: url('https://www.liulangla.cn/public/static/index/login-bg.jpg');
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
 
   .el-form {
-    margin-left: -50px;
+    // margin-left: -50px;
 
     .el-form-item {
       width: 600px;
@@ -199,11 +202,40 @@ const resetForm = (formEl: FormInstance | undefined) => {
   }
 
   .right {
-    // margin-left: 50px;
-    // background-color: pink;
-    // height: 100px;
-    width: 780px;
+    width: 700px;
+    height: 400px;
+    background-image: url(https://source.unsplash.com/random);
+    background-repeat: no-repeat;
+    background-color: #fafafa;
+    background-size: cover;
+    background-position: center;
   }
-
+  .zhuce{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .head{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    h2{
+      font-size: 24px;
+      margin: 0 auto;
+      // text-align: center;
+      word-wrap: break-word;
+      font-style: normal;
+      color: #E9A400;
+      margin-bottom: 30px;
+    }
+    div{
+      background-color: purple;
+      border-radius: 50%;
+      width:50px;
+      margin: 0 auto;
+    }
+  }
+  
 }
 </style>

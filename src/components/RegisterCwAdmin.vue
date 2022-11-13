@@ -12,11 +12,11 @@
         <el-form-item label="请简单描述下你的基地：">
           <el-input v-model="form.desc" type="textarea" />
         </el-form-item>
+          <div class="anniu">
+            <el-button type="danger" @click="onSubmit">注册</el-button>
+          <el-button type="warning">取消</el-button>
+          </div>
         
-        <el-form-item style="margin-left: 180px;">
-          <el-button plain @click="onSubmit">注册</el-button>
-          <el-button>取消</el-button>
-        </el-form-item>
       </el-form>
     </div>
     <div class="right">
@@ -96,5 +96,15 @@ h2 {
     }
   }
 
+}
+.anniu{
+  margin-left: 170px;
+  // width: 400px;
+  display: flex;
+  justify-content: space-between;
+  .el-button{
+    // margin-left: 30px;
+    flex: 1;
+  }
 }
 </style>

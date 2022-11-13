@@ -96,8 +96,8 @@ li {
 }
 
 .img {
-	width: 250px;
-	height: 250px;
+	width:13rem;
+	height:13rem;
 	border: 4px solid transparent;
 	border-radius: 20px;
 
@@ -108,13 +108,13 @@ li {
 
 img {
 	cursor: pointer;
-	width: 250px;
-	height: 250px;
+	width:13rem;
+	height:13rem;
 	border-radius: 20px;
 }
 
 .intro {
-	width: 250px;
+	width:13rem;
 	position: absolute;
 	background-color: rgba(255, 255, 255, 0.3);
 	bottom: 3px;
