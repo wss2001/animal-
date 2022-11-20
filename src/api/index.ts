@@ -3,9 +3,11 @@ import requests from './request'
 export const reqGetCwBase=()=>{
   return requests({url:'/cwbase/getbase',method:'GET'})
 }
+//获取基地的宠物列表
 export const reqGetCwBaseInfo=(id:string)=>{
   return requests({url:`/cwbase/getCwBaseInfo?id=${id}`,method:'GET'})
 }
+// 获取宠物详情信息
 export const reqGetCwInfo=(id:string)=>{
   return requests({url:`/cw/getcw?id=${id}`,method:'GET'})
 }
@@ -68,6 +70,7 @@ export const reqCwAdminEditPet = (form:any)=>{
 export const reqGetMsgMoney = (form:any)=>{
   return requests({url:'/cwbase/getmoney',data:{form:form},method:'POST'})
 }
+// 更新基地热度
 export const reqUpdateHot = (id:string)=>{
   return requests({url:'/cwbase/updateHot',data:{id},method:'POST'})
 }
@@ -75,6 +78,10 @@ export const reqUpdateHot = (id:string)=>{
 //通过cwid获取基地其他一个宠物信息
 export const reqGetBrother = (id:string)=>{
   return requests({url:`/cw/getbrother?id=${id}`,method:'GET'})
+}
+//通过cwid获取基地的信息
+export const reqGetFBase = (id:string)=>{
+  return requests({url:`/cw/fBase?id=${id}`,method:'GET'})
 }
 //获取评论
 export const reqGetComment = (id:string)=>{
@@ -125,6 +132,15 @@ export const reqRefuseZZ = (form:any)=>{
 export const reqCollect = (form:any)=>{
   return requests({url:`/user/collect`,method:'POST',data:{form}})
 }
+//查找密码
+export const reqFindPass = (form:any)=>{
+  return requests({url:`/user/findpass`,method:'POST',data:{form}})
+}
+// 更改密码
+export const reqChangePass = (form:any)=>{
+  return requests({url:`/user/changepass`,method:'POST',data:{form}})
+}
+
 //支付测试
 export const reqPay = (form:any)=>{
   return requests({url:'/pay/api/payment',method:'POST',data:{form}})

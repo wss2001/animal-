@@ -24,8 +24,8 @@
           </p>
           <p>宠物剩余食物: <el-button @click="addFood(result.cw.state)" type="plain" text>{{result.cw.alsoFoodtian}}天</el-button>
           </p>
-          <p>联系人:</p>
-          <p>联系电话:</p>
+          <p>联系人:{{result.fBase.PeopleName}}</p>
+          <p>联系电话:{{result.fBase.phoneNumber}}</p>
           <p>(^_^)联系的时候告诉我是在宠物救助盒子看到的这条消息</p>
           <p>
             <el-button type="danger" text v-if="!result.cw.state" @click="shouyang">收养它</el-button>
@@ -100,7 +100,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, reactive } from "vue";
 import { useRouter } from 'vue-router';
-import { reqGetBrother, reqCollect, reqPay,reqUpdateFood,reqGetCwInfo } from '@/api/index'
+import { reqGetBrother, reqCollect,reqGetFBase, reqPay,reqUpdateFood,reqGetCwInfo } from '@/api/index'
 import { open2, open4 } from '@/utils/message'
 import CC from '@/components/CC.vue'
 const router = useRouter()
@@ -117,7 +117,8 @@ let urls = reactive({
   ]
 })
 let result = reactive({
-  cw:{name:'',state:false,intro:'',alsoFoodtian:''}
+  cw:{name:'',state:false,intro:'',alsoFoodtian:''},
+  fBase:{PeopleName:'',phoneNumber:''}
 })
 let showgg = ref(true)
 let brother = reactive({
@@ -133,6 +134,17 @@ let loading = ref(true)
 onMounted(async()=>{
   try {
     const {data,status} = await reqUpdateFood(id)
+  } catch (error) {
+    console.log(error)
+  }
+})
+onMounted(async()=>{
+  try {
+    const {data,status} = await reqGetFBase(id)
+    if(status==200){
+      result.fBase = data
+      console.log( result.fBase)
+    }
   } catch (error) {
     console.log(error)
   }

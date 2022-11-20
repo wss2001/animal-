@@ -28,8 +28,8 @@
       </el-form-item>
       <el-form-item>
         <div class="zhuce">
-          <el-button type="" link>找回密码</el-button>
-          <el-button type="" link>注册</el-button>
+          <el-button @click="findPass" type="" link>找回密码</el-button>
+          <el-button @click="router.push({name:'userRegister'})" type="" link>注册</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -149,6 +149,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         open2('登录成功')
         //@ts-ignore
         localStorage.setItem("userToken",result.token)
+        localStorage.setItem("IsUserLogin",'yes')
         router.push({ name: 'user', query: { id: result.data[0]._id } })
       } else {
         open4('账号密码错误')
@@ -163,6 +164,9 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
+}
+const findPass = ()=>{
+  router.push({name:'findPass',query:{id:ruleForm.pass}})
 }
 </script>
 <style lang="less" scoped>

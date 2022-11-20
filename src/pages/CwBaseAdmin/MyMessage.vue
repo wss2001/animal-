@@ -14,7 +14,27 @@
 </template>
 <script setup lang="ts">
 import {ref,reactive,onMounted} from 'vue'
-// import {} from 
+import {reqGetMsgMoney} from '@/api/index'
+let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+let result = reactive({
+  cwArr:[{cwid:'',money:0,name:''}],
+  msg:[{food:'',cwid:'',date:''}]
+})
+onMounted(async () => {
+  if (document.cookie.includes(myCookie))
+    try {
+      const form ={
+        baseid:myCookie
+      }
+      let msg = await reqGetMsgMoney(form)
+      if(msg.status==200){
+        result.msg = msg.data
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+})
 
 </script>
 <style lang="less" scoped>

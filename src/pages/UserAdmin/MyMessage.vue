@@ -88,10 +88,28 @@
   </el-descriptions>
   </div>
 </div>
+
+<el-dialog
+    v-model="dialogVisible"
+    title="找回账号"
+    width="30%"
+    :before-close="handleClose"
+  >
+    旧密码：<el-input v-model="result.passForm.oldpass"/>
+    新密码：<el-input v-model="result.passForm.newpass"/>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="changePass">
+          Confirm
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { reqGetUserInfo, reqUploadtx,reqGetUserMsg,reqGetFriendShare } from '@/api/index'
+import { reqGetUserInfo,reqChangePass, reqUploadtx,reqGetUserMsg,reqGetFriendShare } from '@/api/index'
 import { onMounted, ref, reactive, nextTick,computed } from "vue";
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
@@ -99,12 +117,14 @@ import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
 import {reqAgreeZZ ,reqRefuseZZ } from "@/api/index";
 import {open2,open4} from '@/utils/message'
+import {jiami} from '@/utils/index'
 const router = useRouter()
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 let result = reactive({
   userInfo: { img: '' ,username:'',phoneNumber:'',sex:'',desc:''},
   msg:[{content:'',fname:'',date:'',state:''}],
-  zzMsg:[{fname:'',date:'',fid:'',_id:'',cwName:'',cwid:'',issure:false,yes:false}]
+  zzMsg:[{fname:'',date:'',fid:'',_id:'',cwName:'',cwid:'',issure:false,yes:false}],
+  passForm:{oldpass:'',newpass:''}
 })
 //退出登录
 const fail = () => {
@@ -112,6 +132,7 @@ const fail = () => {
   date.setTime(date.getTime() - 10000);
   //@ts-ignore
   document.cookie = 'userToken' + "=a; expires=" + date.toGMTString();
+  localStorage.removeItem('IsUserLogin')
   router.push({ name: 'userLogin' })
 }
 //获取用户信息
@@ -154,6 +175,7 @@ const getZZ = async ()=>{
 //检查登陆状态
 if (!document.cookie.includes('userToken')) {
     router.push({ name: 'userLogin' })
+    localStorage.removeItem('IsUserLogin')
     console.log('时间过久退出登陆状态')
   } else {
     try {
@@ -206,7 +228,7 @@ const agree = async (id:string,fid:string,cwid:string)=>{
       cwid
     }
     try {
-      const {status} = await reqAgreeZZ(form)
+      const {status} = await reqAgreeZZ(jiami(form))
       console.log(status)
     if(status==200){
       open2('操作成功')
@@ -240,6 +262,32 @@ const refuse = async (id:string,fid:string,cwid:string)=>{
       open4('操作失败')
     }
   }
+}
+
+const dialogVisible = ref(false)
+const handleClose = () => {
+  dialogVisible.value = false
+}
+const changePass = async ()=>{
+  const form = {
+    id:myCookie,
+    oldpass:result.passForm.oldpass,
+    newpass:result.passForm.newpass
+  }
+  try {
+    const {status} = await reqChangePass(form);
+  if(status==200){
+    open2('修改成功')
+    return
+  }
+  if(status==403){
+    open4('密码错误')
+    return
+  }
+  } catch (error) {
+    console.log(error)
+  }
+  
 }
 
 </script>

@@ -87,10 +87,26 @@ export const routes: Irouter[] = [
     meta: { showFooter: false, showHeader: true, content: '基地首页' },
   },
   {
+    path: '/findPass',
+    name: 'findPass',
+    component: () => import("@/pages/UserAdmin/FindPass.vue"),
+    meta: { showFooter: false, showHeader: false, content: '基地首页' },
+  },
+  
+  {
     path: '/user',
     name: 'user',
     component: () => import("@/pages/UserAdmin/index.vue"),
     meta: { showFooter: false, showHeader: true, content: '用户首页' },
+    beforeEnter: (to:any, from:any, next:any) => {
+      const { IsUserLogin } = localStorage;
+      // const {user,pass} = JSON.parse(deCode(token) as string)
+      if(IsUserLogin){
+        next()
+      }else{
+        next({name:"userLogin"})
+      }
+    },
     children: [
       {
         path: 'message',
