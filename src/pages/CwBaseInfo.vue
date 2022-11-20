@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="gobase" @click="goBase">查看其基地</div>
+    <div class="gobase" @click="goBase"><h2>查看其基地</h2></div>
     <ul class="cwBaseLi">
       <li v-for="item in cwBase.cwArr" :key="item._id" @click="goCwInfo(item._id)">
         <p v-if="item.state" class="lingyangzhe">领养者：{{item.lovePeople}}</p>
@@ -138,6 +138,22 @@ const goBase = ()=>{
 }
 </script>
 <style lang="less" scoped>
+.gobase{
+  h2{
+    font-size: 20px;
+    // font-size: 24px;
+      // margin: 0 auto;
+      // text-align: center;
+      word-wrap: break-word;
+      font-style: normal;
+      color: #E9A400;
+      margin-bottom: 10px;
+      &:hover{
+        cursor: pointer;
+        text-decoration: underline;
+      }
+  }
+}
 .el-card {
   background-color: rgba(255, 255, 255, 0.03);
   max-height: 385px;

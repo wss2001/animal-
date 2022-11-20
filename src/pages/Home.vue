@@ -118,6 +118,8 @@ img {
 	position: absolute;
 	background-color: rgba(255, 255, 255, 0.3);
 	bottom: 3px;
+	padding: 5px;
+	font-weight: 700;
 	// left: 8px;
 }
 

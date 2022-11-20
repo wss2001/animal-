@@ -61,5 +61,14 @@ img{
     margin: 0;
     padding: 0;
   }
+  
+  // .router-link-active {
+  //   text-decoration: none;//去除默认样式
+  //   color: orange;//高亮的颜色
+  // }
+  a{
+    color: grey;
+    text-decoration: none;
+  }
 }
 </style>

@@ -184,5 +184,18 @@ const otherchar = () => {
     width: 500px;
     height: 500px;
   }
+  @media only screen and (min-width:0px) and (max-width:900px){
+    #otherchar {
+    max-height: 300px;
+    width: 300px;
+    height: 300px;
+  }
+
+  #maychar {
+    max-height: 300px;
+    width: 300px;
+    height: 300px;
+  }
+}
 }
 </style>

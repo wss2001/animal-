@@ -105,4 +105,11 @@
 div {
   width: auto;
 }
+h3{
+  text-align: center;
+  font-size: 20px;
+}
+p{
+  font-size:17px
+}
 </style>

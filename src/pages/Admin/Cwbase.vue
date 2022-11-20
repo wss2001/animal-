@@ -97,6 +97,13 @@ const remove = async ()=>{
     margin-bottom: 5px;
   }
 }
+@media only screen and (min-width:0px) and (max-width:900px){
+  .list {
+  display: grid;
+  grid-template-columns: repeat(2, 46%);
+  grid-gap: 30px;
+}
+}
 
 .card-header {
   display: flex;

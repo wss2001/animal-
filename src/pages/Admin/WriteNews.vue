@@ -115,6 +115,14 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     border-radius: 5px;
     padding: 10px 20px;
   }
+  @media only screen and (min-width:0px) and (max-width:900px){
+    .content{
+    width: 600px;
+    border: 2px solid #444;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }
+}
   .el-textarea__inner{
     width: 80%;
     height: 400px;

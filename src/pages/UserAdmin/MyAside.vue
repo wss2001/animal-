@@ -59,7 +59,7 @@ import {useRouter,useRoute} from 'vue-router'
 const router = useRouter()
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 onMounted(()=>{
-  // router.push({name:'MyMessage'})
+  router.push({name:'MyMessage'})
 })
 const handleOpen = (key: string, keyPath: string[]) => {
   // console.log('000000',key, keyPath)

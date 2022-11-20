@@ -21,7 +21,9 @@
     </el-form-item>
   </el-form>
   <div class="right">
-
+    <h2>基地准则</h2>
+      <p><span>事项一：</span>在台湾没天敌 遭弃养绿鬣蜥大量繁衍,在台湾没天敌 遭弃养绿鬣蜥大量繁衍,在台湾没天敌 遭弃养绿鬣蜥大量繁衍,在台湾没天敌 遭弃养绿鬣蜥大量繁衍</p>
+      <p><span>事项一：</span>在台湾没天敌 遭弃养绿鬣蜥大量繁衍,在台湾没天敌 遭弃养绿</p>
   </div>
 </div>
 
@@ -170,11 +172,26 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
   .right {
     margin-left: 50px;
-    background-color: pink;
+    // background-color: pink;
+    border: 2px solid #986239;
+    border-radius: 8px;
     text-align: right;
     height: 400px;
     width: 400px;
-    
+    h2{
+      margin: 0 auto;
+      text-align: center;
+      color: #d86856;
+    }
+    font-size: 16px;
+    p{
+      text-align: left;
+      margin:5px 3px;
+    }
+    span{
+      font-weight: 800;
+      color: #d86856;
+    }
   }
 }
 .zhuce {
