@@ -38,8 +38,6 @@ import SIdentify from '@/components/Sidentify.vue';
 import { reqCwAdminLogin } from '@/api/index'
 import {jiami} from '@/utils/index'
 const router = useRouter()
-let echarts = inject("echarts");
-// 折线图
 
 if (document.cookie.includes('cwBaseAdminToken')) {
   let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");

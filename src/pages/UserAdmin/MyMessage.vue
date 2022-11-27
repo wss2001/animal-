@@ -60,6 +60,25 @@
     </div>
   </el-card>
 </div>
+<div class="haoyouzhuanzeng">
+  <el-card class="box-card">
+    <template #header>
+      <div class="card-header">
+        <span>需要投喂的动物</span>
+      </div>
+    </template>
+    <div class="text item" v-for="item in result.notFoodCwArr">
+      <div class="left">
+      <div class="notfood">
+        待喂养宠物：{{item.name}}
+      </div>
+      </div>
+      <div class="right">
+        <el-button type="success" plain @click="touwei(item._id)">投喂</el-button>
+      </div>
+    </div>
+  </el-card>
+</div>
 <div class="change">
   <h2>修改个人信息</h2>
   <div class="change_zhuti">
@@ -81,8 +100,8 @@
     </el-descriptions-item>
     <el-descriptions-item label="简介" label-align="right" align="center"
       >{{result.userInfo.desc}}</el-descriptions-item>
-      <el-descriptions-item label-align="right" align="center"
-      >修改账号密码</el-descriptions-item>
+      <el-descriptions-item label-align="right" align="center" 
+      ><span @click="dialogVisible = true" class="changepass">修改账号密码</span></el-descriptions-item>
       <el-descriptions-item label-align="right" align="center"
       >修改基本信息</el-descriptions-item>
   </el-descriptions>
@@ -95,13 +114,13 @@
     width="30%"
     :before-close="handleClose"
   >
-    旧密码：<el-input v-model="result.passForm.oldpass"/>
-    新密码：<el-input v-model="result.passForm.newpass"/>
+    <el-input v-model="result.passForm.oldpass" placeholder="old pass"/>
+    <el-input v-model="result.passForm.newpass" placeholder="new pass"/>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="changePass">
-          Confirm
+          确定
         </el-button>
       </span>
     </template>
@@ -109,7 +128,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reqGetUserInfo,reqChangePass, reqUploadtx,reqGetUserMsg,reqGetFriendShare } from '@/api/index'
+import { reqGetUserInfo,reqChangePass, reqUploadtx,reqGetUserMsg,reqGetFriendShare,reqGetUserCwInfo,reqPay,reqUpdateFood } from '@/api/index'
 import { onMounted, ref, reactive, nextTick,computed } from "vue";
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
@@ -124,7 +143,8 @@ let result = reactive({
   userInfo: { img: '' ,username:'',phoneNumber:'',sex:'',desc:''},
   msg:[{content:'',fname:'',date:'',state:''}],
   zzMsg:[{fname:'',date:'',fid:'',_id:'',cwName:'',cwid:'',issure:false,yes:false}],
-  passForm:{oldpass:'',newpass:''}
+  passForm:{oldpass:'',newpass:''},
+  notFoodCwArr:[{_id:'',name:''}]
 })
 //退出登录
 const fail = () => {
@@ -191,6 +211,36 @@ if (!document.cookie.includes('userToken')) {
 onMounted(async()=>{
   getZZ()
 })
+// 获取宠物信息来决定是否进行展示以投喂
+const handleGetCw = async () => {
+  let {data,status} = await reqGetUserCwInfo(myCookie)
+  if(status==200){
+    let arr = [] 
+    for(let i = 0;i<data.length;i++){
+      if(data[i].alsoFoodtian==0 ||data[i].alsoFoodtian==1 ){
+        arr.push(data[i])
+      }
+    }
+    result.notFoodCwArr = arr
+  }
+}
+onMounted(async () => {
+  handleGetCw()
+})
+const touwei = async (cwid:string) =>{
+  const obj = {
+    state: 'tw',
+    cwid,
+    food: '7',
+    userid: myCookie
+  }
+  let { data, status } = await reqPay(obj)
+  if (status == 200) {
+    window.open(data)
+  }
+  console.log('===')
+  await reqUpdateFood(cwid)
+}
 
 const isShow = ref(false)
 const changetx = () => {
@@ -269,6 +319,9 @@ const handleClose = () => {
   dialogVisible.value = false
 }
 const changePass = async ()=>{
+  if(result.passForm.oldpass==''||result.passForm.newpass==''){
+    return
+  }
   const form = {
     id:myCookie,
     oldpass:result.passForm.oldpass,
@@ -292,6 +345,12 @@ const changePass = async ()=>{
 
 </script>
 <style lang="less" scoped>
+.dialog-footer{
+  float: none;
+}
+.notfood{
+  font-size: 18px;
+}
 .haoyouzhuanzeng{
   margin: 20px 0;
   margin-bottom: 0;
@@ -329,6 +388,11 @@ const changePass = async ()=>{
   h2{
     font-size: 18px;
     color: #496421;
+  }
+}
+.changepass{
+  &:hover{
+    cursor: pointer;
   }
 }
   .mianban{
