@@ -228,6 +228,9 @@ onMounted(async () => {
   handleGetCw()
 })
 const touwei = async (cwid:string) =>{
+  if(cwid==''){
+    return
+  }
   const obj = {
     state: 'tw',
     cwid,
@@ -328,13 +331,19 @@ const changePass = async ()=>{
     newpass:result.passForm.newpass
   }
   try {
-    const {status} = await reqChangePass(form);
+    const {status} = await reqChangePass(jiami(JSON.stringify(form)));
   if(status==200){
     open2('修改成功')
+    handleClose()
     return
   }
   if(status==403){
+    handleClose()
     open4('密码错误')
+    return
+  }else{
+    open4('修改失败')
+    handleClose()
     return
   }
   } catch (error) {
