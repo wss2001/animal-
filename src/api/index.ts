@@ -3,6 +3,10 @@ import requests from './request'
 export const reqGetCwBase=()=>{
   return requests({url:'/cwbase/getbase',method:'GET'})
 }
+// 根据id获取宠物基地信息
+export const reqGetCwBaseById=(id:string)=>{
+  return requests({url:`/cwbase/getbaseByid?id=${id}`,method:'GET'})
+}
 //获取基地的宠物列表
 export const reqGetCwBaseInfo=(id:string)=>{
   return requests({url:`/cwbase/getCwBaseInfo?id=${id}`,method:'GET'})

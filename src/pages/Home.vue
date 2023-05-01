@@ -22,11 +22,9 @@
 		</ul>
 	</div>
 	<div>
-		<!-- <span @click="map">地图</span>
-		<span @click="shipin">视频通话</span>
-		<span @click="tofalse">403</span> -->
 	</div>
 	<Foots></Foots>
+	<RandomCw></RandomCw>
 	<Foot></Foot>
 
 </template>
@@ -37,6 +35,7 @@ import { cwBaseStore } from "@/store/cwbase";
 import Foot from '@/components/Foot.vue';
 import Foots from '@/components/Foots.vue';
 import CwNews from '@/components/CwNews.vue'
+import RandomCw from '@/components/RandomCw.vue'
 const router = useRouter()
 onMounted(async () => {
 	cwBase.getCwBase()

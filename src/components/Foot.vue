@@ -3,7 +3,7 @@
   <div class="rowcon banxin">
     <h2>联系我们</h2>
     <div class="contact">
-      <h3>宠物救助盒子@哈尔滨理工大学信息科技有限公司</h3>
+      <h3 style="cursor:pointer" @click="this.$router.push({name:'law'})">宠物救助盒子@哈尔滨理工大学信息科技有限公司</h3>
       <p><span>在线客服：</span>邹小姐</p>
       <p>
       </p>

@@ -6,7 +6,7 @@
     </template> -->
   </el-page-header>  
   <div class="head">
-    <el-image style="width: 90px; height: 70px" :src="url" fit="contain" />
+    <el-image style="width: 90px; height: 50px" :src="url" fit="contain" />
     <el-button @click="goUserLogin" type="warning" text bg>登录</el-button>
   </div> 
   
@@ -21,6 +21,7 @@
     <el-tab-pane label="基地管理登录" name="third" @click="goBaseUser"></el-tab-pane>
     <el-tab-pane label="首页" name="five" @click="goHome"></el-tab-pane>
     <el-tab-pane label="关于我们" name="fourth" @click="goAboutMe"></el-tab-pane>
+    <el-tab-pane label="法律历史" name="six" @click="goLaw"></el-tab-pane>
   </el-tabs>
     
     <!-- <template>
@@ -35,7 +36,7 @@ import { ref, computed } from "vue";
 import { useRouter } from 'vue-router';
 const activeName = ref('first')
 const router = useRouter()
-const url = ref('http://localhost:3007/public/img/cw1.jpg')
+const url = ref('http://www.mengzands.com/images/zhua.png')
 const goBack = () => {
   router.back()
 }
@@ -56,6 +57,9 @@ const handleClick = (tab: any, event: any) => {
   if (tab.props.name == 'five') {
     goHome()
   }
+  if (tab.props.name == 'six') {
+    goLaw()
+  }
 }
 const goHome = () => {
   router.push({ name: 'home' })
@@ -75,6 +79,10 @@ const goAboutMe = () => {
 const goUserLogin = () => {
   router.push({ name: 'userLogin' })
 }
+const goLaw = () => {
+  router.push({ name: 'law' })
+}
+
 </script>
 <style lang="less" scoped>
 .header {

@@ -92,6 +92,12 @@ export const routes: Irouter[] = [
     component: () => import("@/pages/UserAdmin/FindPass.vue"),
     meta: { showFooter: false, showHeader: false, content: '基地首页' },
   },
+  {
+    path: '/law',
+    name: 'law',
+    component: () => import("@/pages/Law.vue"),
+    meta: { showFooter: false, showHeader: false, content: '法律' },
+  },
   
   {
     path: '/user',

@@ -90,7 +90,7 @@ export default {
 
     let url = window.location.origin
     if (process.env.NODE_ENV == 'development') {
-      url = 'http://localhost:3003/'
+      url = 'http://127.0.0.1:3003/'
     }
 
 
@@ -391,7 +391,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style>
 .video-content {
   width: 100%;
   height: 100%;

@@ -48,6 +48,14 @@ io.on('connection', (socket)=>{
 		
 	});
 
+	socket.on('usersend',(room,data)=>{
+		console.log('room, data',room, data)
+		if(data ===  undefined){
+			return;
+		}
+		socket.to(room).emit('usersend', room, socket.id, data)
+	})
+
 
 	socket.on('join', (obj)=> {
 		console.log('join',obj)
