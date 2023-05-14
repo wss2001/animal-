@@ -150,19 +150,20 @@
     </div>
   </el-dialog>
   <el-dialog title="提示" v-model="dialogTz" width="30%">
-        <span>您还未登录,请跳转到登录页面</span>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogTz = false">取 消</el-button>
-            <el-button type="primary" @click="TzLogin">跳转到登录页面</el-button>
-          </span>
-        </template>
-      </el-dialog>
+    <span>您还未登录,请跳转到登录页面</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogTz = false">取 消</el-button>
+        <el-button type="primary" @click="TzLogin">跳转到登录页面</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script lang="ts" setup>
 import { useRouter, useRoute } from 'vue-router'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref,getCurrentInstance,onBeforeUnmount } from 'vue'
 import { reqGetCwBaseInfo,reqGetCwBaseById,reqGetNews } from '@/api/index'
+import emitter from '../../utils/mitt';
 const route = useRoute()
 const router = useRouter()
 const id = route.query.id as string
@@ -172,21 +173,23 @@ const TzLogin = () => {
   dialogTz.value = false
   router.push({ name: 'userLogin' })
 }
+onBeforeUnmount(()=>{
+  console.log('onBeforeUnmount')
+})
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-const url = 'http://127.0.0.1:3003/'
-// 初始化socket.io
-const socket = io.connect(url, {
+let url = 'http://127.0.0.1:3003/'
+let socket = io.connect(url, {
   path: '/rtckeet'
-});
-
+})
 const handleConnect = ()=>{
-  // if (!myCookie) {
-  //   dialogTz.value = true
-  //   return
-  // }
-  socket.emit('usersend',{room:'123',data:'456'})
-  console.log('===')
-  router.push({name:'shipin'})
+  if (!myCookie) {
+    dialogTz.value = true
+    return
+  }
+  // 在这里传值
+  let room = '111'
+  socket.emit('usersend','123',{a:room})
+  router.push({name:'shipin',query:{room:room,userType:'user',name:'wss'}})
 }
 const openMap = () => {
   dialogVisible.value = true;

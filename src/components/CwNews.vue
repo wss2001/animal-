@@ -3,8 +3,8 @@
     <div class="left">
       <div class="swiper">
         <el-carousel :interval="5000" arrow="always">
-          <el-carousel-item v-for="item in urls.arr" :key="item">
-            <el-image style="width: 100%; height: 100%" :src="item" fit="cover" />
+          <el-carousel-item v-for="item in urls.arr" :key="item._id" @click="handleNew(item._id)">
+            <el-image style="width: 100%; height: 100%" :src="item.img" fit="cover" />
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -64,12 +64,7 @@ import { reqGetNews } from '@/api/index'
 import { RandomNumBoth } from '@/utils/index'
 const router = useRouter()
 let urls = reactive({
-  arr: [
-    'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-    'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-    'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-    'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
-  ]
+  arr: []
 })
 let nn = reactive({
   news: [{
@@ -126,6 +121,11 @@ onBeforeMount(async () => {
       for (let i = 0; i < 3; i++) {
         arr.push(nn.news[RandomNumBoth(0, nn.news.length - 1)])
       }
+      let newarr: any = []
+      for (let i = 0; i < 4; i++) {
+        newarr.push(nn.news[RandomNumBoth(0, nn.news.length - 1)])
+      }
+      urls.arr = newarr
       nn.suiji = arr
     }
   } catch (error) {

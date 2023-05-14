@@ -7,25 +7,80 @@
       <MyHome></MyHome>
     </el-main>
   </el-container>
+  <el-dialog title="提示" v-model="dialogVisible" width="30%">
+    <span>进入视频</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="goShipin">跳转</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
 import MyAside from "./MyAside.vue";
 import MyHome from "./MyHome.vue";
-import { onMounted, ref } from "vue";
+import { onMounted,onUnmounted, ref,getCurrentInstance } from "vue";
 import { useSignOut } from "@/utils/hook";
+import { reqGetCwBaseInfo,reqGetCwBaseById,reqGetNews } from '@/api/index'
+
+// import * as io from 'vue-socket.io'//引入
+const dialogVisible = ref(false);
+
 const router =useRouter()
 useSignOut('cwBaseAdminToken')
+const name = ref('')
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-// onMounted(()=>{
-//   if (!document.cookie.includes('cwBaseAdminToken')) {
-//     router.push({ name: 'cwBaseAdminLogin' })
-//     console.log('基地登录时间过久退出登陆状态')
-//   }else{
-//     router.push({name:'addpet'})
-//   }
-// })
-
+onMounted(async () => {
+  try {
+    const cwBase = await reqGetCwBaseById(myCookie)
+    name.value = cwBase.data.PeopleName
+  } catch (error) {
+    console.log(error)
+  }
+})
+let url = 'http://127.0.0.1:3003/'
+// @ts-ignore
+let socket = io.connect(url, {
+  path: '/rtckeet'
+})
+let room = ref('')
+onMounted(()=>{
+  socket.emit('usersend','123')
+  socket.on('usersend',(r:string,sid:string,data:any)=>{
+    // 在这里接收值
+    room.value = data.a
+    console.log('==',r,sid,data)
+    if(data){
+      sendNotice()
+    }
+    dialogVisible.value = true;
+  })
+})
+const goShipin = ()=>{
+  router.push({name:'shipin',query:{room:room.value,userType:'cwBase',name:name.value}})
+}
+const sendNotice = ()=>{
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  }  else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        var notification = new Notification('视频连线', {
+          body: '您有新的视频连线哦',
+          icon: 'http://assets.souche.com/shop/assets/sso/favicon.ico',
+          vibrate:[200, 100, 200],
+          requireInteraction:true
+        });
+      }
+    });
+  }
+}
+onUnmounted(()=>{
+  console.log('onUnmounted')
+  // emitter.off('mittFn')
+})
 </script>
 <style lang="less" scoped>
   .el-container {

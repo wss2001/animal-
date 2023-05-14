@@ -205,4 +205,12 @@ const gouser = (otherid:string)=>{
     }
   }
 }
+@media screen and (min-height:0px) and (max-height:500px) {
+  .container {
+    grid-template-columns: 25rem;
+  }
+  .container .friends {
+    border-right: 0;
+  }
+}
 </style>

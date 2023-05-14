@@ -10,10 +10,10 @@
   </div>
   <div class="find_content">
     <h2>找回密码</h2>
-    <p>请输入帐号</p>
-    <el-input v-model="input"/>
+    <p>请输入邮箱</p>
+    <el-input v-model="email"/>
     <el-button type="primary" @click="nextFind">下一步</el-button>
-    <span>使用手机号找回密码</span>
+    <span>使用邮箱找回密码</span>
   </div>
 
   <el-dialog
@@ -23,13 +23,13 @@
     :before-close="handleClose"
   >
     <!-- <span>This is a message</span> -->
-    内容：<el-input v-model="input"/>
-    <el-input v-model="input"/>
+    验证码：<el-input v-model="checkCode"/>
+    新密码：<el-input v-model="newPass"/>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="submit">
-          Confirm
+          确认
         </el-button>
       </span>
     </template>
@@ -38,26 +38,47 @@
 <script setup lang="ts">
 import { ref,reactive } from "vue";
 import { useRoute,useRouter } from 'vue-router'
-import { reqFindPass } from '@/api/index'
+import { reqSendEmail,reqFindPass } from '@/api/index'
+import { jiami } from '@/utils/index'
+
 
 const route = useRoute()
 const router = useRouter()
-const id = route.query.id as string
-let input = ref(`${id}`)
-const form = reactive({
-
-})
+let email = ref('')
+let newPass = ref('');
+let checkCode = ref('')
 const dialogVisible = ref(false)
 
 const handleClose = () => {
   dialogVisible.value = false
 }
-const nextFind = ()=>{
-  console.log(input.value)
-  dialogVisible.value = true
+const nextFind = async ()=>{
+  try {
+    const obj = {email:email.value}
+    const res = await reqSendEmail(obj)
+    if(res.status==200){
+      dialogVisible.value = true
+    }
+    
+  } catch (error) {
+    console.log(error)
+  }
 }
 const submit = async ()=>{
-  //可以添加一个好友验证的功能
+  try {
+    const obj = {
+    email:jiami(email.value),
+    code:jiami(checkCode.value),
+    newPass:jiami(newPass.value)
+  }
+  const res = await reqFindPass(obj)
+  if(res.status==200){
+    dialogVisible.value = false
+  }
+  } catch (error) {
+    console.log(error)
+  }
+ 
 }
 </script>
 <style lang="less" scoped>

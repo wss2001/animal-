@@ -166,7 +166,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
   formEl.resetFields()
 }
 const findPass = ()=>{
-  router.push({name:'findPass',query:{id:ruleForm.pass}})
+  router.push({name:'findPass'})
 }
 </script>
 <style lang="less" scoped>

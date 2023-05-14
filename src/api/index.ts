@@ -11,6 +11,14 @@ export const reqGetCwBaseById=(id:string)=>{
 export const reqGetCwBaseInfo=(id:string)=>{
   return requests({url:`/cwbase/getCwBaseInfo?id=${id}`,method:'GET'})
 }
+// 根据查询条件/获取基地的宠物列表
+export const reqPostCwBaseInfo=(id:string,data:any)=>{
+  return requests({url:`/cwbase/postCwBaseInfo?id=${id}`,method:'POST',data})
+}
+// 更改宠物基地基本信息
+export const reqChangeInfo=(data:any)=>{
+  return requests({url:`/cwbase/changeBaseInfo`,method:'POST',data})
+}
 // 获取宠物详情信息
 export const reqGetCwInfo=(id:string)=>{
   return requests({url:`/cw/getcw?id=${id}`,method:'GET'})
@@ -67,8 +75,8 @@ export const reqCwAdminDeletePet = (form:any)=>{
   return requests({url:'/cwbase/removePet',data:{form:form},method:'POST'})
 }
 //基地管理修改宠物
-export const reqCwAdminEditPet = (form:any)=>{
-  return requests({url:'/cwbase/updatepet',data:{form:form},method:'POST'})
+export const reqCwAdminEditPet = (data:any)=>{
+  return requests({url:'/cwbase/updatepet',data,method:'POST'})
 }
 //获取消息中的投喂领养数据从而获取利益
 export const reqGetMsgMoney = (form:any)=>{
@@ -137,9 +145,14 @@ export const reqCollect = (form:any)=>{
   return requests({url:`/user/collect`,method:'POST',data:{form}})
 }
 //查找密码
-export const reqFindPass = (form:any)=>{
-  return requests({url:`/user/findpass`,method:'POST',data:{form}})
+export const reqFindPass = (data:any)=>{
+  return requests({url:`/user/findChangePass`,method:'POST',data})
 }
+//查找密码
+export const reqSendEmail = (data:any)=>{
+  return requests({url:`/user/sendEmail`,method:'POST',data})
+}
+
 // 更改密码
 export const reqChangePass = (form:any)=>{
   return requests({url:`/user/changepass`,method:'POST',data:{form}})

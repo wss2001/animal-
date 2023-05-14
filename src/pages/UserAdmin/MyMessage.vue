@@ -26,6 +26,10 @@
       {{msg.content}}
       <p>--{{msg.fname}}</p>--{{msg.date}}
     </div>
+    <div class="item" v-for="msg in result.friendMsg">
+      {{msg.content}}
+      <p>--{{msg.fname}}</p>--{{msg.date}}
+    </div>
     <div class="item" v-for="zzmsg in result.zzMsg">
       转让宠物:{{zzmsg.cwName}}
       <p>--转让人:{{zzmsg.fname}}</p>--{{zzmsg.date}}
@@ -128,7 +132,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reqGetUserInfo,reqChangePass, reqUploadtx,reqGetUserMsg,reqGetFriendShare,reqGetUserCwInfo,reqPay,reqUpdateFood } from '@/api/index'
+import { reqGetUserInfo,reqChangePass, reqUploadtx,reqGetUserMsg,reqGetFriendRequest,reqGetFriendShare,reqGetUserCwInfo,reqPay,reqUpdateFood } from '@/api/index'
 import { onMounted, ref, reactive, nextTick,computed } from "vue";
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
@@ -143,6 +147,7 @@ let result = reactive({
   userInfo: { img: '' ,username:'',phoneNumber:'',sex:'',desc:''},
   msg:[{content:'',fname:'',date:'',state:''}],
   zzMsg:[{fname:'',date:'',fid:'',_id:'',cwName:'',cwid:'',issure:false,yes:false}],
+  friendMsg:[],
   passForm:{oldpass:'',newpass:''},
   notFoodCwArr:[{_id:'',name:''}]
 })
@@ -183,7 +188,7 @@ onMounted(async()=>{
     try {
       let {data,status} = await reqGetUserMsg(myCookie)
       if(status==200){
-        result.msg = data
+        result.msg = data.reverse()
       }
     } catch (error) {
       console.log(error)
@@ -200,9 +205,11 @@ if (!document.cookie.includes('userToken')) {
   } else {
     try {
       let {data,status} = await reqGetFriendShare(myCookie)
+      let fres = await reqGetFriendRequest(myCookie)
       if(status==200){
         result.zzMsg = data
       }
+      result.friendMsg = fres.data
     } catch (error) {
       console.log(error)
     }
@@ -408,6 +415,8 @@ const changePass = async ()=>{
     position: absolute;
     top: 30px;
     right:60px;
+    max-height: 400px;
+    overflow: scroll;
     .el-collapse{
       --el-collapse-header-bg-color:#f3f0e9;
       --el-collapse-content-bg-color:#f3f0e9;

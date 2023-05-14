@@ -4,6 +4,9 @@
     <el-form-item label="账号" prop="phone">
       <el-input v-model="ruleForm.phone" type="text" autocomplete="off" />
     </el-form-item>
+    <el-form-item label="邮箱" prop="email">
+      <el-input v-model="ruleForm.email" type="text" autocomplete="off" />
+    </el-form-item>
     <el-form-item label="密码" prop="pass">
       <el-input v-model="ruleForm.pass" type="text" autocomplete="off" />
     </el-form-item>
@@ -110,14 +113,16 @@ const checkphone = (rule: any, value: any, callback: any) => {
 const ruleForm = reactive({
   pass: '',
   checkPass: '',
-  phone: ''
+  phone: '',
+  email:''
 })
 
 const rules = reactive({
   pass: [{ validator: validatePass, trigger: 'blur' }],
   checkPass: [{ validator: validatePass2, trigger: 'blur' }],
   age: [{ validator: checkAge, trigger: 'blur' }],
-  phone: [{ validator: checkphone, trigger: 'blur' }]
+  phone: [{ validator: checkphone, trigger: 'blur' }],
+  email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }]
 })
 const centerDialogVisible = ref(false)
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -152,7 +157,8 @@ const register = async () => {
   let form = {
     phoneNumber: jiami(ruleForm.phone),
     pass: jiami(ruleForm.checkPass),
-    username: jiami(name.value)
+    username: jiami(name.value),
+    email:jiami(ruleForm.email)
   }
   centerDialogVisible.value = false
   try {

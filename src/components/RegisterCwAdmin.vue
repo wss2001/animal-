@@ -9,6 +9,9 @@
         <el-form-item label="请输入密码：">
           <el-input v-model="form.pass" />
         </el-form-item>
+        <el-form-item label="请输入基地用户名：">
+          <el-input v-model="form.baseName" />
+        </el-form-item>
         <el-form-item label="请简单描述下你的基地：">
           <el-input v-model="form.desc" type="textarea" />
         </el-form-item>
@@ -34,7 +37,8 @@ import { reqRegisterCwAdmin } from '@/api/index'
 const form = reactive({
   name: '',
   desc: '',
-  pass:''
+  pass:'',
+  baseName:''
 })
 
 const onSubmit = async () => {
@@ -45,7 +49,8 @@ const onSubmit = async () => {
   const newform = {
     phone: form.name,
     intro: form.desc,
-    pass:form.pass
+    pass:form.pass,
+    baseName:form.baseName
   }
   try {
     const { data, status } = await reqRegisterCwAdmin(newform);

@@ -126,6 +126,7 @@ const submit = async () => {
   let result = await reqSubmitComment(form)
   if (result.status == 0) {
     open2('留言成功')
+    content.value = ''
     getComment(id)
   } else {
     open4('留言发生错误，检查网络')

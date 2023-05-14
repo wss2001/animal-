@@ -220,6 +220,12 @@ export const routes: Irouter[] = [
         meta: { showFooter: false, showHeader: true, content: '管理人员信息' }
       },
       {
+        path: 'changeBase',
+        name: 'changeBase',
+        component: () => import("@/pages/CwBaseAdmin/changeInfo.vue"),
+        meta: { showFooter: false, showHeader: true, content: '管理人员信息' }
+      },
+      {
         path: 'basepet',
         name: 'basepet',
         component: () => import("@/pages/CwBaseAdmin/PetCount.vue"),

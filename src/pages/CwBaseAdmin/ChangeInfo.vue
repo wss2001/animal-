@@ -1,24 +1,25 @@
 <template>
   <el-form :model="form" label-width="120px">
-    <el-form-item label="宠物名字">
-      <el-input v-model="form.name" />
+    <el-form-item label="宠物基地名称">
+      <el-input v-model="form.baseName" />
     </el-form-item>
-    <el-form-item label="日期">
-      <el-col :span="15">
-        <el-date-picker v-model="form.date1" type="date" placeholder="收养日期" style="width: 100%" />
-      </el-col>
+    <el-form-item label="基地管理者">
+      <el-input v-model="form.PeopleName" />
     </el-form-item>
-    <el-form-item label="宠物照片">
+    <el-form-item label="基地地址">
+      <el-input v-model="form.address" />
+    </el-form-item>
+    <el-form-item label="基地封面照片">
       <el-upload class="avatar-uploader" action="http://127.0.0.1:5173/api/user/addjpg" :show-file-list="false"
         :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
         <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar" />
-        <el-icon v-if="!form.imageUrl||type=='edit'" class="avatar-uploader-icon">
+        <el-icon class="avatar-uploader-icon">
           <Plus />
         </el-icon>
       </el-upload>
     </el-form-item>
-    <el-form-item label="宠物简介">
-      <el-input v-model="form.desc" type="textarea" />
+    <el-form-item label="基地简介">
+      <el-input v-model="form.intro" type="textarea" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">{{ str }}</el-button>
@@ -29,7 +30,7 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
 import { onMounted, ref, reactive } from "vue";
-import { reqCwAdminAddPet, reqCwAdminEditPet,reqGetCwInfo } from '@/api/index'
+import { reqChangeInfo, reqGetCwBaseById } from '@/api/index'
 import { ElMessage } from 'element-plus'
 import { open2, open4 } from '@/utils/message'
 import { formatDate } from '@/utils/index'
@@ -37,25 +38,32 @@ import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
 const router = useRouter()
 const route = useRoute()
-const type = route.query.type
-const cwid = route.query.id||''
-const str = ref('新增宠物')
+let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+const str = ref('修改')
 onMounted(async () => {
-  if (type == 'edit') {
-    str.value = '修改宠物'
-    const {data} = await reqGetCwInfo(cwid)
-    form.name=data.name
-    form.desc=data.intro
-    form.imageUrl=data.img
-    form.date1=data.birth
+  try {
+    const res = await reqGetCwBaseById(myCookie)
+    if(res.status==0){
+      form.baseName = res.data.baseName
+      form.PeopleName = res.data.PeopleName
+      form.intro = res.data.intro
+      form.address = res.data.address
+      if(res.data.img!==''){
+        form.imageUrl = res.data.img
+      }
+    }
+  } catch (error) {
+    
   }
+  
 })
 const form = reactive({
-  name: '',
-  region: '',
-  date1: '',
-  desc: '',
-  imageUrl: ''
+  intro: '',
+  imageUrl: '',
+  baseName:'',
+  PeopleName:'',
+  address:''
 })
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
   response,
@@ -72,54 +80,36 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
-let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
 const onSubmit = async () => {
-  // console.log(form)
-  let date = formatDate(form.date1, true)
   let newform = {
-    name: form.name,
-    intro: form.desc,
+    intro: form.intro,
     img: form.imageUrl,
     id: myCookie,
-    birth: date
+    baseName:form.baseName,
+    PeopleName:form.PeopleName,
+    address:form.address
   }
-  if (newform.name == '' || newform.intro == '' || newform.img == '' || newform.id == '') {
+  if (newform.PeopleName == '' || newform.intro == '' || newform.img == '' || newform.id == '') {
     open4('请输入完整内容')
     return
   }
-  if (type == 'edit') {
-    newform.id = cwid
-    console.log(newform)
-    try {
-      let result = await reqCwAdminEditPet(newform)
-      if (result.status == 200) {
-        open2('修改成功')
-        form.name = ''
-        form.desc = ''
-        form.imageUrl = ''
-      } else {
-        open4('修改失败')
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  } else {
     try {
       console.log(newform)
-      let result = await reqCwAdminAddPet(newform)
+      let result = await reqChangeInfo(newform)
       if (result.status == 200) {
-        open2('新增成功')
-        form.name = ''
-        form.desc = ''
+        open2('修改成功')
+        form.PeopleName = ''
+        form.baseName = ''
+        form.intro = ''
         form.imageUrl = ''
+        form.address = ''
       } else {
         open4('新增失败')
       }
     } catch (error) {
       console.log(error)
     }
-  }
 
 }
 

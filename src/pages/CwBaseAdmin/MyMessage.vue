@@ -9,17 +9,23 @@
     </template>
     <div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>
   </el-card>
-  <h2 class="change">修改信息</h2>
+  <h2 style="cursor:pointer" class="change" @click="goChange">修改信息</h2>
 
 </template>
 <script setup lang="ts">
 import {ref,reactive,onMounted} from 'vue'
 import {reqGetMsgMoney} from '@/api/index'
+import { useRouter, useRoute } from 'vue-router'
+const router = useRouter()
+
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 let result = reactive({
   cwArr:[{cwid:'',money:0,name:''}],
   msg:[{food:'',cwid:'',date:''}]
 })
+const goChange = ()=>{
+  router.push({name:'changeBase'})
+}
 onMounted(async () => {
   if (document.cookie.includes(myCookie))
     try {

@@ -43,7 +43,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
   components: {
@@ -70,7 +69,9 @@ export default {
           'credential': "123456",
           'username': "lvming"
         }]
-      }
+      },
+      userType:''
+
     }
   },
   watch: {
@@ -84,29 +85,31 @@ export default {
     }
   },
   mounted() {
+    const name = this.$route.query.name
+    //判断进入视频人员类型
+    this.userType = this.$route.query.userType
+    this.room = this.$route.query.room
+    this.info = {
+      ...this.info,name:name
+    }
+    
     window.onerror = function (msg, url, line, col, error) {
       alert(msg)
     }
-
     let url = window.location.origin
     if (process.env.NODE_ENV == 'development') {
       url = 'http://127.0.0.1:3003/'
     }
-
-
     // 初始化socket.io
     this.socket = io.connect(url, {
       path: '/rtckeet'
     });
-
     this.socket.emit('join', {
       room: this.room,
       info: this.info
     });
-
     this.localVideo = this.$refs.localvideo
     this.remoteVideo = this.$refs.remotevideo
-
     this.socketMessage()
   },
   methods: {
@@ -150,32 +153,27 @@ export default {
               this.othersInfo = data[key].info
             }
           }
-
         }
-
       });
+      //发送接收链接邀请消息
+      this.socket.on('usersend',(room,id,data)=>{
+        console.error(room,id,data)
+      })
       // 当前用户离开房间
       this.socket.on("leaved", () => {
-
       });
       // 其他人进入房间
       this.socket.on('otherjoin', (data) => {
         this.othersInfo = data.info
-
       });
       // 其他人离开房间
       this.socket.on('otherleave', () => {
         this.othersInfo = ''
         this.leave();
-
       });
       // 人满了
       this.socket.on('full', (roomid, rooms) => {
-
-
         this.renderFull(rooms)
-
-
       });
     },
     renderFull(rooms) {
@@ -229,9 +227,7 @@ export default {
     guaduanCall() {
       console.log('guaduanCall')
       this.leave();
-
       this.sendMessage(7, 'init');
-
     },
     // 收到来电电话
     getCall() {
@@ -388,13 +384,17 @@ export default {
       }
       this.localStream = null;
     }
-  }
+  },
+  beforeDestroy() {
+    console.log('==')
+    this.guaduanCall()
+  },
 }
 </script>
 <style>
 .video-content {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: rgb(33, 26, 37);
   position: absolute;
   z-index: 999;
@@ -411,7 +411,7 @@ export default {
   bottom: 40px;
   display: flex;
   justify-content: center;
-  z-index: 10
+  z-index: 1000
 }
 
 .tools-icon {
@@ -419,7 +419,8 @@ export default {
   height: 50px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-
+  color: #fff;
+  /* background-color: aqua; */
 }
 
 .tools-icon:first-child {
@@ -427,27 +428,27 @@ export default {
 }
 
 .jinyan {
-  background-image: url('./assets/jinyan.svg');
+  background-image: url('.././assets/jinyan.svg');
 
 }
 
 .jieting {
-  background-image: url('./assets/jieting.svg');
+  background-image: url('.././assets/jieting.svg');
 }
 
 .hang_up {
-  background-image: url('./assets/hang_up.svg');
+  background-image: url('.././assets/hang_up.svg');
 }
 
 .localvideo {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   object-fit: fill;
 }
 
 .remotevideo {
   position: absolute;
-  width: 30%;
+  width: 40%;
   height: 30%;
   right: 0;
   bottom: 0;
@@ -494,6 +495,7 @@ export default {
 .person-one {
   margin-top: 20px;
   color: #fff;
+  text-align: center;
 }
 
 @keyframes pulse-animation {
@@ -523,6 +525,7 @@ export default {
   right: 0;
   bottom: 0;
   top: 0;
+  height: 100vh;
   background-color: rgb(33, 26, 37);
   display: flex;
   justify-content: center;
@@ -696,6 +699,14 @@ export default {
   100% {
     background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
     background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+@media screen and (min-height:0px) and (max-height:500px) {
+  .avatar-wave-top {
+    top: 0;
+  }
+  .avatar-wave-bottom {
+    bottom: 0;
   }
 }
 </style>
