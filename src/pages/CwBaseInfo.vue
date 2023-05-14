@@ -10,7 +10,7 @@
         <div class="intro">
           <p>宠物名称：<span>{{item.name}}</span></p>
           <p>{{item.state?'已领养':'未领养'}}</p>
-          <p>剩余口粮<span>{{item.alsoFoodtian}}</span>天</p>
+          <p>剩余口粮<span>{{item.alsoFoodtian==0?'0天':`${item.alsoFoodtian}`}}</span></p>
         </div>
       </li>
     </ul>

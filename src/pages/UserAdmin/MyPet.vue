@@ -40,12 +40,28 @@
             <template #reference>
               <el-carousel height="150px">
                 <el-carousel-item v-for="img in cw.imgArr" :key="img">
-                  <el-image @click="gobase(cw._id)" style="width: 100%; height: 150px" :src="img" fit="contain" />
+                  <el-image @click="goCwinfo(cw._id)" style="width: 100%; height: 150px" :src="img" fit="contain" />
                 </el-carousel-item>
               </el-carousel>
             </template>
           </el-popover>
-          <el-button class="zrbtn" type="info" @click="showFriend(cw._id)">转让宠物{{cw.name}}</el-button>
+          <el-button class="zrbtn" type="info" @click="showFriend(cw._id)">转让宠物--{{cw.name}}</el-button>
+        </div>
+      </div>
+      <span>收藏宠物</span>
+      <!--  -->
+      <div class="list" v-if="!showEmpty">
+        <div class="swipar" v-for="cw in cwCollectArr.data">
+          <el-popover placement="top-start" :title="cw.name" :width="200" trigger="hover"
+            :content="cw.intro">
+            <template #reference>
+              <el-carousel height="150px">
+                <el-carousel-item v-for="img in cw.imgArr" :key="img">
+                  <el-image @click="goCwinfo(cw._id)" style="width: 100%; height: 150px" :src="img" fit="contain" />
+                </el-carousel-item>
+              </el-carousel>
+            </template>
+          </el-popover>
         </div>
       </div>
     </div>
@@ -82,6 +98,8 @@ import { open2, open4 } from "@/utils/message";
 const router = useRouter()
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 let cwArr = reactive({ data: [{ imgArr: [''], name: '', _id: '',intro:'' }] })
+let cwCollectArr = reactive({ data: [{ imgArr: [''], name: '', _id: '',intro:'' }] })
+
 const goCwinfo = (id: string) => {
   router.push({ name: 'cwinfo', query: { id: id } })
 }
@@ -90,6 +108,7 @@ let ff = reactive({
   cwBase:[{_id:'',img:'',baseName:''}]
 })
 let showEmpty = ref(false)
+// 获取已领养宠物
 const handleGetCw = async () => {
   let {data,status} = await reqGetUserCwInfo(myCookie)
   if(status==200){
@@ -99,8 +118,19 @@ const handleGetCw = async () => {
     showEmpty.value = true
   }
 }
+// 获取收藏
+const handleGetShouCw = async () => {
+  let {data,status} = await reqGetUserCwInfo(myCookie,'sc')
+  if(status==200){
+    cwCollectArr.data = data
+  }
+  // if (cwArr.data.length == 0) {
+  //   showEmpty.value = true
+  // }
+}
 onMounted(async () => {
   handleGetCw()
+  handleGetShouCw()
 })
 //获取好友列表
 onMounted(async ()=>{

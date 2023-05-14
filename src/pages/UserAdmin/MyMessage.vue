@@ -288,7 +288,7 @@ const agree = async (id:string,fid:string,cwid:string)=>{
       cwid
     }
     try {
-      const {status} = await reqAgreeZZ(jiami(form))
+      const {status} = await reqAgreeZZ(form)
       console.log(status)
     if(status==200){
       open2('操作成功')

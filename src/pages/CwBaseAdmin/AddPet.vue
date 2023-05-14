@@ -25,11 +25,26 @@
       <el-button>取消</el-button>
     </el-form-item>
   </el-form>
+  <el-form v-if="type=='edit'" label-width="120px">
+    <el-form-item label="宠物照片">
+      <el-upload class="avatar-uploader" action="http://127.0.0.1:5173/api/user/addjpg" :show-file-list="false"
+        :on-success="handleImgAvatarSuccess" :before-upload="beforeAvatarUpload">
+        <img v-if="newImageUrl" :src="newImageUrl" class="avatar" />
+        <el-icon class="avatar-uploader-icon">
+          <Plus />
+        </el-icon>
+      </el-upload>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="handleImg">新增图片</el-button>
+      <el-button>取消</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
 import { onMounted, ref, reactive } from "vue";
-import { reqCwAdminAddPet, reqCwAdminEditPet,reqGetCwInfo } from '@/api/index'
+import { reqCwAdminAddImgPet,reqCwAdminAddPet, reqCwAdminEditPet,reqGetCwInfo,reqGetCwBaseById } from '@/api/index'
 import { ElMessage } from 'element-plus'
 import { open2, open4 } from '@/utils/message'
 import { formatDate } from '@/utils/index'
@@ -40,7 +55,20 @@ const route = useRoute()
 const type = route.query.type
 const cwid = route.query.id||''
 const str = ref('新增宠物')
+const newImageUrl = ref('')
+const handleImg = async ()=>{
+  if(newImageUrl.value!==''){
+    const {status,data} = await reqCwAdminAddImgPet({id:cwid,imgUrl:newImageUrl.value})
+    if(status==200){
+      open2('添加图片成功')
+    }
+  }
+}
+let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
 onMounted(async () => {
+  const res = await reqGetCwBaseById(myCookie)
+  form.baseName = res.data.baseName
   if (type == 'edit') {
     str.value = '修改宠物'
     const {data} = await reqGetCwInfo(cwid)
@@ -55,7 +83,8 @@ const form = reactive({
   region: '',
   date1: '',
   desc: '',
-  imageUrl: ''
+  imageUrl: '',
+  baseName:''
 })
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
   response,
@@ -64,6 +93,14 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
   let url = `http://127.0.0.1:3007/${response.data.path}`
   form.imageUrl = url
 }
+const handleImgAvatarSuccess: UploadProps['onSuccess'] = (
+  response,
+  uploadFile
+) => {
+  let url = `http://127.0.0.1:3007/${response.data.path}`
+  newImageUrl.value = url
+}
+
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   if (rawFile.size / 1024 / 1024 > 2) {
@@ -72,7 +109,6 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
-let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
 const onSubmit = async () => {
   // console.log(form)
@@ -107,6 +143,7 @@ const onSubmit = async () => {
   } else {
     try {
       console.log(newform)
+      newform.baseName = form.baseName
       let result = await reqCwAdminAddPet(newform)
       if (result.status == 200) {
         open2('新增成功')

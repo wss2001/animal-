@@ -36,8 +36,8 @@ export const reqUserLogin = (form:any)=>{
   return requests({url:'/user/login',data:{form:form},method:'POST'})
 }
 // 获取用户的宠物列表
-export const reqGetUserCwInfo=(id:string)=>{
-  return requests({url:`/user/getCwBaseInfo?id=${id}`,method:'GET',headers:{'Authorization':window.localStorage.getItem("userToken") || ''}})
+export const reqGetUserCwInfo=(id:string,state='cw')=>{
+  return requests({url:`/user/getCwBaseInfo?id=${id}&state=${state}`,method:'GET',headers:{'Authorization':window.localStorage.getItem("userToken") || ''}})
 }
 // 获取用户信息
 export const reqGetUserInfo=(id:string)=>{
@@ -78,6 +78,10 @@ export const reqCwAdminDeletePet = (form:any)=>{
 export const reqCwAdminEditPet = (data:any)=>{
   return requests({url:'/cwbase/updatepet',data,method:'POST'})
 }
+export const reqCwAdminAddImgPet = (data:any)=>{
+  return requests({url:'/cwbase/updatepetImg',data,method:'POST'})
+}
+
 //获取消息中的投喂领养数据从而获取利益
 export const reqGetMsgMoney = (form:any)=>{
   return requests({url:'/cwbase/getmoney',data:{form:form},method:'POST'})
