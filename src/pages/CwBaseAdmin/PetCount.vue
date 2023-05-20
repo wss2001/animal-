@@ -21,7 +21,7 @@
     <el-table-column prop="intro" label="宠物介绍" width="180" />
     <el-table-column prop="alsoFood" label="剩余食物" width="180"/>
     <el-table-column prop="birth" label="收养时间" width="180"/>
-    <el-table-column label="Operations" width="180">
+    <el-table-column label="操作" width="180">
       <template #default="scope">
         <el-button size="small" @click="handleEdit(scope.row._id)"
           >编辑</el-button
@@ -37,11 +37,11 @@
   </el-table>
   <el-dialog
     v-model="dialogVisible"
-    title="Tips"
+    title="删除宠物"
     width="30%"
     :before-close="handleClose"
   >
-    <span>你确认将{{deletedName}}从你的宠物基地删除</span>
+    <span>你确认将<span style="color:brown">{{deletedName}}</span>从你的宠物基地删除</span>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -148,6 +148,7 @@ const sureDelete = async ()=>{
     dialogVisible.value = false
     if(status==200){
     open2()
+    getCw()
     }else{
       open4()
     }

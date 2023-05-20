@@ -50,7 +50,7 @@
       </div>
       <span>收藏宠物</span>
       <!--  -->
-      <div class="list" v-if="!showEmpty">
+      <div class="list" >
         <div class="swipar" v-for="cw in cwCollectArr.data">
           <el-popover placement="top-start" :title="cw.name" :width="200" trigger="hover"
             :content="cw.intro">
@@ -62,13 +62,14 @@
               </el-carousel>
             </template>
           </el-popover>
+          <el-button class="zrbtn" type="info" @click="goCwinfo(cw._id)">宠物--{{cw.name}}</el-button>
         </div>
       </div>
     </div>
   </suspense>
   <el-dialog
     v-model="dialogVisible"
-    title="Tips"
+    title="转让宠物"
     width="30%"
   >
     <span>选择一个好友</span>

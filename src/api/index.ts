@@ -19,6 +19,11 @@ export const reqPostCwBaseInfo=(id:string,data:any)=>{
 export const reqChangeInfo=(data:any)=>{
   return requests({url:`/cwbase/changeBaseInfo`,method:'POST',data})
 }
+//  修改宠物基地获得利益
+export const reqChangeTotal=(data:any)=>{
+  return requests({url:`/cwbase/changeBaseTotal`,method:'POST',data})
+}
+
 // 获取宠物详情信息
 export const reqGetCwInfo=(id:string)=>{
   return requests({url:`/cw/getcw?id=${id}`,method:'GET'})
@@ -161,6 +166,11 @@ export const reqSendEmail = (data:any)=>{
 export const reqChangePass = (form:any)=>{
   return requests({url:`/user/changepass`,method:'POST',data:{form}})
 }
+// 更改用户信息
+export const reqChangeUserInfo = (data:any)=>{
+  return requests({url:`/user/changeInfo`,method:'POST',data})
+}
+
 
 //支付测试
 export const reqPay = (form:any)=>{

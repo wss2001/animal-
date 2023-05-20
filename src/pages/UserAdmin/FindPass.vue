@@ -10,8 +10,8 @@
   </div>
   <div class="find_content">
     <h2>找回密码</h2>
-    <p>请输入邮箱</p>
-    <el-input v-model="email"/>
+    <el-input v-model="user" placeholder="请输入账号"/>
+    <el-input v-model="email" placeholder="请输入邮箱"/>
     <el-button type="primary" @click="nextFind">下一步</el-button>
     <span>使用邮箱找回密码</span>
   </div>
@@ -40,11 +40,13 @@ import { ref,reactive } from "vue";
 import { useRoute,useRouter } from 'vue-router'
 import { reqSendEmail,reqFindPass } from '@/api/index'
 import { jiami } from '@/utils/index'
+import { ElMessage } from 'element-plus'
 
 
 const route = useRoute()
 const router = useRouter()
 let email = ref('')
+const user = ref('')
 let newPass = ref('');
 let checkCode = ref('')
 const dialogVisible = ref(false)
@@ -53,8 +55,18 @@ const handleClose = () => {
   dialogVisible.value = false
 }
 const nextFind = async ()=>{
+  if(email.value==''||user.value==''){
+    ElMessage({
+    message: '请输入完整信息',
+    type: 'error',
+  })
+    return
+  }
   try {
-    const obj = {email:email.value}
+    const obj = {
+      email:email.value,
+      phoneNumber:user.value
+    }
     const res = await reqSendEmail(obj)
     if(res.status==200){
       dialogVisible.value = true
@@ -65,6 +77,9 @@ const nextFind = async ()=>{
   }
 }
 const submit = async ()=>{
+  if(newPass.value==''){
+    return
+  }
   try {
     const obj = {
     email:jiami(email.value),
@@ -74,6 +89,15 @@ const submit = async ()=>{
   const res = await reqFindPass(obj)
   if(res.status==200){
     dialogVisible.value = false
+    ElMessage({
+    message: '密码修改完成',
+    type: 'success',
+  })
+  }else{
+    ElMessage({
+    message: res.data,
+    type: 'error',
+  })
   }
   } catch (error) {
     console.log(error)

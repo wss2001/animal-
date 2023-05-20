@@ -9,23 +9,6 @@
         default-active="3"
         text-color="#fff"
       >
-        <el-sub-menu index="1">
-          <template #title>
-            <el-icon><location /></el-icon>
-            <span>Navigator One</span>
-          </template>
-          <el-menu-item-group title="Group One">
-            <el-menu-item index="1-1">item one</el-menu-item>
-            <el-menu-item index="1-2">item two</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="Group Two">
-            <el-menu-item index="1-3">item three</el-menu-item>
-          </el-menu-item-group>
-          <el-sub-menu index="1-4">
-            <template #title>item four</template>
-            <el-menu-item index="1-4-1">item one</el-menu-item>
-          </el-sub-menu>
-        </el-sub-menu>
         <el-menu-item index="2">
           <el-icon><icon-menu /></el-icon>
           <span @click="handleGomypet">基地</span>
@@ -35,11 +18,11 @@
           <span @click="handleGopmes">信息</span>
         </el-menu-item>
         <el-menu-item index="5" >
-          <el-icon><document /></el-icon>
+          <el-icon><Setting /></el-icon>
           <span @click="handleGopet">收益</span>
         </el-menu-item>
         <el-menu-item index="4">
-          <el-icon><document /></el-icon>
+          <el-icon><Edit /></el-icon>
           <span @click="handleWrite">写作</span>
         </el-menu-item>
       </el-menu>
@@ -52,6 +35,7 @@ import {
   Menu as IconMenu,
   Location,
   Setting,
+  Edit
 } from '@element-plus/icons-vue'
 import { useRouter } from "vue-router";
 const router = useRouter()
@@ -71,5 +55,9 @@ const handleWrite = ()=>{
 
 </script>
 <style lang="less" scoped>
-  
+  .el-menu{
+    height: 100%;
+    width: 150px;
+    text-align: center;
+  }
 </style>

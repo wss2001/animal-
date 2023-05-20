@@ -5,6 +5,7 @@ import './reset.css'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as echarts from 'echarts'
+import 'echarts-liquidfill'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
 import mitt from "mitt";

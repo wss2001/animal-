@@ -3,7 +3,7 @@
     <div class="gobase" @click="goBase"><h2>查看其基地</h2></div>
     <ul class="cwBaseLi">
       <li v-for="item in cwBase.cwArr" :key="item._id" @click="goCwInfo(item._id)">
-        <p v-if="item.state" class="lingyangzhe">领养者：{{item.lovePeople}}</p>
+        <!-- <p v-if="item.state" class="lingyangzhe">领养者：{{item.lovePeople}}</p> -->
         <div class="img">
           <img :src="item.img" alt="">
         </div>
@@ -30,7 +30,7 @@
             </el-icon>{{item.date}}
           </el-divider>
           <span>{{item.content}}</span>
-          <el-divider content-position="right" @click="lookOther(item.userid)">{{item.name}}</el-divider>
+          <el-divider style="cursor:pointer;" content-position="right" @click="lookOther(item.userid)">{{item.name}}</el-divider>
         </div>
       </template>
     </el-card>

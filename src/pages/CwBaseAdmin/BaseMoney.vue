@@ -1,4 +1,5 @@
 <template >
+  <div class="total">总获得救助金:{{ total }}</div>
   <div class="list">
     <div id="maychar"></div>
     <div id="otherchar"></div>
@@ -7,7 +8,7 @@
 </template>
 <script setup lang="ts">
 import { reactive, ref, onMounted, inject } from 'vue'
-import { reqGetCwBaseInfo,reqGetMsgMoney} from "@/api/index";
+import { reqGetCwBaseInfo,reqGetMsgMoney,reqChangeTotal} from "@/api/index";
 
 let echarts = inject("echarts");
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)cwBaseAdminToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
@@ -15,6 +16,7 @@ let result = reactive({
   cwArr:[{cwid:'',money:0,name:''}],
   msg:[{food:'',cwid:''}]
 })
+const total = ref(0)
 onMounted(async () => {
   if (document.cookie.includes(myCookie))
     try {
@@ -28,6 +30,12 @@ onMounted(async () => {
       }
       if(msg.status==200){
         result.msg = msg.data
+        msg.data.forEach((item:any) => {
+          if(parseInt(item.food)){
+            total.value+=parseInt(item.food)
+          }
+        });
+        reqChangeTotal({id:myCookie,income:total.value})
       }
       result.cwArr.forEach((item:any)=>{
         item.money=0
@@ -46,12 +54,16 @@ onMounted(async () => {
 })
 const changetype = () => {
   // 获取组件实例
-  //@ts-ignore
-  const machart = echarts.init(document.getElementById("maychar"));
+  
   let nameArr:string[] = []
+  let moneyArr:number[] = []
   result.cwArr.forEach((item)=>{
     nameArr.push(item.name)
+    moneyArr.push(item.money)
   })
+  console.log(nameArr)
+  //@ts-ignore
+  const machart = echarts.init(document.getElementById("maychar"));
   // 设置配置项
   const option = {
     title: {
@@ -59,6 +71,12 @@ const changetype = () => {
   },
     xAxis: {
       type: 'category',
+      axisLabel: {
+        // color: "#fff",
+        fontSize: 12, //字体大小
+        interval: 0, //横轴信息全部显示，必须设置
+        // rotate: -30, //-30度角倾斜显示，根据页面布局实际可以自行调整
+      },
       data: nameArr
     },
     yAxis: {
@@ -66,20 +84,7 @@ const changetype = () => {
     },
     series: [
       {
-        data: [
-          120,
-          {
-            value: 200,
-            itemStyle: {
-              color: '#a90000'
-            }
-          },
-          150,
-          80,
-          70,
-          110,
-          130
-        ],
+        data: moneyArr,
         type: 'bar'
       }
     ]
@@ -147,7 +152,7 @@ const otherchar = () => {
         length2: 20
       },
       itemStyle: {
-        color: '#c23531',
+        color: '#c90931',
         shadowBlur: 200,
         shadowColor: 'rgba(0, 0, 0, 0.5)'
       },
@@ -169,8 +174,14 @@ const otherchar = () => {
 
 </script>
 <style lang="less" scoped>
+.total{
+  font-size: 16px;
+  font-weight: 700;
+  color: #E9A400;
+}
 .list {
   display: flex;
+  // flex-direction: column;
   flex-wrap: nowrap;
 
   #otherchar {

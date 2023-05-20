@@ -4,14 +4,14 @@
     <div class="left_box clearfix">
       <!-- 联系我们 -->
       <div class="left_contact left_item">
-        <div class="left_item_title"><span>店铺信息</span></div>
+        <div class="left_item_title"><span>基地信息</span></div>
         <div class="left_item_content clearfix">
-          <div class="left_item_content_title">店铺名称</div>&nbsp;:
-          <div class="left_item_content_text">{{result.base.baseName}}</div>
+          <div class="left_item_content_title">基地名称</div>&nbsp;:
+          <div class="left_item_content_text">{{ result.base.baseName }}</div>
         </div>
         <div class="left_item_content clearfix">
-          <div class="left_item_content_title">店铺地址</div>&nbsp;:
-          <div class="left_item_content_text">{{result.base.address}}&nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="left_item_content_title">基地地址</div>&nbsp;:
+          <div class="left_item_content_text">{{ result.base.address }}&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="showMap" class="left_location" @click="openMap">地图</span>
           </div>
         </div>
@@ -25,8 +25,9 @@
         <div class="left_item_content clearfix" style="height:24px;">
           <div class="service_phone_item_title">救助热线</div>&nbsp;:
           <div class="left_item_content_text">
-            <div><span class="aboutus_content_item">{{result.base.phoneNumber}}</span><span class="aboutus_content_item_name"
-                data-num="13032157959" style="margin-right: 0;"><a href="tel:+123456789">查看</a></span></div>
+            <div><span class="aboutus_content_item">{{ result.base.phoneNumber }}</span><span
+                class="aboutus_content_item_name" data-num="13032157959" style="margin-right: 0;"><a
+                  href="tel:+123456789">查看</a></span></div>
           </div>
         </div>
         <div class="left_item_content clearfix" style="height:24px;">
@@ -49,26 +50,26 @@
           <div class="left_item_title"><span>分类信息</span></div>
         </div>
         <div class="cateinfo_item clearfix" v-for="item in result.news">
-          <a class="cateinfo_name hover_color"
-            :href="`http://127.0.0.1:5173/#/newhome?id=${item._id}`" target="blank">{{item.title}}</a>
-          <div class="cateinfo_text">{{item.content}}</div>
+          <a class="cateinfo_name hover_color" :href="`http://127.0.0.1:5173/#/newhome?id=${item._id}`"
+            target="blank">{{ item.title }}</a>
+          <div class="cateinfo_text">{{ item.content }}</div>
         </div>
         <a href="http://127.0.0.1:5173/" target="blank" class="left_item_more">查看更多</a>
       </div>
-    </div> 
+    </div>
     <!-- 内容区 -->
     <div class="main_content clearfix">
 
       <div class="main_item">
-        <div class="product_info_title">{{result.base.baseName}}</div>
+        <div class="product_info_title">{{ result.base.baseName }}</div>
         <div class="product_info_time">发布时间：<span style="color: #333;">2023-04-18</span></div>
         <div class="product_info_price">价格：<span style="color: #c40000;font-weight: bold;">1.00元</span></div>
         <div>
           <div class="format">
             <p>
-              上海宠物救助领养基地帮助流浪动物找家，成立了近二十年，帮助了几万条流浪动物找到了家园，希望有能力的朋友可以领养只狗狗猫猫帮助狗狗猫猫找到新的家园。本中心几百条狗狗猫猫免费赠送，如果你喜欢狗狗猫猫，不要在宠物店去买，会上当受骗的，病猫狗，星期猫狗等，太多了，买了可能要花几千甚至上万去给宠物看病，后来还可能救不活，大家可以来我们这里领养狗狗猫猫，市中心有专门的领养点，天天开放的。
+              {{ result.base.intro }}
             </p><br>
-            <p>
+            <!-- <p>
               上海宠物救助领养中心成立于2000年，上海真实直接收养救助流浪狗猫的地方！我们无偿接受您的领养，被领养的宠物一个月内如果生病，我们免费给予治，再还给领养人，不要一分钱。同时我们需要广大爱心人士捐助、帮助我们，感谢大家！
             </p><br>
             <p>【收养的狗猫主要有两类】</p><br>
@@ -82,8 +83,8 @@
             </p><br>
             <p>
               宠物救助领养中心可供免费提供领养小动物狗品种有：京巴犬、西施犬、蝴蝶犬、泰迪熊犬、比熊犬、博美犬、马尔济斯犬、贵宾犬、吉娃娃犬、约克夏犬、雪纳瑞犬、银狐犬、柯基犬、喜乐蒂犬、苏格兰牧羊犬、边境牧羊犬、英国古代牧羊犬、德国牧羊犬、松狮、萨摩耶犬、哈士奇犬、阿拉斯加雪撬犬、秋田犬、柴犬、金毛犬、拉布拉多水猎犬、混血串串土狗等犬种，猫咪有蓝猫、布偶猫、加菲猫、美短、暹罗猫、金吉拉等，各种混血串种猫土猫等等，年龄有几月到几岁不等。
-            </p><br>
-            <p>上海宠物救助领养中心市区办事处：</p><br>
+            </p><br> -->
+            <!-- <p>上海宠物救助领养中心市区办事处：</p><br> -->
             <p>黄浦区宠物救助领养点</p><br>
             <p>闵行区宠物救助领养点</p><br>
             <p>虹口区宠物救助领养点</p><br>
@@ -97,9 +98,9 @@
             <p>松江区宠物救助领养点</p><br>
             <p>崇明区宠物救助领养点</p><br>
             <p>杨浦区宠物救助领养点</p><br>
-            <p>请想领养狗狗的亲来前和值班电话预约时间，也发短信预约好，再来。具体地址手机短息发给您。因为我们这里不是宠物店，不能保证一直有人，义工们都有自己的工作，望见谅。</p><br>
+            <p>请想领养宠物的亲来前和值班电话预约时间，也发短信预约好，再来。具体地址手机短息发给您。因为我们这里不是宠物店，不能保证一直有人，义工们都有自己的工作，望见谅。</p><br>
             <p>义工值班时间：上午八点到晚上八点。</p><br>
-            <p>上海宠物救助领养中心，我们是上海市正规的宠物领养机构！请大家认准正规机构，正规领养中心进行领养。</p>
+            <!-- <p>上海宠物救助领养中心，我们是上海市正规的宠物领养机构！请大家认准正规机构，正规领养中心进行领养。</p> -->
           </div>
         </div>
         <ul class="product_img_list">
@@ -127,19 +128,7 @@
         <div class="main_item_title">
           <div class="main_item_title_lt">精品推荐</div>
         </div>
-        <div class="main_item_content">
-          <ul class="product_list clearfix">
-            <a href="http://chongwulingyang.shop.liebiao.com/product57892561">
-              <li class="product_item">
-                <img src="http://simg.liecdn.cn/pic/01/f2/10/01f210dc8d0ca1d9f78c382184d17166.jpg" alt="静安区流浪狗流浪猫宠物救助站">
-                <div>
-                  <div class="product_title">静安区流浪狗流浪猫宠物救助站</div>
-                  <div>价格：<span class="product_price">1.00元</span></div>
-                </div>
-              </li>
-            </a>
-          </ul>
-        </div>
+        
       </div>
     </div>
 
@@ -161,8 +150,9 @@
 </template>
 <script lang="ts" setup>
 import { useRouter, useRoute } from 'vue-router'
-import { onMounted, reactive, ref,getCurrentInstance,onBeforeUnmount } from 'vue'
-import { reqGetCwBaseInfo,reqGetCwBaseById,reqGetNews } from '@/api/index'
+import { onMounted, reactive, ref, getCurrentInstance, onBeforeUnmount } from 'vue'
+import { reqGetCwBaseInfo, reqGetCwBaseById, reqGetNews } from '@/api/index'
+import { get_random_str } from '@/utils/index'
 import emitter from '../../utils/mitt';
 const route = useRoute()
 const router = useRouter()
@@ -173,7 +163,7 @@ const TzLogin = () => {
   dialogTz.value = false
   router.push({ name: 'userLogin' })
 }
-onBeforeUnmount(()=>{
+onBeforeUnmount(() => {
   console.log('onBeforeUnmount')
 })
 let myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
@@ -181,15 +171,16 @@ let url = 'http://127.0.0.1:3003/'
 let socket = io.connect(url, {
   path: '/rtckeet'
 })
-const handleConnect = ()=>{
+const name = ref('')
+const handleConnect = () => {
   if (!myCookie) {
     dialogTz.value = true
     return
   }
   // 在这里传值
-  let room = '111'
-  socket.emit('usersend','123',{a:room})
-  router.push({name:'shipin',query:{room:room,userType:'user',name:'wss'}})
+  let room = get_random_str(4)
+  socket.emit('usersend', '123', { a: room })
+  router.push({ name: 'shipin', query: { room: room, userType: 'user', name: 'user' } })
 }
 const openMap = () => {
   dialogVisible.value = true;
@@ -198,25 +189,27 @@ const openMap = () => {
 const init = () => {
   let Bmap = window.BMap; // 注意要带window，不然会报错（注意官方api,会有改动，之前是Bmap,后面3.0版本改为了BMap,最好查文档或者打印一下window）
   var map = new Bmap.Map("allmap"); // allmap必须和dom上的id一直
-  // map.centerAndZoom(
-  //   new Bmap.Point(105.04263635868074, 30.556100647961866),
-  // ); // 初始化地图,设置中心点坐标和地图级别
-  var point = new BMap.Point(116.404, 39.925);
-	map.centerAndZoom(point, 15);
-  map.setCurrentCity("北京");
+  map.addControl(new BMap.NavigationControl()); //添加默认缩放平移控件
+  var localSearch = new BMap.LocalSearch(map);
+  localSearch.enableAutoViewport(); //允许自动调节窗体大小
+  localSearch.setSearchCompleteCallback(function (searchResult) {
+    var poi = searchResult.getPoi(0);
+    map.centerAndZoom(poi.point, 13);
+    var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat)); // 创建标注，为要查询的地方对应的经纬度    
+    map.addOverlay(marker);
+    var opts = {
+      width: 200,     // 信息窗口宽度
+      height: 100,     // 信息窗口高度
+      title: result.base.address, // 信息窗口标题
+    }
+    var infoWindow = new BMap.InfoWindow(`地址：${result.base.address} 基地管理者：${result.base.PeopleName}`, opts);  // 创建信息窗口对象 
+    marker.addEventListener("click", function () {
+      map.openInfoWindow(infoWindow, poi.point); //开启信息窗口
+    });
+  });
+  localSearch.search(result.base.address);
+  // map.setCurrentCity("北京");
   map.enableScrollWheelZoom(true);
-  var marker = new BMap.Marker(point);  // 创建标注
-	map.addOverlay(marker);              // 将标注添加到地图中
-	var opts = {
-	    width : 200,     // 信息窗口宽度
-	    height: 100,     // 信息窗口高度
-	    title : "故宫博物院" , // 信息窗口标题
-	    message:"这里是故宫"
-	}
-	var infoWindow = new BMap.InfoWindow("地址：北京市东城区王府井大街88号乐天银泰百货八层", opts);  // 创建信息窗口对象 
-	marker.addEventListener("click", function(){          
-		map.openInfoWindow(infoWindow, point); //开启信息窗口
-	});
 };
 const loadMapScript = () => {
   // 此处在所需页面引入资源就是，不用再public/index.html中引入
@@ -242,21 +235,21 @@ const loadMapScript = () => {
 const result = reactive({
   cwArr: [{}],
   base: {},
-  news:[]
+  news: []
 })
 onMounted(async () => {
   try {
     const { data, status } = await reqGetCwBaseInfo(id)
     const cwBase = await reqGetCwBaseById(id)
     const news = await reqGetNews()
-    
+
     if (status == 0) {
       result.cwArr = data
     }
     result.base = cwBase.data
     let arr = news.data
-    result.news = arr.slice(0,7)
-    console.log('cwBase',result.news)
+    result.news = arr.slice(0, 7)
+    console.log('cwBase', result.news)
   } catch (error) {
     console.log(error)
   }
@@ -264,17 +257,17 @@ onMounted(async () => {
 })
 </script>
 <style lang='less'>
-.map{
+.map {
   position: relative;
   width: 100%;
   height: 400px;
 }
+
 .baidumap {
   width: 100%;
   height: 100%;
   border: 1px solid red;
 }
-
 </style>
 <style lang="less" scoped>
 body {
@@ -1020,4 +1013,5 @@ span.aboutus_content_item_name {
 
 .aboutus_content_item_name:hover {
   color: #FF0000;
-}</style>
+}
+</style>

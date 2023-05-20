@@ -63,13 +63,23 @@ const goShipin = ()=>{
 }
 const sendNotice = ()=>{
   if (!("Notification" in window)) {
+    // Check if the browser supports notifications
     alert("This browser does not support desktop notification");
+  } else if (Notification.permission === "granted") {
+    // Check whether notification permissions have already been granted;
+    // if so, create a notification
+    var notification = new Notification('视频连线', {
+          body: '您有新的视频连线哦',
+          icon: 'http://www.mengzands.com/images/zhua.png',
+          vibrate:[200, 100, 200],
+          requireInteraction:true
+        });
   }  else if (Notification.permission !== "denied") {
     Notification.requestPermission().then((permission) => {
       if (permission === "granted") {
         var notification = new Notification('视频连线', {
           body: '您有新的视频连线哦',
-          icon: 'http://assets.souche.com/shop/assets/sso/favicon.ico',
+          icon: 'http://www.mengzands.com/images/zhua.png',
           vibrate:[200, 100, 200],
           requireInteraction:true
         });

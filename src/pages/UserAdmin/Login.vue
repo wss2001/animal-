@@ -104,7 +104,7 @@ const checkAge = (rule: any, value: any, callback: any) => {
 
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('Please input the password'))
+    callback(new Error('请输入账号'))
   } else {
     if (ruleForm.checkPass !== '') {
       if (!ruleFormRef.value) return
@@ -115,7 +115,7 @@ const validatePass = (rule: any, value: any, callback: any) => {
 }
 const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === '') {
-    callback(new Error('Please input the password again'))
+    callback(new Error('请输入密码'))
   } else {
     callback()
   }
@@ -208,7 +208,7 @@ const findPass = ()=>{
   .right {
     width: 700px;
     height: 400px;
-    background-image: url(https://source.unsplash.com/random);
+    background-image: url(https://picsum.photos/700/400);
     background-repeat: no-repeat;
     background-color: #fafafa;
     background-size: cover;

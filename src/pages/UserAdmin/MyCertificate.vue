@@ -9,7 +9,7 @@
   <div class="list">
     <div class="item" v-for="item in rr.base">
       <div class="img">
-
+        <img src="../../../public/images/证书.png" alt="">
       </div>
       <p class="text">这是来自{{item.baseName}}的赠予</p>
     </div>
@@ -48,11 +48,11 @@ onBeforeMount(async() => {
     grid-gap: 20px;
     .item{
       height: 200px;
-      background-color: rgba(14, 56, 100, 0.5);
+      // background-color: rgba(14, 56, 100, 0.5);
       .img{
         width: 100%;
-        height: 160px;
-        background-color: pink;
+        // height: 160px;
+        // background-color: pink;
       }
       .text{
         // margin: 5px 0;

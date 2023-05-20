@@ -11,7 +11,11 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <div class="username">{{result.userInfo.username}}</div>
+      <div class="username">{{result.userInfo.username}}-----</div>
+      <div class="username">
+        <span>简介:{{result.userInfo.desc}}，</span>
+        <span>性别:{{result.userInfo.sex}}</span>
+      </div>
     </div>
     <h2>已经收养的宠物</h2>
     <div class="cw">

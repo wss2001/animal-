@@ -35,11 +35,11 @@
           <span @click="handleGopmes">我的信息</span>
         </el-menu-item>
         <el-menu-item index="5" >
-          <el-icon><document /></el-icon>
+          <el-icon><Chicken /></el-icon>
           <span @click="handleGopet">我的宠物</span>
         </el-menu-item>
         <el-menu-item index="4">
-          <el-icon><setting /></el-icon>
+          <el-icon><User /></el-icon>
           <span @click="handleGoFriend">我的好友</span>
         </el-menu-item>
       </el-menu>
@@ -51,8 +51,9 @@
 import {
   Document,
   Menu as IconMenu,
-  Location,
-  Setting,
+  ChatDotRound,
+  Chicken,
+  User
 } from '@element-plus/icons-vue'
 import {onMounted,watch} from 'vue'
 import {useRouter,useRoute} from 'vue-router'
@@ -84,4 +85,9 @@ const handleGopet = ()=>{
   /* .el-cow{
     min-height: 400px;
   } */
+  .el-menu{
+    height: 100%;
+    width: 150px;
+    text-align: center;
+  }
 </style>

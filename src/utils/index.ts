@@ -49,6 +49,19 @@ export function RandomNumBoth(Min: number, Max: number) {
   var num = Min + Math.round(Rand * Range); //四舍五入
   return num;
 }
+
+export function get_random_str(number:number){
+  const x='AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
+  let str = ''
+  for(let i=0;i<number;i++){
+      //重点  这里利用了Math.random()函数生成的随机数大于0 小于1 我们可以
+      //用它的随机数来乘以字符串的长度,得到的也是一个随机值，再通过parseInt()
+      //函数取整，这样就可以实现字符串的随机取值了
+      // @ts-ignore
+      str +=  x[parseInt(Math.random()*x.length)]
+  }
+  return str
+}
 /**
  * @description 获取指定名称的cookie的值
  * @param objname {string}

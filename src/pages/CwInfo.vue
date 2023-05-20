@@ -2,7 +2,9 @@
   <div class="banxin">
     <div class="zhuti">
       <div class="gg" v-show="showgg">
-        <div>我是广告猫粮狗粮，宠物医生，我是广告猫粮狗粮，宠物医生，我是广告猫粮狗粮，宠物医生我是广告猫粮狗粮，宠物医生我是广告猫粮狗粮，宠物医生</div>
+        <div>
+          <img src="../../public/images/cwBase1.png" alt="">
+        </div>
         <div @click="guanbigg" class="guanbi">X</div>
       </div>
       <h2 class="sj">
@@ -250,8 +252,8 @@ const guanbigg = () => {
 <style lang="less" scoped>
 .gg {
   width: 150px;
-  height: 350px;
-  background-color: aquamarine;
+  // height: 350px;
+  // background-color: aquamarine;
   position: fixed;
   top: 200px;
   right: 0;
